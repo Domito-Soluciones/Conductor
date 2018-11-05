@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Conductor</string>
+    <string name="input_usuario">Rut o usuario</string>
+    <string name="input_password">Password</string>
+    <string name="input_button">Ingresar</string>
+    <string name="title_activity_login_new">LoginActivityNew</string>
+    <string name="titulo_info">Conductor </string>
+    <string name="cantidad_viajes">Viajes del dia:</string>
+    <string name="nuevo_servicio">Nuevo servicio</string>
+    <string name="viaje_inicio" >Origen</string>
+    <string name="viaje_destino" >Destino</string>
+    <string name="viaje_contacto">Llamar</string>
+    <string name="viaje_tipo">Tipo</string>
+</resources>
