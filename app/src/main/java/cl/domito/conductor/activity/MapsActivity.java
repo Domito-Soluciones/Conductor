@@ -14,8 +14,10 @@ import android.widget.TextView;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import cl.domito.conductor.R;
 import cl.domito.conductor.http.RequestConductor;
@@ -78,12 +80,14 @@ public class MapsActivity extends FragmentActivity   {
         TextView textViewId = findViewById(R.id.textViewUsuario);
         textViewId.setText(Utilidades.USER);
         TextView textViewNombre = findViewById(R.id.textViewNombre);
-        final String url = Utilidades.URL_BASE_CONDUCTOR + "NombreConductor.php?rut="+Utilidades.USER;
+        final String url = Utilidades.URL_BASE_CONDUCTOR + "DatosConductor.php?rut="+Utilidades.USER;
+        final JSONObject[] jsonObject = {null};
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    Utilidades.NOMBRE = RequestConductor.datosConductor(url);
+                    jsonObject[0] = RequestConductor.datosConductor(url);
+                    Utilidades.NOMBRE = jsonObject[0].getString("nombre");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -98,7 +102,12 @@ public class MapsActivity extends FragmentActivity   {
         }
         textViewNombre.setText(Utilidades.NOMBRE);
         TextView textViewViajes = findViewById(R.id.textViewViajes);
-        textViewViajes.setText(Utilidades.CANTIDAD_VIAJES+"");
+        try {
+            Utilidades.CANTIDAD_VIAJES = jsonObject[0].getString("viajes");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        textViewViajes.setText(Utilidades.CANTIDAD_VIAJES);
 
 
 

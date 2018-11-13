@@ -33,7 +33,7 @@ public class Utilidades {
     public static boolean CONDUCTOR_ACTIVO = false;
     public static String USER;
     public static String NOMBRE = "";
-    public static int CANTIDAD_VIAJES = 0;
+    public static String CANTIDAD_VIAJES = "0";
     public static int TIEMPO_ESPERA = 30;
 
     public static Context CONTEXT = null;
@@ -47,6 +47,7 @@ public class Utilidades {
         JSONObject json= null;
         HttpClient client = new DefaultHttpClient();
         HttpGet request = new HttpGet(urlDest);
+        request.addHeader("Referer", "app-conductor");
         HttpResponse response = null;
         try {
             response = client.execute(request);
@@ -69,6 +70,7 @@ public class Utilidades {
         HttpPost post = new HttpPost(urlDest);
 
         post.setHeader("User-Agent", "");
+        post.addHeader("Referer", "app-conductor");
         try {
             post.setEntity(new UrlEncodedFormEntity(params));
             HttpResponse response = client.execute(post);

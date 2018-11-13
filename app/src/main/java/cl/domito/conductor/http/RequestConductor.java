@@ -1,5 +1,7 @@
 package cl.domito.conductor.http;
 
+import android.location.Location;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -25,17 +27,16 @@ public class RequestConductor {
         }
         return false;
     }
-    public static String datosConductor(String reqUrl) throws JSONException {
-        JSONObject nombre = null;
+    public static JSONObject datosConductor(String reqUrl) throws JSONException {
+        JSONObject datos = null;
         try {
-            nombre = Utilidades.obtenerJsonObject(reqUrl);
-            return nombre.getString("nombre");
+            datos = Utilidades.obtenerJsonObject(reqUrl);
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
-        return nombre.getString("nombre");
+        return datos;
     }
 
     public static JSONObject obtenerServicioAsignado(String reqUrl) {
@@ -67,5 +68,20 @@ public class RequestConductor {
     public static JSONObject getRoute(String url)
     {
         return Utilidades.obtenerJsonObject(url);
+    }
+
+    public static void actualizarUbicacion(String reqUrl,Location lastLocation) {
+        try {
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("lat", lastLocation.getLatitude()+""));
+            params.add(new BasicNameValuePair("lon", lastLocation.getLongitude()+""));
+            params.add(new BasicNameValuePair("conductor",Utilidades.USER));
+            Utilidades.enviarPost(reqUrl,params);
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

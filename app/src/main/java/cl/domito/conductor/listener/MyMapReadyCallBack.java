@@ -56,6 +56,7 @@ public class MyMapReadyCallBack implements OnMapReadyCallback, GoogleApiClient.O
 
     Activity activity;
     GoogleApiClient apiClient;
+    public static Location lastLocation;
 
     public MyMapReadyCallBack(Activity activity) {
         this.activity = activity;
@@ -101,7 +102,7 @@ public class MyMapReadyCallBack implements OnMapReadyCallback, GoogleApiClient.O
         if (ActivityCompat.checkSelfPermission(this.activity, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.activity, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        Location lastLocation =
+        lastLocation =
                 LocationServices.FusedLocationApi.getLastLocation(apiClient);
 
         updateUI(lastLocation);

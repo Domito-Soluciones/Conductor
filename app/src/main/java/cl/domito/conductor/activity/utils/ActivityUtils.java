@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.DirectionsApi;
@@ -26,9 +27,10 @@ import java.util.List;
 
 import cl.domito.conductor.activity.MapsActivity;
 import cl.domito.conductor.http.Utilidades;
+import cl.domito.conductor.listener.MyMapReadyCallBack;
 
 public class ActivityUtils {
-    public static void enviarNotificacion()
+    public static void enviarNotificacion(String text)
     {
         NotificationCompat.Builder mBuilder;
         NotificationManager mNotifyMgr = (NotificationManager) Utilidades.CONTEXT.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -36,9 +38,9 @@ public class ActivityUtils {
         PendingIntent pendingIntent = PendingIntent.getActivity(Utilidades.CONTEXT, 0, intent, 0);
         mBuilder = new NotificationCompat.Builder(Utilidades.CONTEXT)
                 .setContentIntent(pendingIntent)
-                .setContentTitle("Titulo")
+                .setContentTitle("NUEVO SERVICIO ASIGNADO")
                 .setSmallIcon(android.support.v4.R.drawable.notification_icon_background)
-                .setContentText("Hola que tal?")
+                .setContentText("SERVICIO ASIGNADO CON ID "+text)
                 .setVibrate(new long[]{100, 250, 100, 500})
                 .setAutoCancel(true);
         mNotifyMgr.notify(1, mBuilder.build());
@@ -102,7 +104,8 @@ public class ActivityUtils {
             MapsActivity.mMap.addPolyline(opts);
         }
 
-
-        //MapsActivity.mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zaragoza, 6));
+        LatLngBounds.Builder latLngBounds = new LatLngBounds.Builder();
+        latLngBounds.include(path.get(0)).include(path.get(path.size()-1));
+        MapsActivity.mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(),300));
     }
 }

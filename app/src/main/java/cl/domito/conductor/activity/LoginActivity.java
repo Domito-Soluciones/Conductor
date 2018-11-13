@@ -55,9 +55,10 @@ public class LoginActivity extends AppCompatActivity {
                 if (login) {
                     Utilidades.CONDUCTOR_ACTIVO = true;
                     Utilidades.USER = mUserView.getText().toString();
-                    String url = Utilidades.URL_BASE_CONDUCTOR + "HabilitarConductor.php";
+                    String url = Utilidades.URL_BASE_CONDUCTOR + "CambiarEstadoConductor.php";
                     List<NameValuePair> params = new ArrayList<NameValuePair>();
                     params.add(new BasicNameValuePair("usuario", Utilidades.USER));
+                    params.add(new BasicNameValuePair("estado", "1"));
                     Utilidades.enviarPost(url,params);
                     Intent mainIntent = new Intent(LoginActivity.this, MapsActivity.class);
                     AsignacionThread asignacionThread = new AsignacionThread();

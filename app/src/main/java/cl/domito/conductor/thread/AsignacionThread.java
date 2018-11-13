@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 
+import com.google.android.gms.location.LocationServices;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -14,6 +16,7 @@ import cl.domito.conductor.activity.MapsActivity;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.http.Utilidades;
+import cl.domito.conductor.listener.MyMapReadyCallBack;
 
 public  class AsignacionThread extends AsyncTask {
 
@@ -21,6 +24,7 @@ public  class AsignacionThread extends AsyncTask {
     protected Object doInBackground(Object[] objects) {
         String url = Utilidades.URL_BASE_SERVICIO + "ServiciosAsignado.php?user="+Utilidades.USER;
         String urlDes = Utilidades.URL_BASE_SERVICIO + "DesAsignarServicio.php";
+        String urlMod = Utilidades.URL_BASE_CONDUCTOR + "ModificarUbicacion.php";
         while(true) {
             if(Utilidades.CONDUCTOR_ACTIVO)
             {
@@ -46,7 +50,7 @@ public  class AsignacionThread extends AsyncTask {
                             Utilidades.TIEMPO_ESPERA = 30;
                         }
                         else {
-                            ActivityUtils.enviarNotificacion();
+                            ActivityUtils.enviarNotificacion(servicio.getString("servicio_id"));
                             if(Utilidades.GONE) {
                                 MapsActivity.mapsActivity.runOnUiThread(new Runnable() {
                                     @Override
@@ -72,6 +76,9 @@ public  class AsignacionThread extends AsyncTask {
                             Utilidades.TIEMPO_ESPERA--;
                             Log.i("tirmpo restante",Utilidades.TIEMPO_ESPERA+"");
                         }
+                    }
+                    if(MyMapReadyCallBack.lastLocation != null) {
+                        RequestConductor.actualizarUbicacion(urlMod,MyMapReadyCallBack.lastLocation);
                     }
                     Thread.sleep(3000);
                 } catch (Exception e) {
