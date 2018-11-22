@@ -45,6 +45,7 @@ public class MapsActivity extends FragmentActivity   {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //View v = View.inflate(getApplicationContext(), R.layout.activity_maps, null);
         setContentView(R.layout.activity_maps);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         Utilidades.CONTEXT = getApplicationContext();

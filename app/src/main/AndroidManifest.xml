@@ -11,8 +11,8 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-		<meta-data
+        android:theme="@style/Theme.AppCompat.Light" >
+        <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDzk5KMW7MRXU2HUqXUSyCgGlCwib1nTu8" />
 		

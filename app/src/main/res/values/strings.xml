@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Conductor</string>
     <string name="input_usuario">Rut o usuario</string>
     <string name="input_password">Password</string>
     <string name="input_button">Ingresar</string>
@@ -11,4 +10,5 @@
     <string name="viaje_destino" >Destino</string>
     <string name="viaje_contacto">Llamar</string>
     <string name="viaje_tipo">Tipo</string>
+    <string name="app_name">Conductor</string>
 </resources>

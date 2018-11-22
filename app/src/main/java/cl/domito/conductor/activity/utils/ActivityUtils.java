@@ -5,6 +5,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -36,17 +38,20 @@ public class ActivityUtils {
         NotificationManager mNotifyMgr = (NotificationManager) Utilidades.CONTEXT.getSystemService(Context.NOTIFICATION_SERVICE);
         Intent intent = new Intent(Utilidades.CONTEXT, MapsActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(Utilidades.CONTEXT, 0, intent, 0);
+        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         mBuilder = new NotificationCompat.Builder(Utilidades.CONTEXT)
                 .setContentIntent(pendingIntent)
                 .setContentTitle("NUEVO SERVICIO ASIGNADO")
                 .setSmallIcon(android.support.v4.R.drawable.notification_icon_background)
                 .setContentText("SERVICIO ASIGNADO CON ID "+text)
                 .setVibrate(new long[]{100, 250, 100, 500})
-                .setAutoCancel(true);
+                .setAutoCancel(true)
+                .setSound(soundUri);
         mNotifyMgr.notify(1, mBuilder.build());
     }
 
     public static void dibujarRuta(String origen,String destino) {
+        MapsActivity.mMap.clear();
 
         //Define list to get all latlng for the route
         List<LatLng> path = new ArrayList();

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Layout;
+import android.view.View;
 
 import cl.domito.conductor.R;
 
@@ -20,6 +22,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         this.getSupportActionBar().hide();
+        View v = View.inflate(getApplicationContext(), R.layout.activity_splash, null);
         setContentView(R.layout.activity_splash);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable(){

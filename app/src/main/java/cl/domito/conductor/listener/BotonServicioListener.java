@@ -46,15 +46,15 @@ public class BotonServicioListener implements View.OnClickListener {
                             String partida = null;
                             String destino = null;
                             try {
-                                partida = URLDecoder.decode(servicio.getString("servicio_partida"),"UTF-8");
-                                destino = URLDecoder.decode(servicio.getString("servicio_destino"),"UTF-8");
+                                partida = new String(servicio.getString("servicio_partida").getBytes("ISO-8859-1"), "UTF-8");
+                                destino = new String(servicio.getString("servicio_destino").getBytes("ISO-8859-1"), "UTF-8");
+                                ActivityUtils.dibujarRuta(URLDecoder.decode(partida,"ISO-8859-1"),URLDecoder.decode(destino,"ISO-8859-1"));
+                                Utilidades.SERVICIO = null;
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                             }
-                            ActivityUtils.dibujarRuta(partida,destino);
-                            Utilidades.SERVICIO = null;
                         }
                     });
                 }
@@ -79,7 +79,7 @@ public class BotonServicioListener implements View.OnClickListener {
         else if(v.getId() == R.id.button5)
         {
                 //String dial = "tel:"+R.id.textView3;
-                String dial = "tel:995970988";
+                String dial = "tel:981755792";
                 MapsActivity.mapsActivity.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
 
         }
