@@ -4,20 +4,16 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 
-import com.google.android.gms.location.LocationServices;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 
 import cl.domito.conductor.activity.MapsActivity;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.http.Utilidades;
-import cl.domito.conductor.listener.MyMapReadyCallBack;
 
 public  class AsignacionThread extends AsyncTask {
 

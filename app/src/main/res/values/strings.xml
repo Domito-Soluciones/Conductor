@@ -11,4 +11,26 @@
     <string name="viaje_contacto">Llamar</string>
     <string name="viaje_tipo">Tipo</string>
     <string name="app_name">Conductor</string>
+    <string name="contentDescriptionLogo">Logo Principal</string>
+    <string name="recordarme">Recordarme</string>
+    <string name="datos_viaje">¿A dónde se dirige?</string>
+    <string name="origen">Origen</string>
+    <string name="destino">Destino</string>
+    <string name="confirmar_viaje">Solicitar</string>
+    <string name="cancelar_viaje">Cancelar</string>
+    <string name="title_activity_asignar_servicio">AsignarServicioActivity</string>
+    <string name="punto_partida">Ingrese punto de partida</string>
+    <string name="punto_destino">Ingrese punto de destino</string>
+    <string name="descripcionImagenMenu">imagen de menu</string>
+    <string name="descripcionImagenAtras">imagen atras</string>
+    <string name="api_key">AIzaSyDzk5KMW7MRXU2HUqXUSyCgGlCwib1nTu8</string>
+    <string name="solicitar">Solicitar</string>
+    <string name="confirmar">Confirmar</string>
+    <string name="solicitando_viaje">Solicitando Viaje</string>
+    <string name="boton_cancelar">Cancelar</string>
+    <string name="error_internet">No se pudo acceder a la red</string>
+    <string name="sharedPreferenceFile">conf_user</string>
+    <string name="sharedPreferenceKeyUser">idUser</string>
+    <string name="sel_mapa">Selecciona en el mapa</string>
+
 </resources>

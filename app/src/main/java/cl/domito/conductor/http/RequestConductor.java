@@ -10,15 +10,21 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.domito.conductor.dominio.Conductor;
+
 public class RequestConductor {
+
+    private static JSONObject RESPUESTA;
+    private static List<NameValuePair> PARAMS = new ArrayList<NameValuePair>();
 
     public static boolean loginConductor(String reqUrl)
     {
         try {
-            JSONObject login = Utilidades.obtenerJsonObject(reqUrl);
-            if(!login.getString("id").equals("0"))
-            {
-                return true;
+            if(Conductor.getInstance().isConectado()) {
+                RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
+                if (!RESPUESTA.getString("id").equals("0")) {
+                    return true;
+                }
             }
         }
         catch(Exception e)
@@ -27,17 +33,19 @@ public class RequestConductor {
         }
         return false;
     }
+
     public static JSONObject datosConductor(String reqUrl) throws JSONException {
-        JSONObject datos = null;
         try {
-            datos = Utilidades.obtenerJsonObject(reqUrl);
+            if(Conductor.getInstance().isConectado()) {
+                RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
+            }
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
-        return datos;
-    }
+        return RESPUESTA;
+        }
 
     public static JSONObject obtenerServicioAsignado(String reqUrl) {
         JSONObject servicio = null;
@@ -55,7 +63,7 @@ public class RequestConductor {
         try {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("id", idServicio));
-            params.add(new BasicNameValuePair("conductor",Utilidades.USER));
+            params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getNick()));
             Utilidades.enviarPost(reqUrl,params);
 
         }
@@ -75,7 +83,7 @@ public class RequestConductor {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("lat", lastLocation.getLatitude()+""));
             params.add(new BasicNameValuePair("lon", lastLocation.getLongitude()+""));
-            params.add(new BasicNameValuePair("conductor",Utilidades.USER));
+            params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getNick()));
             Utilidades.enviarPost(reqUrl,params);
 
         }
