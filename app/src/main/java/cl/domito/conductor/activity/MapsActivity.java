@@ -35,7 +35,6 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
-import cl.domito.conductor.http.Utilidades;
 import cl.domito.conductor.thread.DatosConductorOperation;
 import cl.domito.conductor.thread.DesAsignarServicioOperation;
 import cl.domito.conductor.thread.RealizarServicioOperation;
@@ -216,7 +215,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     private void realizarServicio() {
         RealizarServicioOperation realizarServicioOperation = new RealizarServicioOperation(this);
-        realizarServicioOperation.execute();
+        realizarServicioOperation.execute(mMap);
     }
 
     private void desasignarServicio() {

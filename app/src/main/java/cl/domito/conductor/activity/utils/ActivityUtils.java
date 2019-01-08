@@ -48,10 +48,6 @@ public class ActivityUtils {
 
     public static String URL_GEOCODER =
             "https://maps.googleapis.com/maps/api/geocode/json?";
-    public static String URL_PLACES =
-            "https://maps.googleapis.com/maps/api/place/autocomplete/json?";
-    public static String URL_DIRECTIONS =
-            "https://maps.googleapis.com/maps/api/directions/json?";
 
     public static void hideSoftKeyBoard(Activity activity)
     {
@@ -62,112 +58,6 @@ public class ActivityUtils {
         }
     }
 
-    /*public static String getGeocoder(Activity activity,String latitud,String longitud,String tipo) {
-        String addressComponents = "";
-        try {
-            String url = URL_GEOCODER + "latlng="+latitud+","+longitud+"&sensor=true&key="+activity.getString(R.string.api_key);
-            JSONObject json = Utilidades.obtenerJsonObject(url);
-            String status = json.getString("status");
-            if (status.equalsIgnoreCase("OK")) {
-                JSONArray results = json.getJSONArray("results");
-                JSONObject zero = results.getJSONObject(0);
-                addressComponents = zero.getString("formatted_address");
-                String placeId = zero.getString("place_id");
-                if(tipo.equals(Conductor.BUSCAR_PARTIDA+""))
-                {
-                    Conductor.getInstance().setPlaceIdOrigen(placeId);
-                    Conductor.getInstance().setPlaceIdOrigenNombre(addressComponents);
-                }
-                else if(tipo.equals(Usuario.BUSCAR_DESTINO+""))
-                {
-                    Conductor.getInstance().setPlaceIdDestino(placeId);
-                    Conductor.getInstance().setPlaceIdDestinoNombre(addressComponents);
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return addressComponents;
-    }*/
-
-    public static JSONArray getPlaces(Activity activity, String latitud, String longitud,String input) {
-        JSONArray results = null;
-        try {
-            String url = URL_PLACES + "input="+URLEncoder.encode(input, "utf8")+"&location="+latitud+","+longitud+"&sensor=true&radius=1000&key="+activity.getString(R.string.api_key);
-            JSONObject json = Utilidades.obtenerJsonObject(url);
-            String status = json.getString("status");
-            if (status.equalsIgnoreCase("OK")) {
-                results = json.getJSONArray("predictions");
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return results;
-    }
-
-    public static List<LatLng> getDirections(Activity activity,GoogleMap mMap,String origen,String[] destinos)
-    {
-        int largo = destinos.length;
-        String destinoFinal = destinos[largo-1];
-        String waypoints = "";
-        StringBuilder waypointsBuilder = new StringBuilder();
-        List<LatLng> polyline = null;
-        try {
-            if (largo > 1) {
-                waypointsBuilder.append("&waypoints=");
-                for (int i = 0; i < largo; i++) {
-                    if (i == largo) {
-                        continue;
-                    }
-                    waypointsBuilder.append(destinos[i]).append("|");
-                }
-                waypoints = waypointsBuilder.toString().substring(0, waypointsBuilder.toString().length() - 1);
-            }
-            String url = URL_DIRECTIONS + "origin=" + URLEncoder.encode(origen, "utf8") + "&destination=" + URLEncoder.encode(destinoFinal, "utf8") + waypoints + "&key=" + activity.getString(R.string.api_key);
-            JSONObject json = Utilidades.obtenerJsonObject(url);
-            String status = json.getString("status");
-            if(status.equals("OK"))
-            {
-                JSONArray array =json.getJSONArray("routes");
-                JSONObject object = (JSONObject) array.get(0);
-                String points = object.getJSONObject("overview_polyline").getString("points");
-                polyline = decodePolyline(points);
-                PolylineOptions polylineOptions = new PolylineOptions().width(10).color(Color.BLACK);
-                polylineOptions.addAll(polyline);
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Polyline line = mMap.addPolyline(polylineOptions);
-                    }
-                });
-            }
-            else if(status.equals("NOT_FOUND"))
-            {
-                activity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(activity.getApplicationContext(),"Ruta no encontrada",Toast.LENGTH_LONG);
-                    }
-                });
-            }
-            LatLngBounds.Builder latLngBounds = new LatLngBounds.Builder();
-            latLngBounds.include(polyline.get(0)).include(polyline.get(polyline.size()-1));
-            activity.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds.build(), 300));
-                }
-            });
-
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return polyline;
-    }
 
     public static void updateUI(Activity activity,GoogleMap googleMap,Location loc) {
         if (loc != null) {
@@ -227,11 +117,11 @@ public class ActivityUtils {
     {
         TextView textViewError = null;
         String nombre = activity.getComponentName().getClassName();
-        if(nombre.equals("cl.domito.cliente.activity.MapsActivity"))
+        if(nombre.equals("cl.domito.conductor.activity.MapsActivity"))
         {
             textViewError = activity.findViewById(R.id.textViewError);
         }
-        else if(nombre.equals("cl.domito.cliente.activity.LoginActivity"))
+        else if(nombre.equals("cl.domito.conductor.activity.LoginActivity"))
         {
             textViewError = activity.findViewById(R.id.textViewError2);
         }
@@ -294,4 +184,23 @@ public class ActivityUtils {
 
     }
 
+    public static void dibujarRuta(Activity activity,GoogleMap mMap,JSONObject route) {
+        PolylineOptions polylineOptions = new PolylineOptions().width(10).color(Color.BLACK);
+        for(int i = 0 ; i < route.length(); i++)
+        {
+            try {
+                polylineOptions.add(new LatLng(route.getDouble("lat"),route.getDouble("lng")));
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Polyline line = mMap.addPolyline(polylineOptions);
+            }
+        });
+    }
 }

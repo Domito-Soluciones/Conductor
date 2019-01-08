@@ -34,6 +34,7 @@ public class Utilidades {
     public static String URL_BASE_SERVICIO = URL_BASE + "servicio/";
     public static String URL_BASE_TRANSPORTISTA = URL_BASE + "transportista/";
     public static String URL_BASE_USUARIO = URL_BASE + "pasajero/";
+    public static boolean GONE;
 
     public static JSONObject obtenerJsonObject(String urlDest)
     {

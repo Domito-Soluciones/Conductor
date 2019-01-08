@@ -1,6 +1,11 @@
 package cl.domito.conductor.dominio;
 
+import android.location.Location;
+
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -21,6 +26,9 @@ public class Conductor {
     private boolean conectado;
     private int cantidadViajes;
     private List<LatLng> latLngs;
+    private JSONObject servicio;
+    private int tiempoEspera = 30;
+    private Location location;
 
     public static synchronized Conductor getInstance(){
         if(instance == null){
@@ -116,7 +124,6 @@ public class Conductor {
     public void setConectado(boolean conectado) {
         this.conectado = conectado;
     }
-
     public int getCantidadViajes() {
         return cantidadViajes;
     }
@@ -131,5 +138,29 @@ public class Conductor {
 
     public void setLatLngs(List<LatLng> latLngs) {
         this.latLngs = latLngs;
+    }
+
+    public JSONObject getServicio() {
+        return servicio;
+    }
+
+    public void setServicio(JSONObject servicio) {
+        this.servicio = servicio;
+    }
+
+    public int getTiempoEspera() {
+        return tiempoEspera;
+    }
+
+    public void setTiempoEspera(int tiempoEspera) {
+        this.tiempoEspera = tiempoEspera;
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 }

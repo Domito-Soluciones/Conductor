@@ -1,79 +1,70 @@
 package cl.domito.conductor.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import cl.domito.conductor.R;
-import cl.domito.conductor.activity.MapsActivity;
-import cl.domito.conductor.http.RequestConductor;
-import cl.domito.conductor.http.Utilidades;
-import cl.domito.conductor.thread.AsignacionThread;
+import cl.domito.conductor.activity.utils.ActivityUtils;
+import cl.domito.conductor.dominio.Conductor;
+import cl.domito.conductor.thread.LoginOperation;
 
 public class LoginActivity extends AppCompatActivity {
 
     private EditText mUserView;
     private EditText mPasswordView;
-    private ProgressBar progressBar;
+    private Button mEmailSignInButton;
+    private CheckBox checkBoxRec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         this.getSupportActionBar().hide();
-        mUserView = findViewById(R.id.email);
+        mUserView = findViewById(R.id.usuario);
         mPasswordView = findViewById(R.id.password);
-        Button mEmailSignInButton = findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton = findViewById(R.id.login_button);
+        checkBoxRec = findViewById(R.id.checkBox);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                login();
+                loginConductor();
             }
         });
-        progressBar = findViewById(R.id.login_progress);
-    }
-
-    private void login() {
-        progressBar.setVisibility(ProgressBar.VISIBLE);
-        final Toast t = Toast.makeText(this, "login erroneo", Toast.LENGTH_LONG);
-        Thread thread = new Thread(new Runnable() {
+        checkBoxRec.setOnClickListener(new OnClickListener() {
             @Override
-            public void run() {
-                boolean login = RequestConductor.loginConductor(Utilidades.URL_BASE_CONDUCTOR + "LoginConductor.php?usuario=" + mUserView.getText().toString() + "&password=" + mPasswordView.getText().toString());
-                if (login) {
-                    Utilidades.CONDUCTOR_ACTIVO = true;
-                    Utilidades.USER = mUserView.getText().toString();
-                    String url = Utilidades.URL_BASE_CONDUCTOR + "CambiarEstadoConductor.php";
-                    List<NameValuePair> params = new ArrayList<NameValuePair>();
-                    params.add(new BasicNameValuePair("usuario", Utilidades.USER));
-                    params.add(new BasicNameValuePair("estado", "1"));
-                    Utilidades.enviarPost(url,params);
-                    Intent mainIntent = new Intent(LoginActivity.this, MapsActivity.class);
-                    AsignacionThread asignacionThread = new AsignacionThread();
-                    asignacionThread.execute((Object) null);
-                    LoginActivity.this.startActivity(mainIntent);
-                    LoginActivity.this.finish();
-                } else {
-                    t.show();
-                }
+            public void onClick(View v) {
+                recordarInicioSesion();
             }
         });
-        thread.start();
-
-
     }
+
+    private void loginConductor() {
+        String usuario = mUserView.getText().toString();
+        String password = mPasswordView.getText().toString();
+        if(!usuario.equals("") && !password.equals(""))
+        {
+            LoginOperation loginOperation = new LoginOperation(this);
+            loginOperation.execute(usuario,password);
+            ActivityUtils.hideSoftKeyBoard(this);
+        }
+        else
+        {
+            Toast t = Toast.makeText(this, "Ingrese tanto usuario como password", Toast.LENGTH_SHORT);
+            t.show();
+        }
+    }
+
+    private void recordarInicioSesion() {
+        Conductor.getInstance().setRecordarSession(true);
+    }
+
+
 
 }
 

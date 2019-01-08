@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import cl.domito.conductor.R;
+import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.Utilidades;
 
 public class ServicioActivity extends AppCompatActivity {
@@ -27,7 +28,7 @@ public class ServicioActivity extends AppCompatActivity {
         });
 
         TextView textView = findViewById(R.id.nombre);
-        textView.setText(Utilidades.NOMBRE);
+        textView.setText(Conductor.getInstance().getNombre());
 
         tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
 
