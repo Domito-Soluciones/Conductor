@@ -44,8 +44,11 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
                 progressBar.setVisibility(ProgressBar.VISIBLE);
             }
         });
-        String url = Utilidades.URL_BASE_CONDUCTOR + "LoginConductor.php?usuario=" + strings[0] + "&password=" + strings[1];
-        boolean login = RequestConductor.loginConductor(url);
+        String url = Utilidades.URL_BASE_CONDUCTOR + "Login.php";
+        List<NameValuePair> params = new ArrayList();
+        params.add(new BasicNameValuePair("usuario", strings[0]));
+        params.add(new BasicNameValuePair("password", strings[1]));
+        boolean login = RequestConductor.loginConductor(url,params);
         loginActivity.runOnUiThread(ActivityUtils.mensajeError(loginActivity));
         if (login) {
             conductor.setActivo(true);

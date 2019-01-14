@@ -6,12 +6,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.List;
 
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.LoginActivity;
@@ -48,7 +52,7 @@ public class AsignacionOperation extends AsyncTask<Void,Void,Void> {
         textViewNombre = context.get().findViewById(R.id.textView14);
         textViewDireccion = context.get().findViewById(R.id.textView16);
         textViewCelular = context.get().findViewById(R.id.textView18);
-        String url = Utilidades.URL_BASE_SERVICIO + "ServiciosAsignado.php?user="+conductor.getNick();
+        String url = Utilidades.URL_BASE_SERVICIO + "ServiciosAsignado.php";
         String urlDes = Utilidades.URL_BASE_SERVICIO + "DesAsignarServicio.php";
         String urlMod = Utilidades.URL_BASE_CONDUCTOR + "ModificarUbicacion.php";
         while(true) {
@@ -57,7 +61,9 @@ public class AsignacionOperation extends AsyncTask<Void,Void,Void> {
                 Log.i("EJECUTANDO THREAD","EJECUTANDO THREAD");
                 try
                 {
-                    JSONObject servicio = RequestConductor.obtenerServicioAsignado(url);
+                    List<NameValuePair> params = new ArrayList();
+                    params.add(new BasicNameValuePair("user",conductor.getNick()));
+                    JSONObject servicio = RequestConductor.obtenerServicioAsignado(url,params);
                     if(servicio != null && !servicio.getString("servicio_id").equals("")) {
                         if(conductor.getServicio() == null) {
                             conductor.setServicio(servicio);

@@ -15,13 +15,12 @@ import cl.domito.conductor.dominio.Conductor;
 public class RequestConductor {
 
     private static JSONObject RESPUESTA;
-    private static List<NameValuePair> PARAMS = new ArrayList<NameValuePair>();
 
-    public static boolean loginConductor(String reqUrl)
+    public static boolean loginConductor(String reqUrl, List<NameValuePair> params)
     {
         try {
             if(Conductor.getInstance().isConectado()) {
-                RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
+                RESPUESTA = Utilidades.enviarPost(reqUrl,params);
                 if (!RESPUESTA.getString("id").equals("0")) {
                     return true;
                 }
@@ -34,10 +33,10 @@ public class RequestConductor {
         return false;
     }
 
-    public static JSONObject datosConductor(String reqUrl) throws JSONException {
+    public static JSONObject datosConductor(String reqUrl, List<NameValuePair> params) throws JSONException {
         try {
             if(Conductor.getInstance().isConectado()) {
-                RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
+                RESPUESTA = Utilidades.enviarPost(reqUrl,params);
             }
         }
         catch(Exception e)
@@ -47,10 +46,10 @@ public class RequestConductor {
         return RESPUESTA;
         }
 
-    public static JSONObject obtenerServicioAsignado(String reqUrl) {
+    public static JSONObject obtenerServicioAsignado(String reqUrl, List<NameValuePair> params) {
         JSONObject servicio = null;
         try {
-            servicio = Utilidades.obtenerJsonObject(reqUrl);
+            servicio = Utilidades.enviarPost(reqUrl,params);
         }
         catch(Exception e)
         {
@@ -73,9 +72,9 @@ public class RequestConductor {
         }
     }
 
-    public static JSONObject getRoute(String url)
+    public static JSONObject getRoute(String url, List<NameValuePair> params)
     {
-        return Utilidades.obtenerJsonObject(url);
+        return Utilidades.enviarPost(url,params);
     }
 
     public static void actualizarUbicacion(String reqUrl,Location lastLocation) {

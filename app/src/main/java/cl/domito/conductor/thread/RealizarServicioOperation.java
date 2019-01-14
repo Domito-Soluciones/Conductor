@@ -56,8 +56,10 @@ public class RealizarServicioOperation extends AsyncTask<Object, Void, Void> {
                 }
                 JSONObject servicio = Conductor.getInstance().getServicio();
                 try {
-                    String url = Utilidades.URL_BASE_SERVICIO + "GetDetalleServicio.php?id="+servicio.getString("servicio_id");
-                    JSONObject route = RequestConductor.getRoute(url);
+                    String url = Utilidades.URL_BASE_SERVICIO + "GetDetalleServicio.php";
+                    List<NameValuePair> params = new ArrayList();
+                    params.add(new BasicNameValuePair("id", servicio.getString("servicio_id"));
+                    JSONObject route = RequestConductor.getRoute(url,params);
                     ActivityUtils.dibujarRuta(context.get(),map,route);
                     Conductor.getInstance().setServicio(null);
                 } catch (JSONException e) {
