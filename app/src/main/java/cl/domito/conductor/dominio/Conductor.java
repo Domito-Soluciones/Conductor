@@ -28,6 +28,7 @@ public class Conductor {
     private List<LatLng> latLngs;
     private JSONObject servicio;
     private int tiempoEspera = 30;
+    private boolean ocupado;
     private Location location;
 
     public static synchronized Conductor getInstance(){
@@ -150,6 +151,14 @@ public class Conductor {
 
     public int getTiempoEspera() {
         return tiempoEspera;
+    }
+
+    public void setOcupado(boolean ocupado) {
+        this.ocupado = ocupado;
+    }
+
+    public boolean getOcupado() {
+        return ocupado;
     }
 
     public void setTiempoEspera(int tiempoEspera) {

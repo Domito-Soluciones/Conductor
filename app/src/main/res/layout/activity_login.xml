@@ -2,10 +2,11 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:background="@color/whitesmoke"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cl.domito.conductor.activity.LoginActivity"
-    android:id="@+id/relativeLayout">
+    tools:context="cl.domito.cliente.activity.LoginActivity">
 
     <TextView
         android:id="@+id/textViewError2"
@@ -31,8 +32,8 @@
         android:id="@+id/imagenLogo"
         android:layout_width="wrap_content"
         android:layout_height="87dp"
-        android:src="@drawable/logo"
         android:contentDescription="@string/contentDescriptionLogo"
+        android:src="@drawable/logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -43,44 +44,47 @@
     <EditText
         android:id="@+id/usuario"
         android:layout_width="@dimen/input_login_width"
-        android:layout_height="48dp"
+        android:layout_height="@dimen/input_login_height"
         android:hint="@string/input_usuario"
+        android:importantForAutofill="no"
         android:inputType="text"
         android:maxLines="1"
         android:singleLine="true"
         android:textSize="@dimen/input_texto_login"
-        app:backgroundTint="@color/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3"
-        android:importantForAutofill="no" tools:targetApi="o"/>
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/password"
         android:layout_width="@dimen/input_login_width"
         android:layout_height="@dimen/input_login_height"
+        android:background="@color/blanco"
+
         android:hint="@string/input_password"
         android:imeActionId="6"
         android:imeOptions="actionUnspecified"
+        android:importantForAutofill="no"
         android:inputType="textPassword"
         android:maxLines="1"
         android:singleLine="true"
         android:textSize="@dimen/input_texto_login"
-        app:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/whitesmoke"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.41000003"
-        android:importantForAutofill="no" tools:targetApi="o" />
+        tools:targetApi="o" />
 
     <Button
         android:id="@+id/login_button"
         android:layout_width="@dimen/input_login_width"
         android:layout_height="@dimen/input_login_height"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/estilo_boton"
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/input_button"
         android:textColor="@color/blanco"

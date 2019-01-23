@@ -21,6 +21,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,16 +49,16 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private MapsActivity mapsActivity;
     private SupportMapFragment mapFragment;
     private View servicioLayout;
-    private TextView textViewNServicio;
-    private TextView textViewOrigen;
-    private TextView textViewDestino;
-    private TextView textViewTipo;
-    private TextView textViewNombre;
-    private TextView textViewDireccion;
-    private TextView textViewCelular;
-    private Button button2;
-    private Button button4;
-    private Button button5;
+    private TextView textViewIdServicioValor;
+    private TextView textViewOrigenValor;
+    private TextView textViewDestinoValor;
+    private TextView textViewTipoValor;
+    private TextView textViewNombreValor;
+    private TextView textViewDireccionValor;
+    private TextView textViewCelularValor;
+    private Button buttonConfirmar;
+    private Button buttonCancelar;
+    private ImageButton buttonLlamar;
     private ImageView imageButton;
     private DrawerLayout drawerLayout;
     private NavigationView  navigationView;
@@ -76,39 +77,39 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        servicioLayout = findViewById(R.id.relativeLayout5);
-        textViewNServicio = findViewById(R.id.textView4);
-        textViewOrigen = findViewById(R.id.textView7);
-        textViewDestino = findViewById(R.id.textView10);
-        textViewTipo = findViewById(R.id.textView12);
-        textViewNombre = findViewById(R.id.textView14);
-        textViewDireccion = findViewById(R.id.textView16);
-        textViewCelular = findViewById(R.id.textView18);
-        button2 = findViewById(R.id.button2);
-        button4 = findViewById(R.id.button4);
-        button5 = findViewById(R.id.button5);
-        imageButton = findViewById(R.id.imageView2);
+        servicioLayout = findViewById(R.id.constrainLayoutServicio);
+        textViewIdServicioValor = findViewById(R.id.textViewIdServicioValor);
+        textViewOrigenValor = findViewById(R.id.textViewOrigenValor);
+        textViewDestinoValor = findViewById(R.id.textViewDestinoValor);
+        textViewTipoValor = findViewById(R.id.textViewTipoValor);
+        textViewNombreValor = findViewById(R.id.textViewNombreValor);
+        textViewDireccionValor = findViewById(R.id.textViewDireccionValor);
+        textViewCelularValor = findViewById(R.id.textViewCelularValor);
+        buttonConfirmar = findViewById(R.id.buttonConfirmar);
+        buttonCancelar = findViewById(R.id.buttonCancelar);
+        buttonLlamar = findViewById(R.id.buttonLlamar);
+        imageButton = findViewById(R.id.imageViewMenu);
         navigationView = findViewById(R.id.nav_view);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
         DatosConductorOperation datosConductorOperation = new DatosConductorOperation(this);
         datosConductorOperation.execute();
 
-        button2.setOnClickListener(new View.OnClickListener() {
+        buttonConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 realizarServicio();
             }
         });
 
-        button4.setOnClickListener(new View.OnClickListener() {
+        buttonCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 desasignarServicio();
             }
         });
 
-        button5.setOnClickListener(new View.OnClickListener() {
+        buttonLlamar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 llamar();
@@ -260,7 +261,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     private void llamar()
     {
-        ActivityUtils.llamar(this,textViewCelular.getText().toString());
+        ActivityUtils.llamar(this,textViewCelularValor.getText().toString());
     }
 
 }

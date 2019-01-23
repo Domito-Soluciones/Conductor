@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorGris">#eeeeee</color>
-    <color name="colorPrimary">#3f51b5</color>
+    <color name="colorPrimary">#a7b9bd</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="blanco">#ffffff</color>
     <color name="gris">#EEEEEE</color>
     <color name="grisOscuro">#BEBDBD</color>
     <color name="negro" >#000000</color>
     <color name="rojo">#ff0000</color>
+    <color name="whitesmoke">#f5f5f5</color>
+    <color name="azulBorde">#0099ff</color>
+
 </resources>

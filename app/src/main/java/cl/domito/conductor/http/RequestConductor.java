@@ -15,14 +15,13 @@ import cl.domito.conductor.dominio.Conductor;
 public class RequestConductor {
 
     private static JSONObject RESPUESTA;
-    private static List<NameValuePair> PARAMS = new ArrayList<NameValuePair>();
 
-    public static boolean loginConductor(String reqUrl)
+    public static boolean loginConductor(String reqUrl, List<NameValuePair> params)
     {
         try {
             if(Conductor.getInstance().isConectado()) {
-                RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
-                if (!RESPUESTA.getString("id").equals("0")) {
+                RESPUESTA = Utilidades.enviarPost(reqUrl,params);
+                if (!RESPUESTA.getString("conductor_id").equals("0")) {
                     return true;
                 }
             }
@@ -34,10 +33,10 @@ public class RequestConductor {
         return false;
     }
 
-    public static JSONObject datosConductor(String reqUrl) throws JSONException {
+    public static JSONObject datosConductor(String reqUrl, List<NameValuePair> params) throws JSONException {
         try {
             if(Conductor.getInstance().isConectado()) {
-                RESPUESTA = Utilidades.obtenerJsonObject(reqUrl);
+                RESPUESTA = Utilidades.enviarPost(reqUrl,params);
             }
         }
         catch(Exception e)
@@ -45,18 +44,14 @@ public class RequestConductor {
             e.printStackTrace();
         }
         return RESPUESTA;
-        }
+    }
 
-    public static JSONObject obtenerServicioAsignado(String reqUrl) {
-        JSONObject servicio = null;
-        try {
-            servicio = Utilidades.obtenerJsonObject(reqUrl);
+    public static JSONObject obtenerServicioAsignado(String reqUrl, List<NameValuePair> params) {
+        JSONObject jsonObject = null;
+        if(Conductor.getInstance().isConectado()) {
+            jsonObject = Utilidades.enviarPost(reqUrl,params);
         }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return servicio;
+        return jsonObject;
     }
 
     public static void desAsignarServicio(String reqUrl,String idServicio) {
@@ -73,9 +68,9 @@ public class RequestConductor {
         }
     }
 
-    public static JSONObject getRoute(String url)
+    public static JSONObject getRoute(String url, List<NameValuePair> params)
     {
-        return Utilidades.obtenerJsonObject(url);
+        return Utilidades.enviarPost(url,params);
     }
 
     public static void actualizarUbicacion(String reqUrl,Location lastLocation) {
