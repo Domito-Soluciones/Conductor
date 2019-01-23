@@ -21,7 +21,7 @@ public class RequestConductor {
         try {
             if(Conductor.getInstance().isConectado()) {
                 RESPUESTA = Utilidades.enviarPost(reqUrl,params);
-                if (!RESPUESTA.getString("id").equals("0")) {
+                if (!RESPUESTA.getString("conductor_id").equals("0")) {
                     return true;
                 }
             }

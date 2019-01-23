@@ -28,6 +28,8 @@
             android:name="cl.domito.conductor.activity.LoginActivity"
             android:label="" />
         <activity android:name="cl.domito.conductor.activity.ServicioActivity" />
+
+        <service android:name="cl.domito.conductor.service.AsignacionServicioService"></service>
 		
 		</application>
 

@@ -258,7 +258,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:background="@color/blanco"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -268,7 +268,7 @@
 
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/buttonCancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/estilo_boton"
@@ -281,7 +281,7 @@
             app:layout_constraintVertical_bias="0.95" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/buttonConfirmar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/estilo_boton"
@@ -481,7 +481,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <ImageButton
-            android:id="@+id/button4"
+            android:id="@+id/buttonLlamar"
             android:layout_width="60dp"
             android:layout_height="40dp"
             android:background="@drawable/telefono"

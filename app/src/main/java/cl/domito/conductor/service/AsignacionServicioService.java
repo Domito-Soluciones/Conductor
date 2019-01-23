@@ -28,7 +28,6 @@ import cl.domito.conductor.http.Utilidades;
 
 public class AsignacionServicioService extends Service {
 
-    Context ctx;
     ConstraintLayout constraintLayoutServicio;
     TextView textViewIdServicio;
     TextView textViewOrigen;
@@ -37,12 +36,6 @@ public class AsignacionServicioService extends Service {
     TextView textViewNombre;
     TextView textViewDireccion;
     TextView textViewCelular;
-
-
-    public AsignacionServicioService(Context ctx) {
-        this.ctx = ctx;
-    }
-
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -56,7 +49,7 @@ public class AsignacionServicioService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Activity activity = (Activity) ctx;
+        Activity activity = (Activity) this.getApplicationContext();
         constraintLayoutServicio = activity.findViewById(R.id.constrainLayoutServicio);
         textViewIdServicio = activity.findViewById(R.id.textViewIdServicioValor);
         textViewOrigen = activity.findViewById(R.id.textViewOrigenValor);
@@ -68,7 +61,7 @@ public class AsignacionServicioService extends Service {
         Conductor conductor = Conductor.getInstance();
         String url = Utilidades.URL_BASE_SERVICIO + "GetServicioConductor.php";
         String urlDes = Utilidades.URL_BASE_SERVICIO + "ModConductorServicio.php";
-        String urlMod = Utilidades.URL_BASE_CONDUCTOR + "ModificarUbicacion.php";
+        String urlMod = Utilidades.URL_BASE_MOVIL + "ModUbicacionMovil.php";
         while(conductor.isActivo()) {
             try {
                 List<NameValuePair> params = new ArrayList();
