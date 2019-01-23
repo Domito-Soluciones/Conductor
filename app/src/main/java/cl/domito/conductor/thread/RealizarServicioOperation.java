@@ -43,7 +43,7 @@ public class RealizarServicioOperation extends AsyncTask<Object, Void, Void> {
         String url = Utilidades.URL_BASE_SERVICIO + "AddServicio.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         textView = context.get().findViewById(R.id.textView4);
-        servicioLayout = context.get().findViewById(R.id.relativeLayout5);
+        servicioLayout = context.get().findViewById(R.id.constrainLayoutServicio);
         params.add(new BasicNameValuePair("id",textView.getText().toString()));
         Utilidades.enviarPost(url,params);
         Conductor.getInstance().setTiempoEspera(30);
@@ -58,7 +58,7 @@ public class RealizarServicioOperation extends AsyncTask<Object, Void, Void> {
                 try {
                     String url = Utilidades.URL_BASE_SERVICIO + "GetDetalleServicio.php";
                     List<NameValuePair> params = new ArrayList();
-                    params.add(new BasicNameValuePair("id", servicio.getString("servicio_id"));
+                    params.add(new BasicNameValuePair("id", servicio.getString("servicio_id")));
                     JSONObject route = RequestConductor.getRoute(url,params);
                     ActivityUtils.dibujarRuta(context.get(),map,route);
                     Conductor.getInstance().setServicio(null);

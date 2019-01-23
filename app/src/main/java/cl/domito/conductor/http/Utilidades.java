@@ -56,6 +56,8 @@ public class Utilidades {
             StringBuilder result = new StringBuilder();
             while ((line = rd.readLine()) != null) {
                 result.append(line);
+                System.out.print(line);
+                System.out.println();
             }
             jsonObject = new JSONObject(result.toString());
             System.out.println(result.toString());

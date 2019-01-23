@@ -22,6 +22,7 @@ import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.http.Utilidades;
+import cl.domito.conductor.service.AsignacionServicioService;
 
 public class LoginOperation extends AsyncTask<String, Void, Void> {
 
@@ -59,11 +60,11 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
                 ActivityUtils.guardarSharedPreferences(pref,loginActivity.getString(
                         R.string.sharedPreferenceKeyUser),conductor.getId());
             }
-            String urlEstado = Utilidades.URL_BASE_CONDUCTOR + "CambiarEstadoConductor.php";
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("usuario", conductor.getId()));
-            params.add(new BasicNameValuePair("estado", "1"));
-            Utilidades.enviarPost(urlEstado,params);
+            String urlEstado = Utilidades.URL_BASE_CONDUCTOR + "ModEstadoConductor.php";
+            List<NameValuePair> params2 = new ArrayList<NameValuePair>();
+            params2.add(new BasicNameValuePair("usuario", conductor.getNick()));
+            params2.add(new BasicNameValuePair("estado", "1"));
+            Utilidades.enviarPost(urlEstado,params2);
             Intent mainIntent = new Intent(loginActivity, MapsActivity.class);
             loginActivity.startActivity(mainIntent);
             loginActivity.finish();
@@ -82,7 +83,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        AsignacionOperation asignacionOperation = new AsignacionOperation(context.get());
-        asignacionOperation.execute();
+        Intent i = new Intent(context.get(), AsignacionServicioService.class);
+        context.get().startService(i);
     }
 }

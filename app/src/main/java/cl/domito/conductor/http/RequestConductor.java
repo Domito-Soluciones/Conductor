@@ -44,18 +44,14 @@ public class RequestConductor {
             e.printStackTrace();
         }
         return RESPUESTA;
-        }
+    }
 
     public static JSONObject obtenerServicioAsignado(String reqUrl, List<NameValuePair> params) {
-        JSONObject servicio = null;
-        try {
-            servicio = Utilidades.enviarPost(reqUrl,params);
+        JSONObject jsonObject = null;
+        if(Conductor.getInstance().isConectado()) {
+            jsonObject = Utilidades.enviarPost(reqUrl,params);
         }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return servicio;
+        return jsonObject;
     }
 
     public static void desAsignarServicio(String reqUrl,String idServicio) {
