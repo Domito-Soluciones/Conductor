@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.Messenger;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -26,26 +27,15 @@ import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.http.Utilidades;
+import cl.domito.conductor.thread.CambiarUbicacionOperation;
+import cl.domito.conductor.thread.DesAsignarServicioOperation;
+import cl.domito.conductor.thread.ObtenerServicioOperation;
 
 public class AsignacionServicioService extends Service {
 
-    ConstraintLayout constraintLayoutServicio;
-    TextView textViewIdServicio;
-    TextView textViewOrigen;
-    TextView textViewDestino;
-    TextView textViewTipo;
-    TextView textViewNombre;
-    TextView textViewDireccion;
-    TextView textViewCelular;
-
-    ArrayList<Messenger> mClients = new ArrayList<Messenger>(); // Keeps track of all current registered clients.
-    int mValue = 0; // Holds last value set by a client.
-    static final int MSG_REGISTER_CLIENT = 1;
-    static final int MSG_UNREGISTER_CLIENT = 2;
-    static final int MSG_SET_INT_VALUE = 3;
-    static final int MSG_SET_STRING_VALUE = 4;
-    final Messenger mMessenger = new Messenger(new IncomingHandler()); // Target we publish for clients to send messages to IncomingHandler.
-
+    public static String OCULTAR_LAYOUT_SERVICIO = "0";
+    public static String MOSTRAR_LAYOUT_SERVICIO = "1";
+    public static boolean LAYOUT_SERVICIO_VISIBLE = false;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -59,74 +49,53 @@ public class AsignacionServicioService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Activity activity = (Activity) this.getApplicationContext();
-        constraintLayoutServicio = activity.findViewById(R.id.constrainLayoutServicio);
-        textViewIdServicio = activity.findViewById(R.id.textViewIdServicioValor);
-        textViewOrigen = activity.findViewById(R.id.textViewOrigenValor);
-        textViewDestino = activity.findViewById(R.id.textViewDestinoValor);
-        textViewTipo = activity.findViewById(R.id.textViewTipoValor);
-        textViewNombre = activity.findViewById(R.id.textViewNombreValor);
-        textViewDireccion = activity.findViewById(R.id.textViewDireccionValor);
-        textViewCelular = activity.findViewById(R.id.textViewCelularValor);
         Conductor conductor = Conductor.getInstance();
-        String url = Utilidades.URL_BASE_SERVICIO + "GetServicioConductor.php";
-        String urlDes = Utilidades.URL_BASE_SERVICIO + "ModConductorServicio.php";
-        String urlMod = Utilidades.URL_BASE_MOVIL + "ModUbicacionMovil.php";
         while(conductor.isActivo()) {
             try {
-                List<NameValuePair> params = new ArrayList();
-                params.add(new BasicNameValuePair("user",conductor.getNick()));
-                JSONObject servicio = RequestConductor.obtenerServicioAsignado(url,params);
+                ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
+                JSONObject servicio = obtenerServicioOperation.execute().get();
                 if(servicio != null) {
                     conductor.setServicio(servicio);
                     if(conductor.getTiempoEspera() == 0)
                     {
-                        RequestConductor.desAsignarServicio(urlDes,servicio.getString("servicio_id"));
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                                public void run() {
-                                    constraintLayoutServicio.setVisibility(View.GONE);
-                                    conductor.setOcupado(false);
-                                }
-                            });
-                            conductor.setTiempoEspera(30);
+                        DesAsignarServicioOperation desAsignarServicioOperation = new DesAsignarServicioOperation();
+                        desAsignarServicioOperation.execute();
+                        sendMessage(OCULTAR_LAYOUT_SERVICIO);
+                        LAYOUT_SERVICIO_VISIBLE = true;
+                        conductor.setOcupado(false);
+                        conductor.setTiempoEspera(30);
                     }
                     else
                     {
-                        ActivityUtils.enviarNotificacion(activity,"Titulo",servicio.getString("servicio_id")+"",0);
-                        if(constraintLayoutServicio.getVisibility() ==View.GONE) {
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    constraintLayoutServicio.setVisibility(View.VISIBLE);
-                                    conductor.setOcupado(true);
-                                    try {
-                                        String partida = new String(servicio.getString("servicio_partida").getBytes("ISO-8859-1"), "UTF-8");
-                                        String destino = new String(servicio.getString("servicio_destino").getBytes("ISO-8859-1"), "UTF-8");
-                                        textViewIdServicio.setText(servicio.getString("servicio_id"));
-                                        textViewOrigen.setText(URLDecoder.decode(partida,"ISO-8859-1"));
-                                        textViewDestino.setText(URLDecoder.decode(destino,"ISO-8859-1"));
-                                        textViewTipo.setText(servicio.getString("servicio_tipo"));
-                                        textViewNombre.setText(servicio.getString("servicio_pasajero"));
-                                        textViewDireccion.setText(servicio.getString("servicio_pasajero_direccion"));
-                                        textViewCelular.setText(servicio.getString("servicio_pasajero_celular"));
-                                    }
-                                    catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    catch (UnsupportedEncodingException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
+                        //ActivityUtils.enviarNotificacion(activity,"Titulo",servicio.getString("servicio_id")+"",0);
+                        if(!LAYOUT_SERVICIO_VISIBLE) {
+                            sendMessage(MOSTRAR_LAYOUT_SERVICIO);
+                            conductor.setOcupado(true);
+                            try {
+                                String partida = new String(servicio.getString("servicio_partida").getBytes("ISO-8859-1"), "UTF-8");
+                                String destino = new String(servicio.getString("servicio_destino").getBytes("ISO-8859-1"), "UTF-8");
+                                /*textViewIdServicio.setText(servicio.getString("servicio_id"));
+                                textViewOrigen.setText(URLDecoder.decode(partida,"ISO-8859-1"));
+                                textViewDestino.setText(URLDecoder.decode(destino,"ISO-8859-1"));
+                                textViewTipo.setText(servicio.getString("servicio_tipo"));
+                                textViewNombre.setText(servicio.getString("servicio_pasajero"));
+                                textViewDireccion.setText(servicio.getString("servicio_pasajero_direccion"));
+                                textViewCelular.setText(servicio.getString("servicio_pasajero_celular"));*/
+                            }
+                            catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
                         }
                         conductor.setTiempoEspera(conductor.getTiempoEspera()-1);
                     }
                 }
                 if(conductor.getLocation() != null) {
-                    RequestConductor.actualizarUbicacion(urlMod,conductor.getLocation());
+                    CambiarUbicacionOperation cambiarUbicacionOperation = new CambiarUbicacionOperation();
+                    cambiarUbicacionOperation.execute();
                 }
-                Thread.sleep(3000);
             }
             catch (Exception e) {
                 e.printStackTrace();
@@ -139,5 +108,12 @@ public class AsignacionServicioService extends Service {
     public void onDestroy() {
         super.onDestroy();
         System.out.println("El servicio a Terminado");
+    }
+
+    private void sendMessage(String message) {
+        Intent intent = new Intent("custom-event-name");
+        // You can also include some extra data.
+        intent.putExtra("message", message);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

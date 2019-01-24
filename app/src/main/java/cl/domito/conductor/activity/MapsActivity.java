@@ -1,9 +1,11 @@
 package cl.domito.conductor.activity;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
@@ -20,6 +22,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -43,6 +46,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
+import cl.domito.conductor.service.AsignacionServicioService;
 import cl.domito.conductor.thread.CambiarEstadoOperation;
 import cl.domito.conductor.thread.DatosConductorOperation;
 import cl.domito.conductor.thread.DesAsignarServicioOperation;
@@ -75,10 +79,19 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     @Override
     protected void onResume() {
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mMessageReceiver, new IntentFilter("custom-event-name"));
         super.onResume();
         if(mMap != null) {
             mMap.clear();
         }
+    }
+
+    @Override
+    protected void onPause() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(
+                mMessageReceiver);
+        super.onPause();
     }
 
     @Override
@@ -107,7 +120,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         DatosConductorOperation datosConductorOperation = new DatosConductorOperation(this);
         datosConductorOperation.execute();
 
-        buttonConfirmar.setOnClickListener(new View.OnClickListener() {
+        buttonEstado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 cambiarEstadoConductor();
@@ -239,11 +252,12 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     }
 
     private void desasignarServicio() {
-        DesAsignarServicioOperation desAsignarServicioOperation = new DesAsignarServicioOperation(this);
+        DesAsignarServicioOperation desAsignarServicioOperation = new DesAsignarServicioOperation();
         desAsignarServicioOperation.execute();
     }
 
     private void cambiarEstadoConductor() {
+        startService(new Intent(MapsActivity.this, AsignacionServicioService.class));
         Conductor conductor = Conductor.getInstance();
         CambiarEstadoOperation cambiarEstadoOperation = new CambiarEstadoOperation(this);
         cambiarEstadoOperation.execute();
@@ -315,5 +329,24 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         }
     };
 
+    private void abrir(String text)
+    {
+        Toast.makeText(this,text,Toast.LENGTH_LONG).show();
+    }
+
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String message = intent.getStringExtra("message");
+            if(message.equals(AsignacionServicioService.OCULTAR_LAYOUT_SERVICIO))
+            {
+               // servicioLayout.setVisibility(View.GONE);
+            }
+            if(message.equals(AsignacionServicioService.MOSTRAR_LAYOUT_SERVICIO))
+            {
+                //servicioLayout.setVisibility(View.VISIBLE);
+            }
+        }
+    };
 
 }

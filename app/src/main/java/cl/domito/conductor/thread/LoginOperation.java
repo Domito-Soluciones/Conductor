@@ -54,7 +54,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
         loginActivity.runOnUiThread(ActivityUtils.mensajeError(loginActivity));
         if (login) {
             conductor.setActivo(true);
-            conductor.setNick("msanchez");
+            conductor.setNick("nsoto");
             //conductor.setNick(strings[0]);
             if(conductor.isRecordarSession()) {
                 SharedPreferences pref = loginActivity.getApplicationContext().getSharedPreferences
