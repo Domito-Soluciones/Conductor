@@ -14,6 +14,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.domito.conductor.R;
 import cl.domito.conductor.activity.MapsActivity;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
@@ -46,5 +47,16 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
         }
         return  null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        context.get().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                TextView textView = context.get().findViewById(R.id.textViewNombreUsuario);
+                textView.setText(Conductor.getInstance().getNombre());
+            }
+        });
     }
 }
