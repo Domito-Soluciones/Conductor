@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.Messenger;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
@@ -36,6 +37,15 @@ public class AsignacionServicioService extends Service {
     TextView textViewNombre;
     TextView textViewDireccion;
     TextView textViewCelular;
+
+    ArrayList<Messenger> mClients = new ArrayList<Messenger>(); // Keeps track of all current registered clients.
+    int mValue = 0; // Holds last value set by a client.
+    static final int MSG_REGISTER_CLIENT = 1;
+    static final int MSG_UNREGISTER_CLIENT = 2;
+    static final int MSG_SET_INT_VALUE = 3;
+    static final int MSG_SET_STRING_VALUE = 4;
+    final Messenger mMessenger = new Messenger(new IncomingHandler()); // Target we publish for clients to send messages to IncomingHandler.
+
 
     @Override
     public IBinder onBind(Intent intent) {

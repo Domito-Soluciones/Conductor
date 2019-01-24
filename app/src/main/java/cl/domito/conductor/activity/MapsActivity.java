@@ -1,14 +1,20 @@
 package cl.domito.conductor.activity;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -24,6 +30,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -36,6 +43,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
+import cl.domito.conductor.service.AsignacionServicioService;
 import cl.domito.conductor.thread.DatosConductorOperation;
 import cl.domito.conductor.thread.DesAsignarServicioOperation;
 import cl.domito.conductor.thread.RealizarServicioOperation;
@@ -91,6 +99,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         imageButton = findViewById(R.id.imageViewMenu);
         navigationView = findViewById(R.id.nav_view);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+        final Messenger mMessenger = new Messenger(new IncomingHandler());
 
         DatosConductorOperation datosConductorOperation = new DatosConductorOperation(this);
         datosConductorOperation.execute();
@@ -263,5 +273,25 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     {
         ActivityUtils.llamar(this,textViewCelularValor.getText().toString());
     }
+
+    public class IncomingHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            textViewCelularValor.setText(msg.arg1);
+        }
+    }
+
+    private ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
 
 }

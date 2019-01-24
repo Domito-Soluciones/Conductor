@@ -49,11 +49,13 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("usuario", strings[0]));
         params.add(new BasicNameValuePair("password", strings[1]));
-        boolean login = RequestConductor.loginConductor(url,params);
+        //boolean login = RequestConductor.loginConductor(url,params);
+        boolean login = true;
         loginActivity.runOnUiThread(ActivityUtils.mensajeError(loginActivity));
         if (login) {
             conductor.setActivo(true);
-            conductor.setNick(strings[0]);
+            conductor.setNick("msanchez");
+            //conductor.setNick(strings[0]);
             if(conductor.isRecordarSession()) {
                 SharedPreferences pref = loginActivity.getApplicationContext().getSharedPreferences
                         (loginActivity.getString(R.string.sharedPreferenceFile),Context.MODE_PRIVATE);
