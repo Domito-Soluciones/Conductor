@@ -1,15 +1,13 @@
 package cl.domito.conductor.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import cl.domito.conductor.R;
-import cl.domito.conductor.dominio.Conductor;
-import cl.domito.conductor.http.Utilidades;
 
 public class ServicioActivity extends AppCompatActivity {
 
@@ -17,39 +15,17 @@ public class ServicioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_servicio);
-        this.getSupportActionBar().hide();
-        TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
-        ImageView imageView = findViewById(R.id.imageView2);
-        imageView.setOnClickListener(new View.OnClickListener() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                finish();
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
             }
         });
-
-        TextView textView = findViewById(R.id.nombre);
-        textView.setText(Conductor.getInstance().getNombre());
-
-        tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-
-        tabs.setOnTabSelectedListener(
-                new TabLayout.OnTabSelectedListener() {
-                    @Override
-                    public void onTabSelected(TabLayout.Tab tab) {
-
-                    }
-
-                    @Override
-                    public void onTabUnselected(TabLayout.Tab tab) {
-
-                    }
-
-                    @Override
-                    public void onTabReselected(TabLayout.Tab tab) {
-
-                    }
-                }
-        );
     }
 
 }

@@ -43,7 +43,7 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
-import cl.domito.conductor.service.AsignacionServicioService;
+import cl.domito.conductor.thread.CambiarEstadoOperation;
 import cl.domito.conductor.thread.DatosConductorOperation;
 import cl.domito.conductor.thread.DesAsignarServicioOperation;
 import cl.domito.conductor.thread.RealizarServicioOperation;
@@ -66,6 +66,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private TextView textViewCelularValor;
     private Button buttonConfirmar;
     private Button buttonCancelar;
+    private Button buttonEstado;
     private ImageButton buttonLlamar;
     private ImageView imageButton;
     private DrawerLayout drawerLayout;
@@ -93,6 +94,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         textViewNombreValor = findViewById(R.id.textViewNombreValor);
         textViewDireccionValor = findViewById(R.id.textViewDireccionValor);
         textViewCelularValor = findViewById(R.id.textViewCelularValor);
+        buttonEstado = findViewById(R.id.buttonEstado);
         buttonConfirmar = findViewById(R.id.buttonConfirmar);
         buttonCancelar = findViewById(R.id.buttonCancelar);
         buttonLlamar = findViewById(R.id.buttonLlamar);
@@ -104,6 +106,13 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
         DatosConductorOperation datosConductorOperation = new DatosConductorOperation(this);
         datosConductorOperation.execute();
+
+        buttonConfirmar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cambiarEstadoConductor();
+            }
+        });
 
         buttonConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,6 +243,12 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         desAsignarServicioOperation.execute();
     }
 
+    private void cambiarEstadoConductor() {
+        Conductor conductor = Conductor.getInstance();
+        CambiarEstadoOperation cambiarEstadoOperation = new CambiarEstadoOperation(this);
+        cambiarEstadoOperation.execute();
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -271,7 +286,14 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     private void llamar()
     {
-        ActivityUtils.llamar(this,textViewCelularValor.getText().toString());
+        String numero = textViewCelularValor.getText().toString();
+        if(numero.equals(""))
+        {
+            Toast.makeText(this,"No se suministro un número de telefono",Toast.LENGTH_LONG);
+        }
+        else {
+            ActivityUtils.llamar(this, numero);
+        }
     }
 
     public class IncomingHandler extends Handler {

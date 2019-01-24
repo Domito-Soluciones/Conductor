@@ -6,7 +6,7 @@
     tools:context="cl.domito.conductor.activity.MapsActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonEstado"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/estilo_boton"
@@ -121,7 +121,7 @@
         app:layout_constraintVertical_bias="1.0">
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/textViewEstadoValor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

@@ -19,6 +19,7 @@ public class Conductor {
     private String password;
     private String celular;
     private String direccion;
+    private int estado;
     private boolean activo;
     private boolean recordarSession;
     private double latitud;
@@ -84,6 +85,14 @@ public class Conductor {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
     }
 
     public boolean isActivo() {

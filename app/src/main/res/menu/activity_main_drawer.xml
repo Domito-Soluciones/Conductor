@@ -8,8 +8,10 @@
             android:id="@+id/servicio"
             android:title="Servicios" />
         <item
+            android:id="@+id/ganancias"
+            android:title="Ganancias" />
+        <item
             android:id="@+id/salir"
             android:title="Cerrar sesión" />
     </group>
 </menu>
-    <!--android:icon="@drawable/buscar"-->
