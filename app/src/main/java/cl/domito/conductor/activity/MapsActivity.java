@@ -89,8 +89,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     @Override
     protected void onPause() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(
-                mMessageReceiver);
+        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(this);
+        bManager.unregisterReceiver(mMessageReceiver);
         super.onPause();
     }
 
@@ -340,11 +340,19 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             String message = intent.getStringExtra("message");
             if(message.equals(AsignacionServicioService.OCULTAR_LAYOUT_SERVICIO))
             {
-               // servicioLayout.setVisibility(View.GONE);
+                MapsActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        servicioLayout.setVisibility(View.GONE);
+                    }
+                });
             }
             if(message.equals(AsignacionServicioService.MOSTRAR_LAYOUT_SERVICIO))
             {
-                //servicioLayout.setVisibility(View.VISIBLE);
+                MapsActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        servicioLayout.setVisibility(View.VISIBLE);
+                    }
+                });
             }
         }
     };

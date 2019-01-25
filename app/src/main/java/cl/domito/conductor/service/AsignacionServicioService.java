@@ -49,31 +49,34 @@ public class AsignacionServicioService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Conductor conductor = Conductor.getInstance();
-        while(conductor.isActivo()) {
-            try {
-                ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
-                JSONObject servicio = obtenerServicioOperation.execute().get();
-                if(servicio != null) {
-                    conductor.setServicio(servicio);
-                    if(conductor.getTiempoEspera() == 0)
-                    {
-                        DesAsignarServicioOperation desAsignarServicioOperation = new DesAsignarServicioOperation();
-                        desAsignarServicioOperation.execute();
-                        sendMessage(OCULTAR_LAYOUT_SERVICIO);
-                        LAYOUT_SERVICIO_VISIBLE = true;
-                        conductor.setOcupado(false);
-                        conductor.setTiempoEspera(30);
-                    }
-                    else
-                    {
-                        //ActivityUtils.enviarNotificacion(activity,"Titulo",servicio.getString("servicio_id")+"",0);
-                        if(!LAYOUT_SERVICIO_VISIBLE) {
-                            sendMessage(MOSTRAR_LAYOUT_SERVICIO);
-                            conductor.setOcupado(true);
-                            try {
-                                String partida = new String(servicio.getString("servicio_partida").getBytes("ISO-8859-1"), "UTF-8");
-                                String destino = new String(servicio.getString("servicio_destino").getBytes("ISO-8859-1"), "UTF-8");
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Conductor conductor = Conductor.getInstance();
+                while(conductor.isActivo()) {
+                    try {
+                        ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
+                        JSONObject servicio = obtenerServicioOperation.execute().get();
+                        if(servicio != null) {
+                            conductor.setServicio(servicio);
+                            if(conductor.getTiempoEspera() == 0)
+                            {
+                                DesAsignarServicioOperation desAsignarServicioOperation = new DesAsignarServicioOperation();
+                                desAsignarServicioOperation.execute();
+                                sendMessage(OCULTAR_LAYOUT_SERVICIO);
+                                LAYOUT_SERVICIO_VISIBLE = true;
+                                conductor.setOcupado(false);
+                                conductor.setTiempoEspera(30);
+                            }
+                            else
+                            {
+                                //ActivityUtils.enviarNotificacion(activity,"Titulo",servicio.getString("servicio_id")+"",0);
+                                if(!LAYOUT_SERVICIO_VISIBLE) {
+                                    sendMessage(MOSTRAR_LAYOUT_SERVICIO);
+                                    conductor.setOcupado(true);
+                                    try {
+                                        String partida = new String(servicio.getString("servicio_partida").getBytes("ISO-8859-1"), "UTF-8");
+                                        String destino = new String(servicio.getString("servicio_destino").getBytes("ISO-8859-1"), "UTF-8");
                                 /*textViewIdServicio.setText(servicio.getString("servicio_id"));
                                 textViewOrigen.setText(URLDecoder.decode(partida,"ISO-8859-1"));
                                 textViewDestino.setText(URLDecoder.decode(destino,"ISO-8859-1"));
@@ -81,26 +84,35 @@ public class AsignacionServicioService extends Service {
                                 textViewNombre.setText(servicio.getString("servicio_pasajero"));
                                 textViewDireccion.setText(servicio.getString("servicio_pasajero_direccion"));
                                 textViewCelular.setText(servicio.getString("servicio_pasajero_celular"));*/
-                            }
-                            catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
+                                    }
+                                    catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    catch (UnsupportedEncodingException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                conductor.setTiempoEspera(conductor.getTiempoEspera()-1);
                             }
                         }
-                        conductor.setTiempoEspera(conductor.getTiempoEspera()-1);
+                        if(conductor.getLocation() != null) {
+                            CambiarUbicacionOperation cambiarUbicacionOperation = new CambiarUbicacionOperation();
+                            cambiarUbicacionOperation.execute();
+                        }
                     }
-                }
-                if(conductor.getLocation() != null) {
-                    CambiarUbicacionOperation cambiarUbicacionOperation = new CambiarUbicacionOperation();
-                    cambiarUbicacionOperation.execute();
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    }
+                    catch(InterruptedException e)
+                    {}
                 }
             }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
+        });
+        t.start();
+
         return Service.START_STICKY ;
     }
 

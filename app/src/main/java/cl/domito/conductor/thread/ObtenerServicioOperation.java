@@ -27,12 +27,12 @@ import cl.domito.conductor.http.Utilidades;
 public class ObtenerServicioOperation extends AsyncTask<Void, Void, JSONObject> {
 
     @Override
-    protected JSONObject doInBackground(Void... voids) {
-        Conductor conductor = Conductor.getInstance();
-        List<NameValuePair> params = new ArrayList();
-        String url = Utilidades.URL_BASE_SERVICIO + "GetServicioConductor.php";
-        params.add(new BasicNameValuePair("user",conductor.getNick()));
-        JSONObject servicio = RequestConductor.obtenerServicioAsignado(url,params);
-        return servicio;
+        protected JSONObject doInBackground(Void... voids) {
+            Conductor conductor = Conductor.getInstance();
+            List<NameValuePair> params = new ArrayList();
+            String url = Utilidades.URL_BASE_SERVICIO + "GetServicioConductor.php";
+            params.add(new BasicNameValuePair("user",conductor.getNick()));
+            JSONObject servicio = RequestConductor.obtenerServicioAsignado(url,params);
+            return servicio;
     }
 }
