@@ -1,6 +1,8 @@
 package cl.domito.conductor.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.text.Layout;
 import android.view.View;
 
 import cl.domito.conductor.R;
+import cl.domito.conductor.dominio.Conductor;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -25,15 +28,30 @@ public class SplashScreenActivity extends AppCompatActivity {
         View v = View.inflate(getApplicationContext(), R.layout.activity_splash, null);
         setContentView(R.layout.activity_splash);
         final Handler handler = new Handler();
-        handler.postDelayed(new Runnable(){
+        handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent mainIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                SplashScreenActivity.this.startActivity(mainIntent);
-                SplashScreenActivity.this.finish();
-                handler.removeCallbacksAndMessages(null);
+                SharedPreferences pref = getApplicationContext().getSharedPreferences
+                        ("preferencias", Context.MODE_PRIVATE);
+                String idConductor = pref.getString("idUsuario",
+                        "");
+                if(!idConductor.equals(""))
+                {
+                    Conductor.getInstance().setNick(idConductor);
+                    Conductor.getInstance().setConectado(true);
+                    Intent mainIntent = new Intent(SplashScreenActivity.this,MapsActivity.class);
+                    SplashScreenActivity.this.startActivity(mainIntent);
+                    SplashScreenActivity.this.finish();
+                    handler.removeCallbacksAndMessages(null);
+                }
+                else {
+                    Intent mainIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                    SplashScreenActivity.this.startActivity(mainIntent);
+                    SplashScreenActivity.this.finish();
+                    handler.removeCallbacksAndMessages(null);
+                }
             }
-        }, 3000);
+        }, 2000);
 
     }
 

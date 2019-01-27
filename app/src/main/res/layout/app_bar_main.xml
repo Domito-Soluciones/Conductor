@@ -7,7 +7,7 @@
 
     <Button
         android:id="@+id/buttonEstado"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:background="@drawable/estilo_boton"
         android:text="Iniciar"
@@ -482,7 +482,7 @@
         <ImageButton
             android:id="@+id/buttonLlamar"
             android:layout_width="60dp"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:background="@drawable/telefono"
             android:text="Button"
             app:layout_constraintBottom_toBottomOf="parent"

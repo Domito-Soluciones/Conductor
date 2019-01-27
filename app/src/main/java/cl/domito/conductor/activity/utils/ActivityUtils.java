@@ -1,6 +1,7 @@
 package cl.domito.conductor.activity.utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -80,7 +81,7 @@ public class ActivityUtils {
 
     public static void eliminarSharedPreferences(SharedPreferences sharedPreferences,String key)
     {
-        sharedPreferences.edit().remove(key).commit();
+        sharedPreferences.edit().putString(key, "").commit();
     }
 
     public static void enviarNotificacion(Activity activity,String titulo,String contenido,int smallIcon)
@@ -202,5 +203,17 @@ public class ActivityUtils {
                 Polyline line = mMap.addPolyline(polylineOptions);
             }
         });
+    }
+
+    public static boolean isRunning(Class<?> serviceClass, Activity activity) {
+        ActivityManager manager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                Log.i ("isMyServiceRunning?", true+"");
+                return true;
+            }
+        }
+        Log.i ("isMyServiceRunning?", false+"");
+        return false;
     }
 }

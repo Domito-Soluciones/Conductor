@@ -28,12 +28,20 @@
             android:name=".activity.LoginActivity"
             android:label="" />
 
-        <service android:name=".service.AsignacionServicioService" />
+        <service android:name=".service.AsignacionServicioService"
+                android:enabled="true"/>
 
         <activity
             android:name=".activity.ServicioActivity"
             android:label="@string/title_activity_servicio"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+        <receiver
+            android:name=".service.RestartBroadcastReceived"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartBroadcastReceived">
+        </receiver>
+
     </application>
 
 </manifest>

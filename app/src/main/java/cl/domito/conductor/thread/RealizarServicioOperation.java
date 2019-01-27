@@ -24,6 +24,7 @@ import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.http.Utilidades;
+import cl.domito.conductor.service.AsignacionServicioService;
 
 public class RealizarServicioOperation extends AsyncTask<Object, Void, Void> {
 
@@ -40,19 +41,19 @@ public class RealizarServicioOperation extends AsyncTask<Object, Void, Void> {
     @Override
     protected Void doInBackground(Object... objects) {
         GoogleMap map = (GoogleMap) objects[0];
-        String url = Utilidades.URL_BASE_SERVICIO + "AddServicio.php";
+        String url = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicio.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        textView = context.get().findViewById(R.id.textView4);
+        textView = context.get().findViewById(R.id.textViewIdServicioValor);
         servicioLayout = context.get().findViewById(R.id.constrainLayoutServicio);
         params.add(new BasicNameValuePair("id",textView.getText().toString()));
+        params.add(new BasicNameValuePair("estado","3"));
         Utilidades.enviarPost(url,params);
         Conductor.getInstance().setTiempoEspera(30);
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (servicioLayout.getVisibility() == View.VISIBLE) {
+                if (AsignacionServicioService.LAYOUT_SERVICIO_VISIBLE) {
                     servicioLayout.setVisibility(View.GONE);
-                    //Utilidades.GONE = true;
                 }
                 JSONObject servicio = Conductor.getInstance().getServicio();
                 try {

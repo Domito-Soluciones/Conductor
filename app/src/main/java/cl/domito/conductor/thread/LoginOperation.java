@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -49,22 +50,24 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("usuario", strings[0]));
         params.add(new BasicNameValuePair("password", strings[1]));
-        //boolean login = RequestConductor.loginConductor(url,params);
-        boolean login = true;
+        boolean login = RequestConductor.loginConductor(url,params);
         loginActivity.runOnUiThread(ActivityUtils.mensajeError(loginActivity));
         if (login) {
             conductor.setActivo(true);
-            conductor.setNick("nsoto");
-            //conductor.setNick(strings[0]);
+            conductor.setNick(strings[0]);
             if(conductor.isRecordarSession()) {
                 SharedPreferences pref = loginActivity.getApplicationContext().getSharedPreferences
-                        (loginActivity.getString(R.string.sharedPreferenceFile),Context.MODE_PRIVATE);
-                ActivityUtils.guardarSharedPreferences(pref,loginActivity.getString(
-                        R.string.sharedPreferenceKeyUser),conductor.getId());
+                        ("preferencias",Context.MODE_PRIVATE);
+                ActivityUtils.guardarSharedPreferences(pref,"idUsuario",conductor.getNick());
             }
             Intent mainIntent = new Intent(loginActivity, MapsActivity.class);
             loginActivity.startActivity(mainIntent);
             loginActivity.finish();
+            String url2 = Utilidades.URL_BASE_CONDUCTOR + "ModEstadoConductor.php";
+            List<NameValuePair> params2 = new ArrayList();
+            params2.add(new BasicNameValuePair("usuario",Conductor.getInstance().getNick()));
+            params2.add(new BasicNameValuePair("estado","1"));
+            Utilidades.enviarPost(url2,params2);
         } else {
             loginActivity.runOnUiThread(new Runnable() {
                 @Override
@@ -80,7 +83,6 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        //Intent i = new Intent(context.get(), AsignacionServicioService.class);
-        //context.get().startService(i);
+
     }
 }

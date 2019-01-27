@@ -29,8 +29,6 @@
     <string name="solicitando_viaje">Solicitando Viaje</string>
     <string name="boton_cancelar">Cancelar</string>
     <string name="error_internet">No se pudo acceder a la red</string>
-    <string name="sharedPreferenceFile">conf_user</string>
-    <string name="sharedPreferenceKeyUser">idUser</string>
     <string name="sel_mapa">Selecciona en el mapa</string>
     <string name="titulo_barra">GoTransfer</string>
     <string name="title_activity_servicio">ServicioActivity</string>

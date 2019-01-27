@@ -1,41 +1,39 @@
 package cl.domito.conductor.service;
 
-import android.app.Activity;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
-import android.os.Messenger;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.List;
-
-import cl.domito.conductor.R;
-import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
-import cl.domito.conductor.http.RequestConductor;
-import cl.domito.conductor.http.Utilidades;
 import cl.domito.conductor.thread.CambiarUbicacionOperation;
 import cl.domito.conductor.thread.DesAsignarServicioOperation;
 import cl.domito.conductor.thread.ObtenerServicioOperation;
 
 public class AsignacionServicioService extends Service {
 
-    public static String OCULTAR_LAYOUT_SERVICIO = "0";
-    public static String MOSTRAR_LAYOUT_SERVICIO = "1";
+    public static final String OCULTAR_LAYOUT_SERVICIO = "0";
+    public static final String MOSTRAR_LAYOUT_SERVICIO = "1";
+    public static final String MOSTRAR_NOTIFICACION_SERVICIO= "2";
+    public static final String LLENAR_LAYOUT_SERVICIO= "3";
+    public static final String CAMBIAR_UBICACION= "4";
     public static boolean LAYOUT_SERVICIO_VISIBLE = false;
+    public static boolean IS_INICIADO = false;
+    public static final String separador = "%/%";
+
+    public AsignacionServicioService(Context applicationContext) {
+        super();
+        Log.i("HERE", "here I am!");
+    }
+
+    public AsignacionServicioService() {
+    }
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -53,66 +51,65 @@ public class AsignacionServicioService extends Service {
             @Override
             public void run() {
                 Conductor conductor = Conductor.getInstance();
-                while(conductor.isActivo()) {
-                    try {
-                        ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
-                        JSONObject servicio = obtenerServicioOperation.execute().get();
-                        if(servicio != null) {
-                            conductor.setServicio(servicio);
-                            if(conductor.getTiempoEspera() == 0)
-                            {
-                                DesAsignarServicioOperation desAsignarServicioOperation = new DesAsignarServicioOperation();
-                                desAsignarServicioOperation.execute();
-                                sendMessage(OCULTAR_LAYOUT_SERVICIO);
-                                LAYOUT_SERVICIO_VISIBLE = true;
-                                conductor.setOcupado(false);
-                                conductor.setTiempoEspera(30);
-                            }
-                            else
-                            {
-                                //ActivityUtils.enviarNotificacion(activity,"Titulo",servicio.getString("servicio_id")+"",0);
-                                if(!LAYOUT_SERVICIO_VISIBLE) {
-                                    sendMessage(MOSTRAR_LAYOUT_SERVICIO);
-                                    conductor.setOcupado(true);
-                                    try {
-                                        String partida = new String(servicio.getString("servicio_partida").getBytes("ISO-8859-1"), "UTF-8");
-                                        String destino = new String(servicio.getString("servicio_destino").getBytes("ISO-8859-1"), "UTF-8");
-                                /*textViewIdServicio.setText(servicio.getString("servicio_id"));
-                                textViewOrigen.setText(URLDecoder.decode(partida,"ISO-8859-1"));
-                                textViewDestino.setText(URLDecoder.decode(destino,"ISO-8859-1"));
-                                textViewTipo.setText(servicio.getString("servicio_tipo"));
-                                textViewNombre.setText(servicio.getString("servicio_pasajero"));
-                                textViewDireccion.setText(servicio.getString("servicio_pasajero_direccion"));
-                                textViewCelular.setText(servicio.getString("servicio_pasajero_celular"));*/
+                while (IS_INICIADO) {
+                    while (conductor.isActivo()) {
+                        Log.i("I","servicio corriendo correctmente");
+                        try {
+                            ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
+                            JSONObject servicio = obtenerServicioOperation.execute().get();
+                            if (servicio.length() > 0) {
+                                conductor.setServicio(servicio);
+                                if (conductor.getTiempoEspera() == 0) {
+                                    DesAsignarServicioOperation desAsignarServicioOperation = new DesAsignarServicioOperation();
+                                    desAsignarServicioOperation.execute();
+                                    sendMessage(OCULTAR_LAYOUT_SERVICIO, null);
+                                    LAYOUT_SERVICIO_VISIBLE = true;
+                                    conductor.setOcupado(false);
+                                    conductor.setTiempoEspera(30);
+                                } else {
+                                    sendMessage(MOSTRAR_NOTIFICACION_SERVICIO, servicio.getString("servicio_id"));
+                                    if (!LAYOUT_SERVICIO_VISIBLE) {
+                                        sendMessage(MOSTRAR_LAYOUT_SERVICIO, null);
+                                        conductor.setOcupado(true);
+                                        String data = servicio.getString("servicio_partida") + separador
+                                                + servicio.getString("servicio_destino") + separador
+                                                + servicio.getString("servicio_id") + separador
+                                                + servicio.getString("servicio_tipo") + separador
+                                                + servicio.getString("servicio_pasajero") + separador
+                                                + servicio.getString("servicio_pasajero_direccion") + separador
+                                                + servicio.getString("servicio_pasajero_celular");
+                                        sendMessage(LLENAR_LAYOUT_SERVICIO, data);
                                     }
-                                    catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    catch (UnsupportedEncodingException e) {
-                                        e.printStackTrace();
-                                    }
+                                    conductor.setTiempoEspera(conductor.getTiempoEspera() - 1);
                                 }
-                                conductor.setTiempoEspera(conductor.getTiempoEspera()-1);
                             }
+                            if (conductor.getLocation() != null) {
+                                CambiarUbicacionOperation cambiarUbicacionOperation = new CambiarUbicacionOperation();
+                                cambiarUbicacionOperation.execute();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                        if(conductor.getLocation() != null) {
-                            CambiarUbicacionOperation cambiarUbicacionOperation = new CambiarUbicacionOperation();
-                            cambiarUbicacionOperation.execute();
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
                         }
                     }
-                    catch (Exception e) {
-                        e.printStackTrace();
+                    while (!conductor.isActivo() && IS_INICIADO) {
+                        try {
+                            System.out.println("servicio a la espera");
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                        }
                     }
                     try {
                         Thread.sleep(1000);
+                    } catch (InterruptedException e) {
                     }
-                    catch(InterruptedException e)
-                    {}
                 }
             }
         });
         t.start();
-
         return Service.START_STICKY ;
     }
 
@@ -120,12 +117,15 @@ public class AsignacionServicioService extends Service {
     public void onDestroy() {
         super.onDestroy();
         System.out.println("El servicio a Terminado");
+        Intent broadcastIntent = new Intent(this, RestartBroadcastReceived.class);
+        sendBroadcast(broadcastIntent);
     }
 
-    private void sendMessage(String message) {
+    private void sendMessage(String message,String value) {
         Intent intent = new Intent("custom-event-name");
         // You can also include some extra data.
         intent.putExtra("message", message);
+        intent.putExtra("value", value);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }

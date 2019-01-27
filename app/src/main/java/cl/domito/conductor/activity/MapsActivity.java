@@ -1,6 +1,7 @@
 package cl.domito.conductor.activity;
 
 import android.Manifest;
+import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -13,10 +14,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
@@ -43,6 +41,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
@@ -50,6 +51,7 @@ import cl.domito.conductor.service.AsignacionServicioService;
 import cl.domito.conductor.thread.CambiarEstadoOperation;
 import cl.domito.conductor.thread.DatosConductorOperation;
 import cl.domito.conductor.thread.DesAsignarServicioOperation;
+import cl.domito.conductor.thread.LogoutOperation;
 import cl.domito.conductor.thread.RealizarServicioOperation;
 
 
@@ -80,7 +82,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     @Override
     protected void onResume() {
         LocalBroadcastManager.getInstance(this).registerReceiver(
-                mMessageReceiver, new IntentFilter("custom-event-name"));
+                broadcastReceiver, new IntentFilter("custom-event-name"));
         super.onResume();
         if(mMap != null) {
             mMap.clear();
@@ -90,8 +92,16 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     @Override
     protected void onPause() {
         LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(this);
-        bManager.unregisterReceiver(mMessageReceiver);
+        bManager.unregisterReceiver(broadcastReceiver);
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        AsignacionServicioService.IS_INICIADO = false;
+        Intent i = new Intent(this, AsignacionServicioService.class);
+        stopService(i);
+        super.onDestroy();
     }
 
     @Override
@@ -114,8 +124,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         imageButton = findViewById(R.id.imageViewMenu);
         navigationView = findViewById(R.id.nav_view);
         mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-
-        final Messenger mMessenger = new Messenger(new IncomingHandler());
 
         DatosConductorOperation datosConductorOperation = new DatosConductorOperation(this);
         datosConductorOperation.execute();
@@ -171,20 +179,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},0);
-            return;
-        }
-        mMap.setMyLocationEnabled(true);
-        locationManager = (LocationManager) getApplicationContext().getSystemService(this.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1000, this);
-        Location lastLocation =
-                LocationServices.FusedLocationApi.getLastLocation(apiClient);
-
-        ActivityUtils.updateUI(this,mMap,lastLocation);
+        iniciarUbicacion(true);
     }
 
     @Override
@@ -206,6 +201,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     public void onStatusChanged(String provider, int status, Bundle extras) {
 
     }
+
 
     @Override
     public void onProviderEnabled(String provider) {
@@ -252,12 +248,11 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     }
 
     private void desasignarServicio() {
-        DesAsignarServicioOperation desAsignarServicioOperation = new DesAsignarServicioOperation();
+        DesAsignarServicioOperation desAsignarServicioOperation = new DesAsignarServicioOperation(this);
         desAsignarServicioOperation.execute();
     }
 
     private void cambiarEstadoConductor() {
-        startService(new Intent(MapsActivity.this, AsignacionServicioService.class));
         Conductor conductor = Conductor.getInstance();
         CambiarEstadoOperation cambiarEstadoOperation = new CambiarEstadoOperation(this);
         cambiarEstadoOperation.execute();
@@ -273,6 +268,27 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             super.onBackPressed();
         }
     }
+
+    private void iniciarUbicacion(boolean updateUI)
+    {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},0);
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+        locationManager = (LocationManager) getApplicationContext().getSystemService(this.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1000, this);
+        Location lastLocation =
+                LocationServices.FusedLocationApi.getLastLocation(apiClient);
+        Conductor.getInstance().setLocation(lastLocation);
+        if(updateUI) {
+            ActivityUtils.updateUI(this, mMap, lastLocation);
+        }
+    }
+
     private void abrirMenuContextual() {
         drawerLayout = this.findViewById(R.id.drawer_layout);
         navigationView = this.findViewById(R.id.nav_view);
@@ -288,11 +304,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             this.startActivity(mainIntent);
         }
         if (id == R.id.salir) {
-            ActivityUtils.eliminarSharedPreferences(getSharedPreferences("preferencias",Context.MODE_PRIVATE),"idUsuario");
-            Conductor.getInstance().setActivo(false);
-            Intent mainIntent = new Intent(this,LoginActivity.class);
-            this.startActivity(mainIntent);
-            this.finish();
+            LogoutOperation logoutOperation = new LogoutOperation(this);
+            logoutOperation.execute();
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
@@ -310,49 +323,55 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         }
     }
 
-    public class IncomingHandler extends Handler {
-        @Override
-        public void handleMessage(Message msg) {
-            textViewCelularValor.setText(msg.arg1);
-        }
-    }
-
-    private ServiceConnection mConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-
-        }
-    };
-
-    private void abrir(String text)
+    private void notificar(String titulo,String valor)
     {
-        Toast.makeText(this,text,Toast.LENGTH_LONG).show();
+        ActivityUtils.enviarNotificacion(this,titulo,valor, R.drawable.furgoneta);
     }
 
-    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
-            if(message.equals(AsignacionServicioService.OCULTAR_LAYOUT_SERVICIO))
+            String value = intent.getStringExtra("value");
+            switch (message)
             {
-                MapsActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        servicioLayout.setVisibility(View.GONE);
+                case AsignacionServicioService.OCULTAR_LAYOUT_SERVICIO:
+                    MapsActivity.this.runOnUiThread(new Runnable() {
+                        public void run() {
+                            servicioLayout.setVisibility(View.GONE);
+                        }
+                    });
+                break;
+                case AsignacionServicioService.MOSTRAR_LAYOUT_SERVICIO:
+                    MapsActivity.this.runOnUiThread(new Runnable() {
+                        public void run() {
+                            servicioLayout.setVisibility(View.VISIBLE);
+                        }
+                    });
+                break;
+                case AsignacionServicioService.MOSTRAR_NOTIFICACION_SERVICIO:
+                    notificar("Nuevo Servicio",value);
+                break;
+                case AsignacionServicioService.LLENAR_LAYOUT_SERVICIO:
+                    try {
+                        String[] datos = value.split(AsignacionServicioService.separador);
+                        String partida = new String(datos[0].getBytes("ISO-8859-1"), "UTF-8");
+                        String destino = new String(datos[1].getBytes("ISO-8859-1"), "UTF-8");
+                        textViewIdServicioValor.setText(datos[2]);
+                        textViewOrigenValor.setText(URLDecoder.decode(partida,"ISO-8859-1"));
+                        textViewDestinoValor.setText(URLDecoder.decode(destino,"ISO-8859-1"));
+                        textViewTipoValor.setText(datos[3]);
+                        textViewNombreValor.setText(datos[4]);
+                        textViewDireccionValor.setText(datos[5]);
+                        textViewCelularValor.setText(datos[6]);
                     }
-                });
-            }
-            if(message.equals(AsignacionServicioService.MOSTRAR_LAYOUT_SERVICIO))
-            {
-                MapsActivity.this.runOnUiThread(new Runnable() {
-                    public void run() {
-                        servicioLayout.setVisibility(View.VISIBLE);
+                    catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
                     }
-                });
+                break;
+                case AsignacionServicioService.CAMBIAR_UBICACION:
+                    iniciarUbicacion(false);
+                break;
             }
         }
     };

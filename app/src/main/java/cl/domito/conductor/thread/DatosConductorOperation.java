@@ -1,7 +1,9 @@
 package cl.domito.conductor.thread;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
@@ -20,6 +22,7 @@ import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.http.Utilidades;
+import cl.domito.conductor.service.AsignacionServicioService;
 
 public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
 
@@ -42,6 +45,7 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
             if(jsonObject != null) {
                 conductor.setNombre(jsonObject.getString("conductor_nombre"));
                 conductor.setCantidadViajes(jsonObject.getInt("conductor_viajes"));
+                conductor.setEstado(jsonObject.getInt("conductor_estado"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -55,7 +59,26 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
             @Override
             public void run() {
                 TextView textView = context.get().findViewById(R.id.textViewNombreUsuario);
+                Button buttonEstado = context.get().findViewById(R.id.buttonEstado);
+                TextView textViewEstado = context.get().findViewById(R.id.textViewEstadoValor);
                 textView.setText(Conductor.getInstance().getNombre());
+                if(Conductor.getInstance().getEstado() == 1)
+                {
+                    buttonEstado.setText("Terminar");
+                    textViewEstado.setText("Conectado");
+                    AsignacionServicioService asignacionServicioService = new AsignacionServicioService(context.get());
+                    Intent i = new Intent(context.get(), AsignacionServicioService.class);
+                    if(!ActivityUtils.isRunning(asignacionServicioService.getClass(),context.get())) {
+                        context.get().startService(i);
+                    }
+                    AsignacionServicioService.IS_INICIADO = true;
+                    Conductor.getInstance().setActivo(true);
+                }
+                else
+                {
+                    buttonEstado.setText("Iniciar");
+                    textViewEstado.setText("Desconectado");
+                }
             }
         });
     }
