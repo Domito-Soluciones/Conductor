@@ -24,7 +24,6 @@ public class AsignacionServicioService extends Service {
     public static final String CAMBIAR_UBICACION= "4";
     public static boolean LAYOUT_SERVICIO_VISIBLE = false;
     public static boolean IS_INICIADO = false;
-    public static final String separador = "%/%";
 
     public AsignacionServicioService(Context applicationContext) {
         super();
@@ -70,14 +69,7 @@ public class AsignacionServicioService extends Service {
                                     if (!LAYOUT_SERVICIO_VISIBLE) {
                                         sendMessage(MOSTRAR_LAYOUT_SERVICIO, null);
                                         conductor.setOcupado(true);
-                                        String data = servicio.getString("servicio_partida") + separador
-                                                + servicio.getString("servicio_destino") + separador
-                                                + servicio.getString("servicio_id") + separador
-                                                + servicio.getString("servicio_tipo") + separador
-                                                + servicio.getString("servicio_pasajero") + separador
-                                                + servicio.getString("servicio_pasajero_direccion") + separador
-                                                + servicio.getString("servicio_pasajero_celular");
-                                        sendMessage(LLENAR_LAYOUT_SERVICIO, data);
+                                        sendMessage(LLENAR_LAYOUT_SERVICIO, servicio.toString());
                                     }
                                     conductor.setTiempoEspera(conductor.getTiempoEspera() - 1);
                                 }

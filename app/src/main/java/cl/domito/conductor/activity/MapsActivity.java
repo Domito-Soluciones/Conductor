@@ -42,6 +42,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MapStyleOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -389,21 +392,23 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 break;
                 case AsignacionServicioService.LLENAR_LAYOUT_SERVICIO:
                     try {
-                        String[] datos = value.split(AsignacionServicioService.separador);
-                        String partida = new String(datos[0].getBytes("ISO-8859-1"), "UTF-8");
-                        String destino = new String(datos[1].getBytes("ISO-8859-1"), "UTF-8");
-                        textViewIdServicioValor.setText(datos[2]);
+                        JSONObject servicio = new JSONObject(value);
+                        String partida = new String(servicio.getString("servicio_partida").getBytes("ISO-8859-1"), "UTF-8");
+                        String destino = new String(servicio.getString("servicio_destino").getBytes("ISO-8859-1"), "UTF-8");
+                        textViewIdServicioValor.setText(servicio.getString("servicio_id"));
                         textViewOrigenValor.setText(URLDecoder.decode(partida,"ISO-8859-1"));
                         textViewDestinoValor.setText(URLDecoder.decode(destino,"ISO-8859-1"));
-                        textViewTipoValor.setText(datos[3]);
-                        textViewNombreValor.setText(datos[4]);
-                        textViewDireccionValor.setText(datos[5]);
-                        textViewCelularValor.setText(datos[6]);
+                        textViewTipoValor.setText(servicio.getString("servicio_tipo"));
+                        textViewNombreValor.setText(servicio.getString("pasajero_nombre"));
+                        textViewDireccionValor.setText(servicio.getString("pasajero_partida"));
+                        textViewCelularValor.setText(servicio.getString("servicio_celular"));
                     }
                     catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                break;
+                    break;
                 case AsignacionServicioService.CAMBIAR_UBICACION:
                     iniciarUbicacion(false);
                 break;
