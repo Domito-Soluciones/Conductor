@@ -185,24 +185,40 @@ public class ActivityUtils {
 
     }
 
-    public static void dibujarRuta(Activity activity,GoogleMap mMap,JSONObject route) {
+    public static void dibujarRuta(Activity activity,GoogleMap mMap,JSONArray route) {
         PolylineOptions polylineOptions = new PolylineOptions().width(10).color(Color.BLACK);
+        LatLng latLngInicio = null;
+        LatLng latLngFin = null;
         for(int i = 0 ; i < route.length(); i++)
         {
             try {
-                polylineOptions.add(new LatLng(route.getDouble("lat"),route.getDouble("lng")));
+                JSONObject jsonObject = (JSONObject) route.get(i);
+                LatLng latLng = new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng"));
+                polylineOptions.add(latLng);
+                if(i == 0)
+                {
+                    latLngInicio = latLng;
+                }
+                if(i == route.length() - 1)
+                {
+                    latLngFin = latLng;
+                }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
         }
+        LatLngBounds.Builder builder = new LatLngBounds.Builder(); builder.include(latLngInicio).include(latLngFin);
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 Polyline line = mMap.addPolyline(polylineOptions);
+                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 300));
+
             }
         });
+
     }
 
     public static boolean isRunning(Class<?> serviceClass, Activity activity) {

@@ -3,12 +3,16 @@ package cl.domito.conductor.thread;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLngBounds;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,7 +34,6 @@ public class RealizarServicioOperation extends AsyncTask<Object, Void, Void> {
 
     private WeakReference<MapsActivity> context;
     private TextView textView;
-    private TextView textViewError;
     private ConstraintLayout servicioLayout;
 
 
@@ -55,19 +58,45 @@ public class RealizarServicioOperation extends AsyncTask<Object, Void, Void> {
                 if (AsignacionServicioService.LAYOUT_SERVICIO_VISIBLE) {
                     servicioLayout.setVisibility(View.GONE);
                 }
-                JSONObject servicio = Conductor.getInstance().getServicio();
-                try {
-                    String url = Utilidades.URL_BASE_SERVICIO + "GetDetalleServicio.php";
-                    List<NameValuePair> params = new ArrayList();
-                    params.add(new BasicNameValuePair("id", servicio.getString("servicio_id")));
-                    JSONObject route = RequestConductor.getRoute(url,params);
-                    ActivityUtils.dibujarRuta(context.get(),map,route);
-                    Conductor.getInstance().setServicio(null);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
             }
         });
+        try {
+            JSONObject servicio = Conductor.getInstance().getServicio();
+            String url2 = Utilidades.URL_BASE_SERVICIO + "GetDetalleServicio.php";
+            List<NameValuePair> params2 = new ArrayList();
+            params2.add(new BasicNameValuePair("id", servicio.getString("servicio_id")));
+            JSONArray route = RequestConductor.getRoute(url2,params2);
+            ActivityUtils.dibujarRuta(context.get(),map,route);
+            //Conductor.getInstance().setServicio(null);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         return null;
+    }
+    @Override
+    protected void onPreExecute() {
+        if(context != null) {
+            context.get().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Button buttonConfirmar = context.get().findViewById(R.id.buttonConfirmar);
+                    buttonConfirmar.setText("Confirmando...");
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        if(context != null) {
+            context.get().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                   servicioLayout.setVisibility(View.GONE);
+                   Button buttonNavegar = context.get().findViewById(R.id.buttonNavegar);
+                   buttonNavegar.setVisibility(View.VISIBLE);
+                }
+            });
+        }
     }
 }

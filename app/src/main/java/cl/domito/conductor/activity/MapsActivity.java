@@ -13,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
@@ -43,10 +44,12 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
+import cl.domito.conductor.http.Utilidades;
 import cl.domito.conductor.service.AsignacionServicioService;
 import cl.domito.conductor.thread.CambiarEstadoOperation;
 import cl.domito.conductor.thread.DatosConductorOperation;
@@ -60,7 +63,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     private GoogleMap mMap;
     private GoogleApiClient apiClient;
-    private MapsActivity mapsActivity;
     private SupportMapFragment mapFragment;
     private View servicioLayout;
     private TextView textViewIdServicioValor;
@@ -73,6 +75,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private Button buttonConfirmar;
     private Button buttonCancelar;
     private Button buttonEstado;
+    private Button buttonNavegar;
     private ImageButton buttonLlamar;
     private ImageView imageButton;
     private DrawerLayout drawerLayout;
@@ -84,9 +87,9 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 broadcastReceiver, new IntentFilter("custom-event-name"));
         super.onResume();
-        if(mMap != null) {
-            mMap.clear();
-        }
+        //if(mMap != null) {
+        //mMap.clear();
+        //}
     }
 
     @Override
@@ -96,12 +99,12 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         super.onPause();
     }
 
-    @Override
-    protected void onDestroy() {
-        AsignacionServicioService.IS_INICIADO = false;
-        Intent i = new Intent(this, AsignacionServicioService.class);
-        stopService(i);
-        super.onDestroy();
+        @Override
+        protected void onDestroy() {
+            AsignacionServicioService.IS_INICIADO = false;
+            Intent i = new Intent(this, AsignacionServicioService.class);
+            stopService(i);
+            super.onDestroy();
     }
 
     @Override
@@ -118,6 +121,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         textViewDireccionValor = findViewById(R.id.textViewDireccionValor);
         textViewCelularValor = findViewById(R.id.textViewCelularValor);
         buttonEstado = findViewById(R.id.buttonEstado);
+        buttonNavegar = findViewById(R.id.buttonNavegar);
         buttonConfirmar = findViewById(R.id.buttonConfirmar);
         buttonCancelar = findViewById(R.id.buttonCancelar);
         buttonLlamar = findViewById(R.id.buttonLlamar);
@@ -132,6 +136,13 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 cambiarEstadoConductor();
+            }
+        });
+
+        buttonNavegar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navegar();
             }
         });
 
@@ -258,6 +269,30 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         cambiarEstadoOperation.execute();
     }
 
+    private void navegar()
+    {
+        try {
+            Conductor conductor = Conductor.getInstance();
+            String partida = conductor.getServicio().getString("servicio_partida");
+            String destino =  conductor.getServicio().getString("servicio_destino");
+            Uri gmmIntentUri = Uri.parse("https://www.google.com/maps/dir/?api=1&origin="+partida+"&destination="+destino+"&travelmode=driving&dir_action=navigate");
+            //&waypoints=Zaragoza,Spain%7CHuesca,Spain
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+            mapIntent.setPackage("com.google.android.apps.maps");
+            startActivity(mapIntent);
+
+            //String uri = "http://maps.google.com/maps?saddr="+partida
+            //        +"&daddr="+destino+"&mode=driving&dir_action=navigate";
+            //Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
+            //intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+            //startActivity(intent);
+
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onBackPressed() {

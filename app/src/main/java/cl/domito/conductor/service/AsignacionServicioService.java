@@ -28,7 +28,6 @@ public class AsignacionServicioService extends Service {
 
     public AsignacionServicioService(Context applicationContext) {
         super();
-        Log.i("HERE", "here I am!");
     }
 
     public AsignacionServicioService() {

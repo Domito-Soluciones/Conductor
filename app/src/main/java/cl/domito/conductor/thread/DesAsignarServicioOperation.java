@@ -3,6 +3,7 @@ package cl.domito.conductor.thread;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
+import android.widget.Button;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -44,6 +45,19 @@ public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, Void> {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        if(context != null) {
+            context.get().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Button buttonCancelar = context.get().findViewById(R.id.buttonCancelar);
+                    buttonCancelar.setText("Cancelando...");
+                }
+            });
+        }
     }
 
     @Override

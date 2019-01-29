@@ -58,11 +58,12 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                Conductor conductor = Conductor.getInstance();
                 TextView textView = context.get().findViewById(R.id.textViewNombreUsuario);
                 Button buttonEstado = context.get().findViewById(R.id.buttonEstado);
                 TextView textViewEstado = context.get().findViewById(R.id.textViewEstadoValor);
-                textView.setText(Conductor.getInstance().getNombre());
-                if(Conductor.getInstance().getEstado() == 1)
+                textView.setText(conductor.getNombre());
+                if(conductor.getEstado() == 1)
                 {
                     buttonEstado.setText("Terminar");
                     textViewEstado.setText("Conectado");
@@ -72,9 +73,9 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
                         context.get().startService(i);
                     }
                     AsignacionServicioService.IS_INICIADO = true;
-                    Conductor.getInstance().setActivo(true);
+                    conductor.setActivo(true);
                 }
-                else
+                else if(conductor.getEstado() == 0)
                 {
                     buttonEstado.setText("Iniciar");
                     textViewEstado.setText("Desconectado");

@@ -4,6 +4,7 @@ import android.location.Location;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -68,9 +69,9 @@ public class RequestConductor {
         }
     }
 
-    public static JSONObject getRoute(String url, List<NameValuePair> params)
+    public static JSONArray getRoute(String url, List<NameValuePair> params)
     {
-        return Utilidades.enviarPost(url,params);
+        return Utilidades.enviarPostArray(url,params);
     }
 
     public static void actualizarUbicacion(String reqUrl,Location lastLocation) {
