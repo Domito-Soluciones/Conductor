@@ -209,7 +209,8 @@ public class ActivityUtils {
                 e.printStackTrace();
             }
         }
-        LatLngBounds.Builder builder = new LatLngBounds.Builder(); builder.include(latLngInicio).include(latLngFin);
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(latLngInicio).include(latLngFin);
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
