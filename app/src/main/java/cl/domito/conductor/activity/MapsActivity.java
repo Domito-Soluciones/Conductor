@@ -55,6 +55,7 @@ import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.Utilidades;
 import cl.domito.conductor.service.AsignacionServicioService;
 import cl.domito.conductor.thread.CambiarEstadoOperation;
+import cl.domito.conductor.thread.CambiarUbicacionOperation;
 import cl.domito.conductor.thread.DatosConductorOperation;
 import cl.domito.conductor.thread.DesAsignarServicioOperation;
 import cl.domito.conductor.thread.LogoutOperation;
@@ -310,12 +311,12 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private void iniciarUbicacion(boolean updateUI)
     {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED)
-        {
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},0);
-            return;
-        }
+            != PackageManager.PERMISSION_GRANTED)
+    {
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},0);
+        return;
+    }
         mMap.setMyLocationEnabled(true);
         locationManager = (LocationManager) getApplicationContext().getSystemService(this.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1000, this);
@@ -400,20 +401,26 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                         textViewDestinoValor.setText(URLDecoder.decode(destino,"ISO-8859-1"));
                         textViewTipoValor.setText(servicio.getString("servicio_tipo"));
                         textViewNombreValor.setText(servicio.getString("pasajero_nombre"));
-                        textViewDireccionValor.setText(servicio.getString("pasajero_partida"));
-                        textViewCelularValor.setText(servicio.getString("servicio_celular"));
-                    }
+                    textViewDireccionValor.setText(servicio.getString("pasajero_partida"));
+                    textViewCelularValor.setText(servicio.getString("servicio_celular"));
+            }
                     catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case AsignacionServicioService.CAMBIAR_UBICACION:
-                    iniciarUbicacion(false);
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            break;
+            case AsignacionServicioService.CAMBIAR_UBICACION:
+                getUbicacion();
                 break;
             }
         }
     };
+
+    private void getUbicacion() {
+        iniciarUbicacion(false);
+        CambiarUbicacionOperation cambiarUbicacionOperation = new CambiarUbicacionOperation(this);
+        cambiarUbicacionOperation.execute();
+    }
 
 }
