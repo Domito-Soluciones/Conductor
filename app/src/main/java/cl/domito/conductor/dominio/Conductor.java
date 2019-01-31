@@ -22,8 +22,6 @@ public class Conductor {
     private int estado;
     private boolean activo;
     private boolean recordarSession;
-    private double latitud;
-    private double longitud;
     private boolean conectado;
     private int cantidadViajes;
     private List<LatLng> latLngs;
@@ -110,23 +108,6 @@ public class Conductor {
     public void setRecordarSession(boolean recordarSession) {
         this.recordarSession = recordarSession;
     }
-
-    public double getLatitud() {
-        return latitud;
-    }
-
-    public void setLatitud(double latitud) {
-        this.latitud = latitud;
-    }
-
-    public double getLongitud() {
-        return longitud;
-    }
-
-    public void setLongitud(double longitud) {
-        this.longitud = longitud;
-    }
-
     public boolean isConectado() {
         return conectado;
     }

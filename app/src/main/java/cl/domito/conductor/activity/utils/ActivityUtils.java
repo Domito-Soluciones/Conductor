@@ -62,8 +62,6 @@ public class ActivityUtils {
 
     public static void updateUI(Activity activity,GoogleMap googleMap,Location loc) {
         if (loc != null) {
-            Conductor.getInstance().setLatitud(loc.getLatitude());
-            Conductor.getInstance().setLongitud(loc.getLongitude());
             LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
             CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(17).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));

@@ -32,6 +32,7 @@ public class CambiarUbicacionOperation extends AsyncTask<Void, Void, Void> {
         Conductor conductor = Conductor.getInstance();
         String url = Utilidades.URL_BASE_MOVIL + "ModUbicacionMovil.php";
         RequestConductor.actualizarUbicacion(url,conductor.getLocation());
+        System.out.println("back LAT: "+conductor.getLocation().getLatitude() + " LON: "+conductor.getLocation().getLongitude());
         return null;
     }
 
@@ -39,7 +40,8 @@ public class CambiarUbicacionOperation extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void aVoid) {
         Conductor conductor = Conductor.getInstance();
         TextView textViewTemporal = context.get().findViewById(R.id.textViewTemporal);
-        textViewTemporal.setText("LAT: "+conductor.getLatitud() + " LON: "+conductor.getLongitud());
+        textViewTemporal.setText("LAT: "+conductor.getLocation().getLatitude() + " LON: "+conductor.getLocation().getLongitude());
+        System.out.println("TEXT LAT: "+conductor.getLocation().getLatitude() + " LON: "+conductor.getLocation().getLongitude());
 
     }
 }
