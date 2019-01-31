@@ -7,6 +7,7 @@ import android.widget.TextView;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -20,6 +21,11 @@ import cl.domito.conductor.http.Utilidades;
 
 public class CambiarUbicacionOperation extends AsyncTask<Void, Void, Void> {
 
+    private WeakReference<MapsActivity> context;
+
+    public CambiarUbicacionOperation(MapsActivity activity) {
+        context = new WeakReference<MapsActivity>(activity);
+    }
 
     @Override
     protected Void doInBackground(Void... voids) {
@@ -29,7 +35,11 @@ public class CambiarUbicacionOperation extends AsyncTask<Void, Void, Void> {
         return null;
     }
 
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        Conductor conductor = Conductor.getInstance();
+        TextView textViewTemporal = context.get().findViewById(R.id.textViewTemporal);
+        textViewTemporal.setText("LAT: "+conductor.getLatitud() + " LON: "+conductor.getLongitud());
 
-
-
+    }
 }

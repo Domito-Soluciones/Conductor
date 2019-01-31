@@ -75,8 +75,7 @@ public class AsignacionServicioService extends Service {
                                 }
                             }
                             if (conductor.getLocation() != null) {
-                                CambiarUbicacionOperation cambiarUbicacionOperation = new CambiarUbicacionOperation();
-                                cambiarUbicacionOperation.execute();
+                                sendMessage(CAMBIAR_UBICACION,null);
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
