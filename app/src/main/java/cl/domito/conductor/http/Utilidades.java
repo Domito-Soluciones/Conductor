@@ -28,6 +28,7 @@ public class Utilidades {
     public static String URL_BASE_CONDUCTOR = URL_BASE + "conductor/";
     public static String URL_BASE_ESTADISTICA = URL_BASE + "estaditica/";
     public static String URL_BASE_MOVIL = URL_BASE + "movil/";
+    public static String URL_BASE_NOTIFICACION = URL_BASE + "notificacion/";
     public static String URL_BASE_SERVICIO = URL_BASE + "servicio/";
     public static String URL_BASE_TRANSPORTISTA = URL_BASE + "transportista/";
     public static String URL_BASE_USUARIO = URL_BASE + "pasajero/";
@@ -89,14 +90,14 @@ public class Utilidades {
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(urlDest);
         post.setHeader("User-Agent", "");
-        post.addHeader("Referer", "app-cliente");
-        try {
-            if(params != null) {
-                params.add(new BasicNameValuePair("app","app"));
-                post.setEntity(new UrlEncodedFormEntity(params));
-            }
-            else
-            {
+                post.addHeader("Referer", "app-cliente");
+                try {
+                    if(params != null) {
+                        params.add(new BasicNameValuePair("app","app"));
+                        post.setEntity(new UrlEncodedFormEntity(params));
+                    }
+                    else
+                    {
                 params = new ArrayList();
                 params.add(new BasicNameValuePair("app","app"));
             }

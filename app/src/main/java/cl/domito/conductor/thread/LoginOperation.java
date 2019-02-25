@@ -12,6 +12,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,14 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
         String url = Utilidades.URL_BASE_CONDUCTOR + "Login.php";
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("usuario", strings[0]));
-        params.add(new BasicNameValuePair("password", strings[1]));
+        String password = null;
+        try {
+            byte[] data = strings[1].getBytes("UTF-8");
+            String base64 = android.util.Base64.encodeToString(data, android.util.Base64.NO_WRAP);
+            params.add(new BasicNameValuePair("password",base64));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         boolean login = RequestConductor.loginConductor(url,params);
         loginActivity.runOnUiThread(ActivityUtils.mensajeError(loginActivity));
         if (login) {
@@ -58,14 +66,22 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             if(conductor.isRecordarSession()) {
                 SharedPreferences pref = loginActivity.getApplicationContext().getSharedPreferences
                         ("preferencias",Context.MODE_PRIVATE);
-                ActivityUtils.guardarSharedPreferences(pref,"idUsuario",conductor.getNick());
+                ActivityUtils.guardarSharedPreferences(pref,"idUsuario",strings[0]);
+                ActivityUtils.guardarSharedPreferences(pref,"claveUsuario",strings[1]);
+            }
+            else
+            {
+                ActivityUtils.eliminarSharedPreferences(context.get().getSharedPreferences
+                        ("preferencias", Context.MODE_PRIVATE),"idUsuario");
+                ActivityUtils.eliminarSharedPreferences(context.get().getSharedPreferences
+                        ("preferencias", Context.MODE_PRIVATE),"claveUsuario");
             }
             Intent mainIntent = new Intent(loginActivity, MapsActivity.class);
             loginActivity.startActivity(mainIntent);
             loginActivity.finish();
-            String url2 = Utilidades.URL_BASE_CONDUCTOR + "ModEstadoConductor.php";
+            String url2 = Utilidades.URL_BASE_MOVIL + "ModEstadoMovil.php";
             List<NameValuePair> params2 = new ArrayList();
-            params2.add(new BasicNameValuePair("usuario",Conductor.getInstance().getNick()));
+            params2.add(new BasicNameValuePair("conductor",Conductor.getInstance().getId()));
             params2.add(new BasicNameValuePair("estado","1"));
             Utilidades.enviarPost(url2,params2);
         } else {
@@ -79,10 +95,18 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             });
         }
         return null;
-    }
+}
 
     @Override
     protected void onPostExecute(Void aVoid) {
-
+        if(Conductor.getInstance().isActivo()) {
+            AsignacionServicioService asignacionServicioService = new AsignacionServicioService(context.get());
+            Intent i = new Intent(context.get(), AsignacionServicioService.class);
+            if (!ActivityUtils.isRunning(asignacionServicioService.getClass(), context.get())) {
+                context.get().startService(i);
+                Toast.makeText(context.get(),"servicio iniciado",Toast.LENGTH_LONG).show();
+            }
+            AsignacionServicioService.IS_INICIADO = true;
+        }
     }
 }

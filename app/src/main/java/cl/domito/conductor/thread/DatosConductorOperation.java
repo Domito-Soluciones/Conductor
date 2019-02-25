@@ -44,7 +44,6 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
             context.get().runOnUiThread(ActivityUtils.mensajeError(context.get()));
             if(jsonObject != null) {
                 conductor.setNombre(jsonObject.getString("conductor_nombre"));
-                conductor.setCantidadViajes(jsonObject.getInt("conductor_viajes"));
                 conductor.setEstado(jsonObject.getInt("conductor_estado"));
             }
         } catch (JSONException e) {
@@ -60,12 +59,12 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
             public void run() {
                 Conductor conductor = Conductor.getInstance();
                 TextView textView = context.get().findViewById(R.id.textViewNombreUsuario);
-                Button buttonEstado = context.get().findViewById(R.id.buttonEstado);
+                //Button buttonEstado = context.get().findViewById(R.id.buttonEstado);
                 TextView textViewEstado = context.get().findViewById(R.id.textViewEstadoValor);
                 textView.setText(conductor.getNombre());
                 if(conductor.getEstado() == 1)
                 {
-                    buttonEstado.setText("Terminar");
+                    //buttonEstado.setText("Terminar");
                     textViewEstado.setText("Conectado");
                     AsignacionServicioService asignacionServicioService = new AsignacionServicioService(context.get());
                     Intent i = new Intent(context.get(), AsignacionServicioService.class);
@@ -77,7 +76,7 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
                 }
                 else if(conductor.getEstado() == 0)
                 {
-                    buttonEstado.setText("Iniciar");
+                    //buttonEstado.setText("Iniciar");
                     textViewEstado.setText("Desconectado");
                 }
             }

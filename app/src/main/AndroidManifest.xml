@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +13,15 @@
         android:roundIcon="@drawable/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
+        <activity
+            android:name=".activity.ServicioDetalleActivity"
+            android:label="@string/title_activity_servicio_detalle"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
+            android:name=".activity.HistoricoActivity"
+            android:label="@string/title_activity_historico"
+            android:theme="@style/NoActionBar" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDzk5KMW7MRXU2HUqXUSyCgGlCwib1nTu8" />
@@ -28,20 +38,24 @@
             android:name=".activity.LoginActivity"
             android:label="" />
 
-        <service android:name=".service.AsignacionServicioService"
-                android:enabled="true"/>
+        <service
+            android:name=".service.AsignacionServicioService"
+            android:enabled="true" />
 
         <activity
             android:name=".activity.ServicioActivity"
             android:label="@string/title_activity_servicio"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <activity
+            android:name=".activity.ConfiguracionActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
         <receiver
             android:name=".service.RestartBroadcastReceived"
             android:enabled="true"
             android:exported="true"
-            android:label="RestartBroadcastReceived">
-        </receiver>
-
+            android:label="RestartBroadcastReceived" />
     </application>
 
 </manifest>

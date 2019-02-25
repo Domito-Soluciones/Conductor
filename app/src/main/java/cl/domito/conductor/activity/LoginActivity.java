@@ -1,5 +1,7 @@
 package cl.domito.conductor.activity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -26,10 +28,23 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         this.getSupportActionBar().hide();
+        SharedPreferences pref = getApplicationContext().getSharedPreferences
+                ("preferencias", Context.MODE_PRIVATE);
+        String idConductor = pref.getString("idUsuario", "");
+        String clave = pref.getString("claveUsuario","");
         mUserView = findViewById(R.id.usuario);
         mPasswordView = findViewById(R.id.password);
         mEmailSignInButton = findViewById(R.id.login_button);
         checkBoxRec = findViewById(R.id.checkBox);
+
+        mUserView.setText(idConductor);
+        mPasswordView.setText(clave);
+        if(!idConductor.equals("") && !clave.equals(""))
+        {
+            Conductor.getInstance().setRecordarSession(true);
+            checkBoxRec.setChecked(true);
+        }
+
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,7 +54,14 @@ public class LoginActivity extends AppCompatActivity {
         checkBoxRec.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                recordarInicioSesion();
+                if(checkBoxRec.isChecked())
+                {
+                    recordarInicioSesion();
+                }
+                else
+                {
+                    olvidarInicioSesion();
+                }
             }
         });
     }
@@ -64,7 +86,9 @@ public class LoginActivity extends AppCompatActivity {
         Conductor.getInstance().setRecordarSession(true);
     }
 
-
+    private void olvidarInicioSesion() {
+        Conductor.getInstance().setRecordarSession(false);
+    }
 
 }
 

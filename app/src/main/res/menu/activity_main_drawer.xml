@@ -6,12 +6,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/servicio"
-            android:title="Servicios" />
+            android:icon="@drawable/calendario"
+            android:title="Servicios Programados" />
         <item
-            android:id="@+id/ganancias"
-            android:title="Ganancias" />
+            android:id="@+id/historico"
+            android:icon="@drawable/historial"
+            android:title="Historial" />
+        <item
+            android:id="@+id/configuracion"
+            android:icon="@drawable/configuracion"
+            android:title="Configuración" />
         <item
             android:id="@+id/salir"
+            android:icon="@drawable/logout"
             android:title="Cerrar sesión" />
     </group>
 </menu>

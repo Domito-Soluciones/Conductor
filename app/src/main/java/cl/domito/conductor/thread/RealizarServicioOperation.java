@@ -1,10 +1,12 @@
 package cl.domito.conductor.thread;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,53 +26,46 @@ import java.util.List;
 
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.MapsActivity;
+import cl.domito.conductor.activity.ServicioActivity;
+import cl.domito.conductor.activity.ServicioDetalleActivity;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.http.Utilidades;
 import cl.domito.conductor.service.AsignacionServicioService;
 
-public class RealizarServicioOperation extends AsyncTask<Object, Void, Void> {
+public class RealizarServicioOperation extends AsyncTask<Void, Void, Void> {
 
-    private WeakReference<MapsActivity> context;
+    private WeakReference<ServicioDetalleActivity> context;
     private TextView textView;
-    private ConstraintLayout servicioLayout;
+    Button buttonConfirmar;
 
 
-    public RealizarServicioOperation(MapsActivity activity) {
-        context = new WeakReference<MapsActivity>(activity);
+    public RealizarServicioOperation(ServicioDetalleActivity activity) {
+        context = new WeakReference<ServicioDetalleActivity>(activity);
+        buttonConfirmar = context.get().findViewById(R.id.buttonConfirmar);
     }
 
     @Override
-    protected Void doInBackground(Object... objects) {
-        GoogleMap map = (GoogleMap) objects[0];
+    protected Void doInBackground(Void... voids) {
         String url = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicio.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         textView = context.get().findViewById(R.id.textViewIdServicioValor);
-        servicioLayout = context.get().findViewById(R.id.constrainLayoutServicio);
-        params.add(new BasicNameValuePair("id",textView.getText().toString()));
-        params.add(new BasicNameValuePair("estado","3"));
-        Utilidades.enviarPost(url,params);
-        Conductor.getInstance().setTiempoEspera(30);
-        context.get().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (AsignacionServicioService.LAYOUT_SERVICIO_VISIBLE) {
-                    servicioLayout.setVisibility(View.GONE);
-                }
-            }
-        });
-        try {
-            JSONObject servicio = Conductor.getInstance().getServicio();
+
+                params.add(new BasicNameValuePair("id",textView.getText().toString()));
+                params.add(new BasicNameValuePair("estado","3"));
+                Utilidades.enviarPost(url,params);
+        /*try {
+            JSONArray servicio = Conductor.getInstance().getServicio();
             String url2 = Utilidades.URL_BASE_SERVICIO + "GetDetalleServicio.php";
             List<NameValuePair> params2 = new ArrayList();
-            params2.add(new BasicNameValuePair("id", servicio.getString("servicio_id")));
+            params2.add(new BasicNameValuePair("id", ((JSONObject)servicio.get(0)).getString("servicio_id")));
             JSONArray route = RequestConductor.getRoute(url2,params2);
             ActivityUtils.dibujarRuta(context.get(),map,route);
             //Conductor.getInstance().setServicio(null);
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
         return null;
     }
     @Override
@@ -79,8 +74,7 @@ public class RealizarServicioOperation extends AsyncTask<Object, Void, Void> {
             context.get().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Button buttonConfirmar = context.get().findViewById(R.id.buttonConfirmar);
-                    buttonConfirmar.setText("Confirmando...");
+                    buttonConfirmar.setText("En Proceso...");
                 }
             });
         }
@@ -92,9 +86,14 @@ public class RealizarServicioOperation extends AsyncTask<Object, Void, Void> {
             context.get().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                   servicioLayout.setVisibility(View.GONE);
-                   Button buttonNavegar = context.get().findViewById(R.id.buttonNavegar);
-                   buttonNavegar.setVisibility(View.VISIBLE);
+                    Intent intent = new Intent(context.get(),ServicioActivity.class);
+                    intent.putExtra("idServicio",textView.getText().toString());
+                    intent.putExtra("accion","0");
+                    context.get().startActivity(intent);
+                    context.get().finish();
+                    Toast.makeText(context.get(),"Servicio aceptado",Toast.LENGTH_LONG).show();
+                   //Button buttonNavegar = context.get().findViewById(R.id.buttonNavegar);
+                   //buttonNavegar.setVisibility(View.VISIBLE);
                 }
             });
         }

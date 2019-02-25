@@ -2,6 +2,8 @@ package cl.domito.conductor.http;
 
 import android.location.Location;
 
+import com.google.gson.JsonObject;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -23,6 +25,7 @@ public class RequestConductor {
             if(Conductor.getInstance().isConectado()) {
                 RESPUESTA = Utilidades.enviarPost(reqUrl,params);
                 if (!RESPUESTA.getString("conductor_id").equals("0")) {
+                    Conductor.getInstance().setId(RESPUESTA.getString("conductor_id"));
                     return true;
                 }
             }
@@ -79,7 +82,7 @@ public class RequestConductor {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("lat", lastLocation.getLatitude()+""));
             params.add(new BasicNameValuePair("lon", lastLocation.getLongitude()+""));
-            params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getNick()));
+            params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getId()));
             Utilidades.enviarPost(reqUrl,params);
 
         }
@@ -89,4 +92,15 @@ public class RequestConductor {
         }
     }
 
+    public static JSONArray getServicios(String url, List<NameValuePair> params) {
+        JSONArray object = null;
+        try {
+            object = Utilidades.enviarPostArray(url,params);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return object;
+    }
 }

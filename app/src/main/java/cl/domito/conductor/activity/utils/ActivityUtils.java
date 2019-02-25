@@ -1,5 +1,6 @@
 package cl.domito.conductor.activity.utils;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
@@ -7,6 +8,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -15,6 +17,7 @@ import android.location.Location;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.annotation.DrawableRes;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
@@ -42,6 +45,7 @@ import java.util.List;
 
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.MapsActivity;
+import cl.domito.conductor.activity.ServicioActivity;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.Utilidades;
 
@@ -62,13 +66,11 @@ public class ActivityUtils {
 
     public static void updateUI(Activity activity,GoogleMap googleMap,Location loc) {
         if (loc != null) {
-            Conductor.getInstance().setLatitud(loc.getLatitude());
-            Conductor.getInstance().setLongitud(loc.getLongitude());
             LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
             CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(17).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         } else {
-            Toast.makeText(activity, "mal", Toast.LENGTH_LONG);
+            Toast.makeText(activity, "mal", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -84,11 +86,11 @@ public class ActivityUtils {
         sharedPreferences.edit().putString(key, "").commit();
     }
 
-    public static void enviarNotificacion(Activity activity,String titulo,String contenido,int smallIcon)
+    public static void enviarNotificacion(Context activity,String titulo,String contenido,int smallIcon)
     {
         NotificationCompat.Builder mBuilder;
         NotificationManager mNotifyMgr = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
-        Intent intent = new Intent(activity, MapsActivity.class);
+        Intent intent = new Intent(activity, ServicioActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(activity, 0, intent, 0);
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         mBuilder = new NotificationCompat.Builder(activity)
@@ -181,7 +183,19 @@ public class ActivityUtils {
     public static void llamar(Activity activity,String numero)
     {
         String dial = numero;
-        activity.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+        if (ContextCompat.checkSelfPermission(activity,
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(activity,
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    0);
+            activity.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+
+        } else {
+            activity.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+            //requestPermissions(new String[]{CALL_PHONE}, 1);
+        }
 
     }
 
@@ -214,7 +228,9 @@ public class ActivityUtils {
             @Override
             public void run() {
                 Polyline line = mMap.addPolyline(polylineOptions);
-                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 300));
+                line.setColor(activity.getResources().getColor(R.color.colorLinea));
+                line.setWidth(30f);
+                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150),1000,null);
 
             }
         });

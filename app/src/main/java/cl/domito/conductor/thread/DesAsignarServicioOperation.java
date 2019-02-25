@@ -1,13 +1,17 @@
 package cl.domito.conductor.thread;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -15,15 +19,19 @@ import java.util.List;
 
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.MapsActivity;
+import cl.domito.conductor.activity.ServicioActivity;
+import cl.domito.conductor.activity.ServicioDetalleActivity;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.Utilidades;
 
 public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, Void> {
 
-    private WeakReference<MapsActivity> context;
+    private WeakReference<ServicioDetalleActivity> context;
+    private TextView textView;
 
-    public DesAsignarServicioOperation(MapsActivity activity) {
-        context = new WeakReference<MapsActivity>(activity);
+
+    public DesAsignarServicioOperation(ServicioDetalleActivity activity) {
+        context = new WeakReference<ServicioDetalleActivity>(activity);
     }
 
     public DesAsignarServicioOperation() {
@@ -32,18 +40,13 @@ public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        String url = Utilidades.URL_BASE_SERVICIO + "ModConductorServicio.php";
+        String url = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicio.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        String idServicio = null;
-        try {
-            idServicio = Conductor.getInstance().getServicio().getString("servicio_id");
-            params.add(new BasicNameValuePair("id",idServicio));
-            params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getNick()));
-            Utilidades.enviarPost(url,params);
-            Conductor.getInstance().setTiempoEspera(30);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        textView = context.get().findViewById(R.id.textViewIdServicioValor);
+
+        params.add(new BasicNameValuePair("id",textView.getText().toString()));
+        params.add(new BasicNameValuePair("estado","1"));
+        Utilidades.enviarPost(url,params);
         return null;
     }
 
@@ -66,8 +69,12 @@ public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, Void> {
             context.get().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ConstraintLayout constraintLayout = context.get().findViewById(R.id.constrainLayoutServicio);
-                    constraintLayout.setVisibility(View.GONE);
+                    Intent intent = new Intent(context.get(), ServicioActivity.class);
+                    intent.putExtra("idServicio",textView.getText().toString());
+                    intent.putExtra("accion","1");
+                    context.get().startActivity(intent);
+                    context.get().finish();
+                    Toast.makeText(context.get(),"Servicio cancelado",Toast.LENGTH_LONG).show();
                 }
             });
         }

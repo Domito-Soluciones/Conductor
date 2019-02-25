@@ -1,18 +1,26 @@
 package cl.domito.conductor.service;
 
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.os.IBinder;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import cl.domito.conductor.R;
+import cl.domito.conductor.activity.MapsActivity;
+import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.CambiarUbicacionOperation;
-import cl.domito.conductor.thread.DesAsignarServicioOperation;
+import cl.domito.conductor.thread.FinalizarRutaPasajeroOperation;
+import cl.domito.conductor.thread.InsertarNavegacionOperation;
+import cl.domito.conductor.thread.NotificationOperation;
 import cl.domito.conductor.thread.ObtenerServicioOperation;
 
 public class AsignacionServicioService extends Service {
@@ -21,9 +29,12 @@ public class AsignacionServicioService extends Service {
     public static final String MOSTRAR_LAYOUT_SERVICIO = "1";
     public static final String MOSTRAR_NOTIFICACION_SERVICIO= "2";
     public static final String LLENAR_LAYOUT_SERVICIO= "3";
-    public static final String CAMBIAR_UBICACION= "4";
+    public static final String CAMBIAR_UBICACION = "4";
+    public static final String CALCULAR_DISTACIA = "5";
     public static boolean LAYOUT_SERVICIO_VISIBLE = false;
     public static boolean IS_INICIADO = false;
+    public static boolean TERMINAR = true;
+
 
     public AsignacionServicioService(Context applicationContext) {
         super();
@@ -38,77 +49,77 @@ public class AsignacionServicioService extends Service {
         return null;
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
+        @Override
+        public void onCreate() {
+            super.onCreate();
+        }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Conductor conductor = Conductor.getInstance();
-                while (IS_INICIADO) {
-                    while (conductor.isActivo()) {
-                        Log.i("I","servicio corriendo correctmente");
-                        try {
-                            ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
-                            JSONObject servicio = obtenerServicioOperation.execute().get();
-                            if (servicio.length() > 0) {
-                                conductor.setServicio(servicio);
-                                if (conductor.getTiempoEspera() == 0) {
-                                    DesAsignarServicioOperation desAsignarServicioOperation = new DesAsignarServicioOperation();
-                                    desAsignarServicioOperation.execute();
-                                    sendMessage(OCULTAR_LAYOUT_SERVICIO, null);
-                                    LAYOUT_SERVICIO_VISIBLE = true;
-                                    conductor.setOcupado(false);
-                                    conductor.setTiempoEspera(30);
-                                } else {
-                                    sendMessage(MOSTRAR_NOTIFICACION_SERVICIO, servicio.getString("servicio_id"));
-                                    if (!LAYOUT_SERVICIO_VISIBLE) {
-                                        sendMessage(MOSTRAR_LAYOUT_SERVICIO, null);
-                                        conductor.setOcupado(true);
-                                        sendMessage(LLENAR_LAYOUT_SERVICIO, servicio.toString());
+        @Override
+        public int onStartCommand(Intent intent, int flags, int startId) {
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Conductor conductor = Conductor.getInstance();
+                    while (IS_INICIADO) {
+                        while (conductor.isActivo()) {
+                            Log.i("I","servicio corriendo correctmente");
+                            try {
+                                ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
+                                conductor.setServicios(obtenerServicioOperation.execute().get());
+                                obtenerNotificacion();
+                                if (conductor.getLocation() != null) {
+                                    sendMessage(CAMBIAR_UBICACION,null);
+                                    if(Conductor.getInstance().isNavegando() && Conductor.getInstance().getLocation()!=null)
+                                    {
+                                        insertarNavegacion();
                                     }
-                                    conductor.setTiempoEspera(conductor.getTiempoEspera() - 1);
-                                }
-                            }
-                            if (conductor.getLocation() != null) {
-                                sendMessage(CAMBIAR_UBICACION,null);
+                                Location location = Conductor.getInstance().getLocation();
+                                Location locationDestino = Conductor.getInstance().getLocationDestino();
+                                //if(location.distanceTo(locationDestino) < 50f)
+                                //{
+                                abrirActivity();
+                                //}
                             }
                         } catch (Exception e) {
-                            e.printStackTrace();
+                                e.printStackTrace();
+                            }
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                            }
+                        }
+                        while (!conductor.isActivo() && IS_INICIADO) {
+                            try {
+                                System.out.println("servicio a la espera");
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                            }
                         }
                         try {
                             Thread.sleep(1000);
                         } catch (InterruptedException e) {
                         }
-                    }
-                    while (!conductor.isActivo() && IS_INICIADO) {
-                        try {
-                            System.out.println("servicio a la espera");
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                        }
-                    }
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
                     }
                 }
-            }
-        });
+            });
         t.start();
         return Service.START_STICKY ;
+    }
+
+    private void abrirActivity() {
+        Intent dialogIntent = new Intent(this, MapsActivity.class);
+        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        startActivity(dialogIntent);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         System.out.println("El servicio a Terminado");
-        Intent broadcastIntent = new Intent(this, RestartBroadcastReceived.class);
-        sendBroadcast(broadcastIntent);
+        if(TERMINAR) {
+            Intent broadcastIntent = new Intent(this, RestartBroadcastReceived.class);
+            sendBroadcast(broadcastIntent);
+        }
     }
 
     private void sendMessage(String message,String value) {
@@ -118,4 +129,29 @@ public class AsignacionServicioService extends Service {
         intent.putExtra("value", value);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
+
+    private void notificar(String titulo,String contenido)
+    {
+        ActivityUtils.enviarNotificacion(this,titulo,contenido, R.drawable.furgoneta);
+    }
+
+    private void obtenerNotificacion()
+    {
+        NotificationOperation notificationOperation = new NotificationOperation(this);
+        notificationOperation.execute();
+    }
+
+    private void insertarNavegacion()
+    {
+        InsertarNavegacionOperation insertarNavegacionOperation = new InsertarNavegacionOperation();
+        insertarNavegacionOperation.execute();
+    }
+
+    private void getUbicacion()
+    {
+        CambiarUbicacionOperation cambiarUbicacionOperation = new CambiarUbicacionOperation();
+        cambiarUbicacionOperation.execute();
+    }
 }
+
+

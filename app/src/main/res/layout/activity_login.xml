@@ -6,7 +6,7 @@
     android:background="@color/whitesmoke"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cl.domito.cliente.activity.LoginActivity">
+    tools:context="cl.domito.conductor.activity.LoginActivity">
 
     <TextView
         android:id="@+id/textViewError2"

@@ -31,25 +31,10 @@ public class SplashScreenActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                SharedPreferences pref = getApplicationContext().getSharedPreferences
-                        ("preferencias", Context.MODE_PRIVATE);
-                String idConductor = pref.getString("idUsuario",
-                        "");
-                if(!idConductor.equals(""))
-                {
-                    Conductor.getInstance().setNick(idConductor);
-                    Conductor.getInstance().setConectado(true);
-                    Intent mainIntent = new Intent(SplashScreenActivity.this,MapsActivity.class);
-                    SplashScreenActivity.this.startActivity(mainIntent);
-                    SplashScreenActivity.this.finish();
-                    handler.removeCallbacksAndMessages(null);
-                }
-                else {
-                    Intent mainIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                    SplashScreenActivity.this.startActivity(mainIntent);
-                    SplashScreenActivity.this.finish();
-                    handler.removeCallbacksAndMessages(null);
-                }
+                Intent mainIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                SplashScreenActivity.this.startActivity(mainIntent);
+                SplashScreenActivity.this.finish();
+                handler.removeCallbacksAndMessages(null);
             }
         }, 2000);
 

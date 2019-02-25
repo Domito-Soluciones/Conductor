@@ -58,7 +58,7 @@ public class CambiarEstadoOperation extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPreExecute() {
-        buttonConfirmar = context.get().findViewById(R.id.buttonEstado);
+      /*  buttonConfirmar = context.get().findViewById(R.id.buttonEstado);
         if(buttonConfirmar.getText().toString().equals("Terminar")) {
             context.get().runOnUiThread(new Runnable() {
                 @Override
@@ -75,12 +75,12 @@ public class CambiarEstadoOperation extends AsyncTask<Void, Void, Void> {
                     buttonConfirmar.setText("Iniciando...");
                 }
             });
-        }
+        }*/
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        buttonConfirmar = context.get().findViewById(R.id.buttonEstado);
+        /*buttonConfirmar = context.get().findViewById(R.id.buttonEstado);
         textViewEstadoValor = context.get().findViewById(R.id.textViewEstadoValor);
         if(AsignacionServicioService.IS_INICIADO) {
             if(Conductor.getInstance().getEstado() == 1) {
@@ -121,7 +121,7 @@ public class CambiarEstadoOperation extends AsyncTask<Void, Void, Void> {
                     textViewEstadoValor.setText("Conectado");
                 }
             });
-        }
+        }*/
     }
 
 }

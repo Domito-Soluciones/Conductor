@@ -32,5 +32,7 @@
     <string name="sel_mapa">Selecciona en el mapa</string>
     <string name="titulo_barra">GoTransfer</string>
     <string name="title_activity_servicio">ServicioActivity</string>
+    <string name="title_activity_historico">HistoricoActivity</string>
+    <string name="title_activity_servicio_detalle">ServicioDetalleActivity</string>
 
 </resources>
