@@ -124,7 +124,6 @@ public class Conductor {
     public void setRecordarSession(boolean recordarSession) {
         this.recordarSession = recordarSession;
     }
-
     public boolean isConectado() {
         return conectado;
     }
