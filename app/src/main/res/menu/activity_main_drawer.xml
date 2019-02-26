@@ -9,6 +9,10 @@
             android:icon="@drawable/calendario"
             android:title="Servicios Programados" />
         <item
+            android:id="@+id/especial"
+            android:icon="@drawable/evento"
+            android:title="Servicios Especiales" />
+        <item
             android:id="@+id/historico"
             android:icon="@drawable/historial"
             android:title="Historial" />

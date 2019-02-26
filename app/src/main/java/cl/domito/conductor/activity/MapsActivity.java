@@ -306,6 +306,10 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             Intent mainIntent = new Intent(this,ServicioActivity.class);
             this.startActivity(mainIntent);
         }
+        if (id == R.id.especial) {
+            Intent mainIntent = new Intent(this,ServicioEspecialActivity.class);
+            this.startActivity(mainIntent);
+        }
         if (id == R.id.historico) {
             Intent mainIntent = new Intent(this,HistoricoActivity.class);
             this.startActivity(mainIntent);

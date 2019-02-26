@@ -28,6 +28,7 @@ public class Conductor {
     private boolean conectado;
     private List<LatLng> latLngs;
     private JSONArray servicios;
+    private JSONArray serviciosEspeciales;
     private boolean ocupado;
     private Location location;
     private Location locationDestino;
@@ -144,8 +145,16 @@ public class Conductor {
         return servicios;
     }
 
+    public JSONArray getServiciosEspeciales() {
+        return serviciosEspeciales;
+    }
+
     public void setServicios(JSONArray servicios) {
         this.servicios = servicios;
+    }
+
+    public void setServiciosEspeciales(JSONArray serviciosEspeciales) {
+        this.serviciosEspeciales = serviciosEspeciales;
     }
 
     public void setOcupado(boolean ocupado) {

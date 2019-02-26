@@ -14,9 +14,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
         <activity
+            android:name=".activity.ServicioEspecialActivity"
+            android:label="@string/title_activity_servicio_especial"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
             android:name=".activity.ServicioDetalleActivity"
             android:label="@string/title_activity_servicio_detalle"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/NoActionBar" />
+        <activity
+            android:name=".activity.ServicioDetalleEspecialActivity"
+            android:label="@string/title_activity_servicio_detalle"
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".activity.HistoricoActivity"
             android:label="@string/title_activity_historico"
@@ -46,7 +54,6 @@
             android:name=".activity.ServicioActivity"
             android:label="@string/title_activity_servicio"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
         <activity
             android:name=".activity.ConfiguracionActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

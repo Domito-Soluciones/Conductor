@@ -21,6 +21,7 @@ import cl.domito.conductor.thread.CambiarUbicacionOperation;
 import cl.domito.conductor.thread.FinalizarRutaPasajeroOperation;
 import cl.domito.conductor.thread.InsertarNavegacionOperation;
 import cl.domito.conductor.thread.NotificationOperation;
+import cl.domito.conductor.thread.ObtenerServicioEspecialOperation;
 import cl.domito.conductor.thread.ObtenerServicioOperation;
 
 public class AsignacionServicioService extends Service {
@@ -66,6 +67,8 @@ public class AsignacionServicioService extends Service {
                             try {
                                 ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
                                 conductor.setServicios(obtenerServicioOperation.execute().get());
+                                ObtenerServicioEspecialOperation obtenerServicioEspecialOperation = new ObtenerServicioEspecialOperation();
+                                conductor.setServiciosEspeciales(obtenerServicioEspecialOperation.execute().get());
                                 obtenerNotificacion();
                                 if (conductor.getLocation() != null) {
                                     sendMessage(CAMBIAR_UBICACION,null);
@@ -77,7 +80,7 @@ public class AsignacionServicioService extends Service {
                                 Location locationDestino = Conductor.getInstance().getLocationDestino();
                                 //if(location.distanceTo(locationDestino) < 50f)
                                 //{
-                                abrirActivity();
+                                //    abrirActivity();
                                 //}
                             }
                         } catch (Exception e) {

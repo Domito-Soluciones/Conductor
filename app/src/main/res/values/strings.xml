@@ -34,5 +34,6 @@
     <string name="title_activity_servicio">ServicioActivity</string>
     <string name="title_activity_historico">HistoricoActivity</string>
     <string name="title_activity_servicio_detalle">ServicioDetalleActivity</string>
+    <string name="title_activity_servicio_especial">ServicioEspecialActivity</string>
 
 </resources>
