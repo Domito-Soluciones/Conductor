@@ -9,7 +9,9 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -180,8 +182,24 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
             Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation != null) {
                 System.out.println("la wea esta wena");
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Toast.makeText(AsignacionServicioService.this.getApplicationContext(),"la wea este wena",Toast.LENGTH_SHORT).show();
+                    }
+                });
                 Conductor.getInstance().setLocation(mLastLocation);
             } else {
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Toast.makeText(AsignacionServicioService.this.getApplicationContext(),"la wea este mala",Toast.LENGTH_SHORT).show();
+                    }
+                });
                 System.out.println("la wea esta mala");
             }
             mGoogleApiClient.disconnect();
