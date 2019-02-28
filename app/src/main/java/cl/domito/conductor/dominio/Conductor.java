@@ -2,6 +2,7 @@ package cl.domito.conductor.dominio;
 
 import android.location.Location;
 
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonObject;
 
@@ -38,6 +39,7 @@ public class Conductor {
     private int indiceViaje = 0;
     private boolean navegando;
     private int cantidadPasajeros;
+    private GoogleApiClient googleApiClient;
 
     public static synchronized Conductor getInstance(){
         if(instance == null){
@@ -240,4 +242,13 @@ public class Conductor {
     public void setCantidadPasajeros(int cantidadPasajeros) {
         this.cantidadPasajeros = cantidadPasajeros;
     }
+
+    public GoogleApiClient getGoogleApiClient() {
+        return googleApiClient;
+    }
+
+    public void setGoogleApiClient(GoogleApiClient googleApiClient) {
+        this.googleApiClient = googleApiClient;
+    }
 }
+

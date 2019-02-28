@@ -77,6 +77,21 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
         params3.add(new BasicNameValuePair("id",idServicio));
         params3.add(new BasicNameValuePair("conductor",Conductor.getInstance().getNick()));
         conductor.setServicio(Utilidades.enviarPostArray(url3, params3));
+        if(conductor.getServicios() != null) {
+            try {
+                JSONObject primero = conductor.getServicios().getJSONObject(0);
+                String ruta = primero.getString("servicio_ruta").split("-")[1];
+                if (ruta.equals("ZP")) {
+                    String cliente = primero.getString("servicio_cliente");
+                    String destino = primero.getString("servicio_cliente_direccion");
+                    lista.add(cliente + "%%" + destino);
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
         for(int i =  0; i < conductor.getServicio().length();i++ ) {
             try {
                 JSONObject servicio = conductor.getServicios().getJSONObject(i);
@@ -86,10 +101,25 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
                     String celular = servicio.getString("servicio_pasajero_celular");
                     String destino = servicio.getString("servicio_destino");
                     lista.add(nombre + "%" + celular + "%" + destino + "%" + id);
-        }
-    }
+                }
+            }
             catch(Exception e){e.printStackTrace();}
-}
+        }
+        if(conductor.getServicios() != null) {
+            try {
+                JSONObject ultimo = conductor.getServicios().getJSONObject(conductor.getServicios().length() - 1);
+                String ruta = ultimo.getString("servicio_ruta").split("-")[1];
+                if (ruta.equals("RG")) {
+                    String cliente = ultimo.getString("servicio_cliente");
+                    String destino = ultimo.getString("servicio_cliente_direccion");
+                    lista.add(cliente + "%%" + destino);
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
         if(lista.size() > 0 ) {
                 String[] array = new String[lista.size()];
             array  = lista.toArray(array);

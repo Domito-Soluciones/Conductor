@@ -86,11 +86,11 @@ public class ActivityUtils {
         sharedPreferences.edit().putString(key, "").commit();
     }
 
-    public static void enviarNotificacion(Context activity,String titulo,String contenido,int smallIcon)
+    public static void enviarNotificacion(Context activity,String titulo,String contenido,int smallIcon,Class clase)
     {
         NotificationCompat.Builder mBuilder;
         NotificationManager mNotifyMgr = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
-        Intent intent = new Intent(activity, ServicioActivity.class);
+        Intent intent = new Intent(activity, clase);
         PendingIntent pendingIntent = PendingIntent.getActivity(activity, 0, intent, 0);
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         mBuilder = new NotificationCompat.Builder(activity)

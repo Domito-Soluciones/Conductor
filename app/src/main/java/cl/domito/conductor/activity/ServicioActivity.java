@@ -40,33 +40,33 @@ public class ServicioActivity extends AppCompatActivity {
             setContentView(R.layout.activity_servicio);
 
             recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        imageViewAtras = findViewById(R.id.imageViewAtras);
-        imageViewAtrasInt = findViewById(R.id.imageViewAtrasInt);
-        constraintLayoutProgramado = findViewById(R.id.constrainLayoutProgramado);
-        constraintLayoutDetalle = findViewById(R.id.constrainLayoutServicio);
-        JSONArray jsonArray = Conductor.getInstance().getServicios();
-        ArrayList<String> lista = new ArrayList();
-        String ant = "";
-        for(int i = 0; i < jsonArray.length(); i++)
-        {
-            try {
-                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                String servicioId = jsonObject.getString("servicio_id");
-                String servicioFecha = jsonObject.getString("servicio_fecha");
-                Date date = format1.parse(servicioFecha);
-                String servicioHora = jsonObject.getString("servicio_hora");
-                String servicioCliente = jsonObject.getString("servicio_cliente");
-                String servicioEstado = jsonObject.getString("servicio_estado");
-                if(!servicioId.equals(ant))
-                {
-                    lista.add( servicioId + "%"+format2.format(date) + "%"+ servicioHora + "%" + servicioCliente + "%" + servicioEstado);
+            recyclerView.setHasFixedSize(true);
+            layoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(layoutManager);
+            imageViewAtras = findViewById(R.id.imageViewAtras);
+            imageViewAtrasInt = findViewById(R.id.imageViewAtrasInt);
+            constraintLayoutProgramado = findViewById(R.id.constrainLayoutProgramado);
+            constraintLayoutDetalle = findViewById(R.id.constrainLayoutServicio);
+            JSONArray jsonArray = Conductor.getInstance().getServicios();
+            ArrayList<String> lista = new ArrayList();
+            String ant = "";
+            if(jsonArray != null) {
+                for (int i = 0; i < jsonArray.length(); i++) {
+                try {
+                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                    String servicioId = jsonObject.getString("servicio_id");
+                    String servicioFecha = jsonObject.getString("servicio_fecha");
+                    Date date = format2.parse(servicioFecha);
+                    String servicioHora = jsonObject.getString("servicio_hora");
+                    String servicioCliente = jsonObject.getString("servicio_cliente");
+                    String servicioEstado = jsonObject.getString("servicio_estado");
+                    if (!servicioId.equals(ant)) {
+                        lista.add(servicioId + "%" + format2.format(date) + "%" + servicioHora + "%" + servicioCliente + "%" + servicioEstado);
+                    }
+                    ant = servicioId;
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                ant = servicioId;
-            } catch (Exception e) {
-                e.printStackTrace();
             }
         }
         if(lista.size() > 0 ) {

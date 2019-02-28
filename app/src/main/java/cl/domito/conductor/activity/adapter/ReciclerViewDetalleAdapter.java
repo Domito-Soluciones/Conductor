@@ -64,7 +64,13 @@ public class ReciclerViewDetalleAdapter extends RecyclerView.Adapter<ReciclerVie
             texto = Html.fromHtml(mDataset[i]);
         }
         String[] data = mDataset[i].split("%");
-        myViewHolder.imageViewLlamar.setTag(data[1]);
+        if(data[1].equals(""))
+        {
+            myViewHolder.imageViewLlamar.setVisibility(View.GONE);
+        }
+        else {
+            myViewHolder.imageViewLlamar.setTag(data[1]);
+        }
         myViewHolder.textViewNombre.setText(data[0]);
         myViewHolder.textViewDireccion.setText(data[2]);
     }

@@ -64,8 +64,12 @@ public class ConfiguracionActivity extends AppCompatActivity {
     private void seleccionarGMaps() {
         SharedPreferences pref = getApplicationContext().getSharedPreferences
                 ("preferencias", Context.MODE_PRIVATE);
+        ActivityUtils.guardarSharedPreferences(pref,"nav","waze");
+        Toast.makeText(this,"Navegación Waze seleccionada",Toast.LENGTH_LONG).show();
+        /*SharedPreferences pref = getApplicationContext().getSharedPreferences
+                ("preferencias", Context.MODE_PRIVATE);
         ActivityUtils.guardarSharedPreferences(pref,"nav","google");
-        Toast.makeText(this,"Navegación Google Maps seleccionada",Toast.LENGTH_LONG).show();
+        Toast.makeText(this,"Navegación Google Maps seleccionada",Toast.LENGTH_LONG).show();*/
     }
 
     private void seleccionarWaze() {

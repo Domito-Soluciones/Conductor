@@ -93,6 +93,15 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                 try {
                     int cantidad = 0;
                     ArrayList<String> lista = new ArrayList();
+                    if(conductor.getServicios() != null) {
+                        JSONObject primero =  conductor.getServicios().getJSONObject(0);
+                        String ruta = primero.getString("servicio_ruta").split("-")[1];
+                        if (ruta.equals("ZP")) {
+                            String cliente = primero.getString("servicio_cliente");
+                            String destino = primero.getString("servicio_cliente_direccion");
+                            lista.add(cliente + "%%" + destino);
+                        }
+                    }
                     for(int i =  0; i < conductor.getServicios().length();i++ ) {
                         JSONObject servicio = conductor.getServicios().getJSONObject(i);
                         if(servicio.getString("servicio_id").equals(getIntent().getExtras().getString("id"))) {
@@ -107,7 +116,17 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                             String nombre = servicio.getString("servicio_pasajero_nombre");
                             String celular = servicio.getString("servicio_pasajero_celular");
                             String destino = servicio.getString("servicio_destino");
-                            lista.add(nombre + "%"+celular + "%" + destino);
+                            String cliente = servicio.getString("servicio_cliente_direccion");
+                            lista.add(nombre + "%"+celular + "%" + destino ) ;
+                        }
+                    }
+                    if(conductor.getServicios() != null) {
+                        JSONObject ultimo =  conductor.getServicios().getJSONObject(conductor.getServicios().length()-1);
+                        String ruta = ultimo.getString("servicio_ruta").split("-")[1];
+                        if (ruta.equals("RG")) {
+                            String cliente = ultimo.getString("servicio_cliente");
+                            String destino = ultimo.getString("servicio_cliente_direccion");
+                            lista.add(cliente + "%%" + destino);
                         }
                     }
                     textviewCantidadValor.setText(cantidad+"");

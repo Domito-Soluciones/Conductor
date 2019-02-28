@@ -51,19 +51,20 @@ public class ServicioEspecialActivity extends AppCompatActivity {
         JSONArray jsonArray = Conductor.getInstance().getServiciosEspeciales();
         ArrayList<String> lista = new ArrayList();
         String ant = "";
-        for(int i = 0; i < jsonArray.length(); i++)
-        {
-            try {
-                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                String servicioId = jsonObject.getString("servicio_id");
-                String servicioPasajero = jsonObject.getString("servicio_pasajero");
-                String servicioFecha = jsonObject.getString("servicio_fecha");
-                String servicioEstado = jsonObject.getString("servicio_estado");
-                Date date = format1.parse(servicioFecha);
-                String servicioHora = jsonObject.getString("servicio_hora");
-                lista.add( servicioId + "%" + servicioPasajero + "%" + format2.format(date) +" "+ servicioHora + "%" + servicioEstado );
-            } catch (Exception e) {
-                e.printStackTrace();
+        if(jsonArray != null) {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                try {
+                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                    String servicioId = jsonObject.getString("servicio_id");
+                    String servicioPasajero = jsonObject.getString("servicio_pasajero");
+                    String servicioFecha = jsonObject.getString("servicio_fecha");
+                    String servicioEstado = jsonObject.getString("servicio_estado");
+                    Date date = format2.parse(servicioFecha);
+                    String servicioHora = jsonObject.getString("servicio_hora");
+                    lista.add(servicioId + "%" + servicioPasajero + "%" + format2.format(date) + " " + servicioHora + "%" + servicioEstado);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
         if(lista.size() > 0 ) {

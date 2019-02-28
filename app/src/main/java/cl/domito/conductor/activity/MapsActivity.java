@@ -125,7 +125,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             }
         });
 
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -135,6 +134,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
         mapFragment.getMapAsync(this);
         navigationView.setItemIconTintList(null);
+
 
     }
 
@@ -254,6 +254,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 .addConnectionCallbacks(this)
                 .addApi(LocationServices.API)
                 .build();
+
+        Conductor.getInstance().setGoogleApiClient(apiClient);
     }
 
     private void cambiarEstadoConductor() {
@@ -284,6 +286,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         mMap.setMyLocationEnabled(true);
         locationManager = (LocationManager) getApplicationContext().getSystemService(this.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1000, this);
+
         Location lastLocation =
                 LocationServices.FusedLocationApi.getLastLocation(apiClient);
         Conductor.getInstance().setLocation(lastLocation);
