@@ -13,7 +13,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,8 +24,8 @@ import cl.domito.conductor.dominio.Conductor;
 
 public class Utilidades {
 
-    public static String URL_BASE = "https://www.domito.cl/GpsVan/source/httprequest/";
-    //public static String URL_BASE = "http://192.168.43.136/GpsVan/source/httprequest/";
+    //public static String URL_BASE = "https://www.domito.cl/GpsVan/source/httprequest/";
+    public static String URL_BASE = "http://192.168.43.136/GpsVan/source/httprequest/";
     public static String URL_BASE_CLIENTE = URL_BASE +  "cliente/";
     public static String URL_BASE_CONDUCTOR = URL_BASE + "conductor/";
     public static String URL_BASE_ESTADISTICA = URL_BASE + "estaditica/";
@@ -43,7 +45,7 @@ public class Utilidades {
     public static int CANCELADO = 6;
 
 
-    public static JSONObject enviarPost(String urlDest,List<NameValuePair> params) {
+    public static JSONObject enviarPost(String urlDest,List<NameValuePair> params) throws IOException {
         JSONObject jsonObject = null;
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(urlDest);
@@ -74,6 +76,10 @@ public class Utilidades {
         catch (UnknownHostException e)
         {
             Conductor.getInstance().setConectado(false);
+        }
+        catch (IOException ioe)
+        {
+            throw new IOException(ioe.getMessage(), ioe);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -114,7 +120,7 @@ public class Utilidades {
             Conductor.getInstance().setConectado(false);
         }
         catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return  jsonArray;
     }

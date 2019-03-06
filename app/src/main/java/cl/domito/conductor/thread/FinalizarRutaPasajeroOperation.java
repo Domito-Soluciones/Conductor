@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,11 @@ public class FinalizarRutaPasajeroOperation extends AsyncTask<String, Void, Void
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("idServicio",conductor.getServicioActual()));
         params.add(new BasicNameValuePair("idPasajero",conductor.getPasajeroActual()));
-        Utilidades.enviarPost(url,params);
+        try {
+            Utilidades.enviarPost(url,params);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

@@ -84,7 +84,7 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
                 if (ruta.equals("ZP")) {
                     String cliente = primero.getString("servicio_cliente");
                     String destino = primero.getString("servicio_cliente_direccion");
-                    lista.add(cliente + "%%" + destino);
+                    lista.add(cliente + "%%" + destino + "%0");
                 }
             }
             catch (Exception e)
@@ -92,7 +92,7 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
                 e.printStackTrace();
             }
         }
-        for(int i =  0; i < conductor.getServicio().length();i++ ) {
+        for(int i =  0; i < conductor.getServicios().length();i++ ) {
             try {
                 JSONObject servicio = conductor.getServicios().getJSONObject(i);
                 if (servicio.getString("servicio_id").equals(idServicio)) {
@@ -112,7 +112,7 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
                 if (ruta.equals("RG")) {
                     String cliente = ultimo.getString("servicio_cliente");
                     String destino = ultimo.getString("servicio_cliente_direccion");
-                    lista.add(cliente + "%%" + destino);
+                    lista.add(cliente + "%%" + destino + "%0");
                 }
             }
             catch (Exception e)

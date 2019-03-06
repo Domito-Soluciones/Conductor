@@ -128,6 +128,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
 
     private void abrirActivity() {
         Intent dialogIntent = new Intent(this, MapsActivity.class);
+        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
         dialogIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(dialogIntent);
     }
@@ -161,6 +162,8 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
     }
 
     private void getUbicacion() throws InterruptedException {
+        CambiarUbicacionOperation cambiarUbicacionOperation = new CambiarUbicacionOperation();
+        cambiarUbicacionOperation.execute();
         GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)

@@ -17,6 +17,14 @@
             android:icon="@drawable/historial"
             android:title="Historial" />
         <item
+            android:id="@+id/produccion"
+            android:icon="@drawable/produccion"
+            android:title="Producción" />
+        <item
+            android:id="@+id/descuento"
+            android:icon="@drawable/descuento"
+            android:title="Descuentos" />
+        <item
             android:id="@+id/configuracion"
             android:icon="@drawable/configuracion"
             android:title="Configuración" />

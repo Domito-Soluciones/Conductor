@@ -13,6 +13,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,11 @@ public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, Void> {
 
         params.add(new BasicNameValuePair("id",textView.getText().toString()));
         params.add(new BasicNameValuePair("estado","1"));
-        Utilidades.enviarPost(url,params);
+        try {
+            Utilidades.enviarPost(url,params);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

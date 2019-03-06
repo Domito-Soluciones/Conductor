@@ -9,6 +9,7 @@ import android.widget.Toast;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +41,11 @@ public class DesAsignarServicioEspecialOperation extends AsyncTask<Void, Void, V
 
         params.add(new BasicNameValuePair("id",textView.getText().toString()));
         params.add(new BasicNameValuePair("estado","1"));
-        Utilidades.enviarPost(url,params);
+        try {
+            Utilidades.enviarPost(url,params);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

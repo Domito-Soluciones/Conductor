@@ -10,6 +10,7 @@ import android.widget.TextView;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +43,11 @@ public class LogoutOperation extends AsyncTask<String, Void, Void> {
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getId()));
         params.add(new BasicNameValuePair("estado","0"));
-        Utilidades.enviarPost(url,params);
+        try {
+            Utilidades.enviarPost(url,params);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 

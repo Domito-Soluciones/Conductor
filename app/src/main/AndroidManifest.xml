@@ -14,9 +14,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
         <activity
+            android:name=".activity.DescuentoActivity"
+            android:label="@string/title_activity_descuento"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
+            android:name=".activity.ProduccionActivity"
+            android:label="@string/title_activity_produccion"
+            android:theme="@style/NoActionBar" />
+        <activity
             android:name=".activity.ServicioEspecialActivity"
             android:label="@string/title_activity_servicio_especial"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".activity.ServicioDetalleActivity"
             android:label="@string/title_activity_servicio_detalle"

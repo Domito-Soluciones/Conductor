@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +20,11 @@ public class CambiarEstadoNotificacionOperation extends AsyncTask<String,Void,Vo
             String url = Utilidades.URL_BASE_NOTIFICACION + "ModEstadoNotificacion.php";
             List<NameValuePair> params = new ArrayList();
             params.add(new BasicNameValuePair("id", strings[0]));
-            Utilidades.enviarPost(url, params);
+            try {
+                Utilidades.enviarPost(url, params);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }

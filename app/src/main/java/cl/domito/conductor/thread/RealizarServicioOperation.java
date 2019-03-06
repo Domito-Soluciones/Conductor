@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.net.URLDecoder;
@@ -54,7 +55,11 @@ public class RealizarServicioOperation extends AsyncTask<Void, Void, Void> {
 
                 params.add(new BasicNameValuePair("id",textView.getText().toString()));
                 params.add(new BasicNameValuePair("estado","3"));
-                Utilidades.enviarPost(url,params);
+        try {
+            Utilidades.enviarPost(url,params);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         /*try {
             JSONArray servicio = Conductor.getInstance().getServicio();
             String url2 = Utilidades.URL_BASE_SERVICIO + "GetDetalleServicio.php";
