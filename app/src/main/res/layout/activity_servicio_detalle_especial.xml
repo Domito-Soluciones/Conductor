@@ -35,7 +35,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.34" />
+            app:layout_constraintVertical_bias="0.38" />
 
         <TextView
             android:id="@+id/textViewCelular"
@@ -52,7 +52,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.34" />
+            app:layout_constraintVertical_bias="0.38" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constrainLayoutTituloInt"
@@ -165,7 +165,7 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.37" />
+            app:layout_constraintVertical_bias="0.42" />
 
         <TextView
             android:id="@+id/textViewPartida"
@@ -183,7 +183,7 @@
             app:layout_constraintEnd_toEndOf="@+id/constrainLayoutTituloInt"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/constrainLayoutTituloInt"
-            app:layout_constraintVertical_bias="0.25" />
+            app:layout_constraintVertical_bias="0.26" />
 
         <TextView
             android:id="@+id/textViewDestino"
@@ -200,7 +200,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.28" />
+            app:layout_constraintVertical_bias="0.30" />
 
         <TextView
             android:id="@+id/textViewTarifa"
@@ -217,7 +217,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.40" />
+            app:layout_constraintVertical_bias="0.46" />
 
         <TextView
             android:id="@+id/textViewPasajero"
@@ -234,7 +234,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.31" />
+            app:layout_constraintVertical_bias="0.34" />
 
         <TextView
             android:id="@+id/textViewFechaValor"
@@ -250,7 +250,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.37" />
+            app:layout_constraintVertical_bias="0.42" />
 
         <TextView
             android:id="@+id/textViewPartidaValor"
@@ -267,7 +267,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.25" />
+            app:layout_constraintVertical_bias="0.26" />
 
         <TextView
             android:id="@+id/textViewDestinoValor"
@@ -283,7 +283,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.28" />
+            app:layout_constraintVertical_bias="0.30" />
 
         <TextView
             android:id="@+id/textViewTarifaValor"
@@ -299,7 +299,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.40" />
+            app:layout_constraintVertical_bias="0.46" />
 
         <TextView
             android:id="@+id/textViewPasajeroValor"
@@ -315,7 +315,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.31" />
+            app:layout_constraintVertical_bias="0.34" />
 
         <View
             android:id="@+id/view"
@@ -329,7 +329,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.53" />
+            app:layout_constraintVertical_bias="0.65999997" />
 
         <TextView
             android:id="@+id/textViewObservacion"
@@ -338,13 +338,13 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="250dp"
             android:paddingLeft="40dp"
-            android:text="Observaciones"
+            android:text="Observacion"
             android:textSize="@dimen/fab_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.43" />
+            app:layout_constraintVertical_bias="0.50" />
 
         <TextView
             android:id="@+id/textViewObservacionValor"
@@ -358,7 +358,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.45" />
+            app:layout_constraintVertical_bias="0.52" />
 
     </android.support.constraint.ConstraintLayout>
 
