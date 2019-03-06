@@ -12,6 +12,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -83,7 +84,11 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             List<NameValuePair> params2 = new ArrayList();
             params2.add(new BasicNameValuePair("conductor",Conductor.getInstance().getId()));
             params2.add(new BasicNameValuePair("estado","1"));
-            Utilidades.enviarPost(url2,params2);
+            try {
+                Utilidades.enviarPost(url2,params2);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             loginActivity.runOnUiThread(new Runnable() {
                 @Override

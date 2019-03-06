@@ -321,6 +321,14 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             Intent mainIntent = new Intent(this,ConfiguracionActivity.class);
             this.startActivity(mainIntent);
         }
+        if (id == R.id.produccion) {
+            Intent mainIntent = new Intent(this,ProduccionActivity.class);
+            this.startActivity(mainIntent);
+        }
+        if (id == R.id.descuento) {
+            Intent mainIntent = new Intent(this,DescuentoActivity.class);
+            this.startActivity(mainIntent);
+        }
         if (id == R.id.salir) {
             LogoutOperation logoutOperation = new LogoutOperation(this);
             logoutOperation.execute();

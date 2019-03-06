@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,11 @@ public class InsertarNavegacionOperation extends AsyncTask<Void, Void, Void> {
         params.add(new BasicNameValuePair("servicio",conductor.getServicioActual()));
         params.add(new BasicNameValuePair("lat",conductor.getLocation().getLatitude()+""));
         params.add(new BasicNameValuePair("lon",conductor.getLocation().getLatitude()+""));
-        Utilidades.enviarPost(url,params);
+        try {
+            Utilidades.enviarPost(url,params);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

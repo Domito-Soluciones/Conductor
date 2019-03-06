@@ -13,6 +13,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,13 +45,21 @@ public class CambiarEstadoOperation extends AsyncTask<Void, Void, Void> {
         if(conductor.getEstado() == 0)
         {
             params.add(new BasicNameValuePair("estado","1"));
-            jsonObject = Utilidades.enviarPost(url,params);
+            try {
+                jsonObject = Utilidades.enviarPost(url,params);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             conductor.setEstado(1);
         }
         else if(conductor.getEstado() == 1)
         {
             params.add(new BasicNameValuePair("estado","0"));
-            jsonObject = Utilidades.enviarPost(url,params);
+            try {
+                jsonObject = Utilidades.enviarPost(url,params);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             conductor.setEstado(0);
         }
         return null;

@@ -10,6 +10,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,7 @@ public class RequestConductor {
         return RESPUESTA;
     }
 
-    public static JSONObject obtenerServicioAsignado(String reqUrl, List<NameValuePair> params) {
+    public static JSONObject obtenerServicioAsignado(String reqUrl, List<NameValuePair> params) throws IOException {
         JSONObject jsonObject = null;
         if(Conductor.getInstance().isConectado()) {
             jsonObject = Utilidades.enviarPost(reqUrl,params);
