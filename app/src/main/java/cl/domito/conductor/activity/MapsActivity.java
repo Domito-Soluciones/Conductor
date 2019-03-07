@@ -105,6 +105,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         constraintLayoutEstado = findViewById(R.id.constrainLayoutEstado);
         constraintLayoutPasajero = findViewById(R.id.constraitLayoutPasajero);
 
+        Conductor.getInstance().setContext(getApplicationContext());
+
         if(savedInstanceState!=null)
         {
             ArrayList<String> lista = new ArrayList();

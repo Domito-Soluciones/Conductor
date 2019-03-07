@@ -48,6 +48,8 @@ public class ServicioActivity extends AppCompatActivity {
             constraintLayoutProgramado = findViewById(R.id.constrainLayoutProgramado);
             constraintLayoutDetalle = findViewById(R.id.constrainLayoutServicio);
             JSONArray jsonArray = Conductor.getInstance().getServicios();
+            Conductor.getInstance().setContext(getApplicationContext());
+
             ArrayList<String> lista = new ArrayList();
             String ant = "";
             if(jsonArray != null) {

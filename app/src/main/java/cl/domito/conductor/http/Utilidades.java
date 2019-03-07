@@ -20,6 +20,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 
 public class Utilidades {
@@ -46,6 +47,10 @@ public class Utilidades {
 
 
     public static JSONObject enviarPost(String urlDest,List<NameValuePair> params) throws IOException {
+        if(!ActivityUtils.checkNetworkAvailable(Conductor.getInstance().getContext()))
+        {
+            return null;
+        }
         JSONObject jsonObject = null;
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(urlDest);
@@ -71,11 +76,9 @@ public class Utilidades {
                 result.append(line);
             }
             jsonObject = new JSONObject(result.toString());
-            Conductor.getInstance().setConectado(true);
         }
         catch (UnknownHostException e)
         {
-            Conductor.getInstance().setConectado(false);
         }
         catch (IOException ioe)
         {
@@ -88,6 +91,10 @@ public class Utilidades {
     }
 
     public static JSONArray enviarPostArray(String urlDest, List<NameValuePair> params) {
+        if(!ActivityUtils.checkNetworkAvailable(Conductor.getInstance().getContext()))
+        {
+            return null;
+        }
         JSONArray jsonArray = null;
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(urlDest);
@@ -113,11 +120,9 @@ public class Utilidades {
                 result.append(line);
             }
             jsonArray = new JSONArray(result.toString());
-            Conductor.getInstance().setConectado(true);
         }
         catch (UnknownHostException e)
         {
-            Conductor.getInstance().setConectado(false);
         }
         catch (Exception e) {
             //e.printStackTrace();

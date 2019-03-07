@@ -38,6 +38,8 @@ public class ConfiguracionActivity extends AppCompatActivity {
         radioButtonGMaps = findViewById(R.id.radioButton);
         radioButtonWaze = findViewById(R.id.radioButton2);
 
+        Conductor.getInstance().setContext(getApplicationContext());
+
         imageViewAtras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

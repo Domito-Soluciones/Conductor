@@ -37,6 +37,8 @@ public class DescuentoActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        Conductor.getInstance().setContext(getApplicationContext());
+
         ObtenerDescuentoOperation obtenerDescuentoOperation = new ObtenerDescuentoOperation(this);
         obtenerDescuentoOperation.execute();
 

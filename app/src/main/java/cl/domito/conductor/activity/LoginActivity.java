@@ -37,6 +37,9 @@ public class LoginActivity extends AppCompatActivity {
         mEmailSignInButton = findViewById(R.id.login_button);
         checkBoxRec = findViewById(R.id.checkBox);
 
+        Conductor.getInstance().setContext(getApplicationContext());
+
+
         mUserView.setText(idConductor);
         mPasswordView.setText(clave);
         if(!idConductor.equals("") && !clave.equals(""))

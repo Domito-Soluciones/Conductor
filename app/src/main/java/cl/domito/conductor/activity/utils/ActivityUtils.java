@@ -15,6 +15,8 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.annotation.DrawableRes;
 import android.support.v4.app.ActivityCompat;
@@ -248,5 +250,24 @@ public class ActivityUtils {
         }
         Log.i ("isMyServiceRunning?", false+"");
         return false;
+    }
+
+    public static boolean checkNetworkAvailable(Context context) {
+        boolean networkStatus = false;
+        try{
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo netInfo = cm.getNetworkInfo(0);
+            if (netInfo != null && netInfo.getState()==NetworkInfo.State.CONNECTED) {
+                networkStatus = true;
+            }else {
+                netInfo = cm.getNetworkInfo(1);
+                if(netInfo!=null && netInfo.getState()==NetworkInfo.State.CONNECTED)
+                    networkStatus = true;
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+            networkStatus = false;
+        }
+        return networkStatus;
     }
 }

@@ -26,6 +26,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         this.getSupportActionBar().hide();
         View v = View.inflate(getApplicationContext(), R.layout.activity_splash, null);
+        Conductor.getInstance().setContext(getApplicationContext());
         setContentView(R.layout.activity_splash);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

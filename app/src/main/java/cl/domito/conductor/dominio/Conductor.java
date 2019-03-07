@@ -1,5 +1,6 @@
 package cl.domito.conductor.dominio;
 
+import android.content.Context;
 import android.location.Location;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -26,7 +27,6 @@ public class Conductor {
     private int estado;
     private boolean activo;
     private boolean recordarSession;
-    private boolean conectado;
     private List<LatLng> latLngs;
     private JSONArray servicios;
     private JSONArray serviciosEspeciales;
@@ -40,6 +40,7 @@ public class Conductor {
     private boolean navegando;
     private int cantidadPasajeros;
     private GoogleApiClient googleApiClient;
+    private Context context;
 
     public static synchronized Conductor getInstance(){
         if(instance == null){
@@ -126,13 +127,6 @@ public class Conductor {
 
     public void setRecordarSession(boolean recordarSession) {
         this.recordarSession = recordarSession;
-    }
-    public boolean isConectado() {
-        return conectado;
-    }
-
-    public void setConectado(boolean conectado) {
-        this.conectado = conectado;
     }
 
     public List<LatLng> getLatLngs() {
@@ -249,6 +243,14 @@ public class Conductor {
 
     public void setGoogleApiClient(GoogleApiClient googleApiClient) {
         this.googleApiClient = googleApiClient;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 }
 

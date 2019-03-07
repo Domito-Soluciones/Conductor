@@ -53,12 +53,10 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
 
     @Override
     protected String doInBackground(Object... objects) {
+        Conductor conductor = Conductor.getInstance();
         GoogleMap map = (GoogleMap) objects[0];
         String idServicio = (String) objects[1];
-        String url2 = Utilidades.URL_BASE_SERVICIO + "GetDetalleServicio.php";
-        List<NameValuePair> params2 = new ArrayList();
-        params2.add(new BasicNameValuePair("id", idServicio));
-        JSONArray route = RequestConductor.getRoute(url2,params2);
+        JSONArray route = RequestConductor.getRoute(idServicio);
         ActivityUtils.dibujarRuta(context.get(),map,route);
         RecyclerView recyclerView = context.get().findViewById(R.id.recyclerViewPasajero);
         final RecyclerView.LayoutManager[] layoutManager = new RecyclerView.LayoutManager[1];
@@ -71,12 +69,7 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
             }
         });
         ArrayList<String> lista = new ArrayList();
-        Conductor conductor = Conductor.getInstance();
-        String url3 = Utilidades.URL_BASE_SERVICIO + "GetServicioProgramado.php";
-        List<NameValuePair> params3 = new ArrayList();
-        params3.add(new BasicNameValuePair("id",idServicio));
-        params3.add(new BasicNameValuePair("conductor",Conductor.getInstance().getNick()));
-        conductor.setServicio(Utilidades.enviarPostArray(url3, params3));
+        RequestConductor.obtenerServicioProgramados(idServicio);
         if(conductor.getServicios() != null) {
             try {
                 JSONObject primero = conductor.getServicios().getJSONObject(0);

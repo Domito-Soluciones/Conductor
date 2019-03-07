@@ -49,28 +49,7 @@ public class RealizarServicioOperation extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        String url = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicio.php";
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        textView = context.get().findViewById(R.id.textViewIdServicioValor);
-
-                params.add(new BasicNameValuePair("id",textView.getText().toString()));
-                params.add(new BasicNameValuePair("estado","3"));
-        try {
-            Utilidades.enviarPost(url,params);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        /*try {
-            JSONArray servicio = Conductor.getInstance().getServicio();
-            String url2 = Utilidades.URL_BASE_SERVICIO + "GetDetalleServicio.php";
-            List<NameValuePair> params2 = new ArrayList();
-            params2.add(new BasicNameValuePair("id", ((JSONObject)servicio.get(0)).getString("servicio_id")));
-            JSONArray route = RequestConductor.getRoute(url2,params2);
-            ActivityUtils.dibujarRuta(context.get(),map,route);
-            //Conductor.getInstance().setServicio(null);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
+        RequestConductor.cambiarEstadoServicio(textView.getText().toString(),"3");
         return null;
     }
     @Override

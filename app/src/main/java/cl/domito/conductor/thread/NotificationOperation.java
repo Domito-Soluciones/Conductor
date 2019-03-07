@@ -23,6 +23,7 @@ import cl.domito.conductor.activity.ServicioActivity;
 import cl.domito.conductor.activity.ServicioEspecialActivity;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
+import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.http.Utilidades;
 
 public class NotificationOperation extends AsyncTask<String, Void, String[]> {
@@ -39,10 +40,7 @@ public class NotificationOperation extends AsyncTask<String, Void, String[]> {
     protected String[] doInBackground(String... strings) {
         String[] respuesta = new String[2];
         Conductor conductor = Conductor.getInstance();
-        String url = Utilidades.URL_BASE_NOTIFICACION + "GetNotificaciones.php";
-        List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("llave", Conductor.getInstance().getNick()));
-        JSONArray jsonArray = Utilidades.enviarPostArray(url, params);
+        JSONArray jsonArray = RequestConductor.obtenerNotificaciones();
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);

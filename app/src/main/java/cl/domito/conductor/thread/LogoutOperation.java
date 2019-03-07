@@ -20,6 +20,7 @@ import cl.domito.conductor.activity.LoginActivity;
 import cl.domito.conductor.activity.MapsActivity;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
+import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.http.Utilidades;
 import cl.domito.conductor.service.AsignacionServicioService;
 
@@ -39,15 +40,7 @@ public class LogoutOperation extends AsyncTask<String, Void, Void> {
         context.get().startActivity(mainIntent);
         context.get().finish();
         Conductor conductor = Conductor.getInstance();
-        String url = Utilidades.URL_BASE_MOVIL + "ModEstadoMovil.php";
-        List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getId()));
-        params.add(new BasicNameValuePair("estado","0"));
-        try {
-            Utilidades.enviarPost(url,params);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        RequestConductor.logOut();
         return null;
     }
 

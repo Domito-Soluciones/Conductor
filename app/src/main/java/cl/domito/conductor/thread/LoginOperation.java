@@ -48,18 +48,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
                 progressBar.setVisibility(ProgressBar.VISIBLE);
             }
         });
-        String url = Utilidades.URL_BASE_CONDUCTOR + "Login.php";
-        List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("usuario", strings[0]));
-        String password = null;
-        try {
-            byte[] data = strings[1].getBytes("UTF-8");
-            String base64 = android.util.Base64.encodeToString(data, android.util.Base64.NO_WRAP);
-            params.add(new BasicNameValuePair("password",base64));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        boolean login = RequestConductor.loginConductor(url,params);
+        boolean login = RequestConductor.loginConductor(strings[0],strings[1]);
         loginActivity.runOnUiThread(ActivityUtils.mensajeError(loginActivity));
         if (login) {
             conductor.setActivo(true);
@@ -80,15 +69,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             Intent mainIntent = new Intent(loginActivity, MapsActivity.class);
             loginActivity.startActivity(mainIntent);
             loginActivity.finish();
-            String url2 = Utilidades.URL_BASE_MOVIL + "ModEstadoMovil.php";
-            List<NameValuePair> params2 = new ArrayList();
-            params2.add(new BasicNameValuePair("conductor",Conductor.getInstance().getId()));
-            params2.add(new BasicNameValuePair("estado","1"));
-            try {
-                Utilidades.enviarPost(url2,params2);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            RequestConductor.cambiarEstadoMovil("1");
         } else {
             loginActivity.runOnUiThread(new Runnable() {
                 @Override

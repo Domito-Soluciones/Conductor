@@ -48,6 +48,9 @@ public class ServicioEspecialActivity extends AppCompatActivity {
         imageViewAtrasInt = findViewById(R.id.imageViewAtrasInt);
         constraintLayoutEspecial = findViewById(R.id.constrainLayoutEspecial);
         constraintLayoutDetalle = findViewById(R.id.constrainLayoutServicio);
+
+        Conductor.getInstance().setContext(getApplicationContext());
+
         JSONArray jsonArray = Conductor.getInstance().getServiciosEspeciales();
         ArrayList<String> lista = new ArrayList();
         String ant = "";

@@ -61,6 +61,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
         textviewTarifaValor = findViewById(R.id.textViewTarifaValor);
         textviewCantidadValor = findViewById(R.id.textViewCantidadValor);
         textviewObservacionValor = findViewById(R.id.textViewObservacionValor);
+        Conductor.getInstance().setContext(getApplicationContext());
 
         buttonConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override

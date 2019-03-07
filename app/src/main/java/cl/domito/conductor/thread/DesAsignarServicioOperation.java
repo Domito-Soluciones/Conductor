@@ -23,6 +23,7 @@ import cl.domito.conductor.activity.MapsActivity;
 import cl.domito.conductor.activity.ServicioActivity;
 import cl.domito.conductor.activity.ServicioDetalleActivity;
 import cl.domito.conductor.dominio.Conductor;
+import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.http.Utilidades;
 
 public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, Void> {
@@ -41,17 +42,8 @@ public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        String url = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicio.php";
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
         textView = context.get().findViewById(R.id.textViewIdServicioValor);
-
-        params.add(new BasicNameValuePair("id",textView.getText().toString()));
-        params.add(new BasicNameValuePair("estado","1"));
-        try {
-            Utilidades.enviarPost(url,params);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        RequestConductor.cambiarEstadoServicio(textView.getText().toString(),"1");
         return null;
     }
 

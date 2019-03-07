@@ -18,6 +18,7 @@ import cl.domito.conductor.R;
 import cl.domito.conductor.activity.ServicioActivity;
 import cl.domito.conductor.activity.ServicioDetalleActivity;
 import cl.domito.conductor.activity.ServicioDetalleEspecialActivity;
+import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.http.Utilidades;
 
 public class RealizarServicioEspecialOperation extends AsyncTask<Void, Void, Void> {
@@ -34,17 +35,7 @@ public class RealizarServicioEspecialOperation extends AsyncTask<Void, Void, Voi
 
     @Override
     protected Void doInBackground(Void... voids) {
-        String url = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicioEspecial.php";
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        textView = context.get().findViewById(R.id.textViewIdServicioValor);
-
-                params.add(new BasicNameValuePair("id",textView.getText().toString()));
-                params.add(new BasicNameValuePair("estado","3"));
-        try {
-            Utilidades.enviarPost(url,params);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        RequestConductor.cambiarEstadoServicioEspecial(textView.getText().toString(),"3");
         return null;
     }
     @Override
