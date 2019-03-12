@@ -191,7 +191,7 @@ public class ActivityUtils {
 
             ActivityCompat.requestPermissions(activity,
                     new String[]{Manifest.permission.CALL_PHONE},
-                    0);
+                    101);
             activity.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
 
         } else {

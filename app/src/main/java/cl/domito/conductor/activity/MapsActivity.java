@@ -278,13 +278,16 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     public void iniciarUbicacion(boolean updateUI)
     {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED)
-    {
-        ActivityCompat.requestPermissions(this, new String[]{
-                Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},0);
-        return;
-    }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION},100);
+            return;
+        }
+        else
+        {
+
+        }
         mMap.setMyLocationEnabled(true);
         locationManager = (LocationManager) getApplicationContext().getSystemService(this.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1000, this);
@@ -338,7 +341,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private void llamar()
     {
         String numero  = "";
-        //String numero = textViewCelularValor.getText().toString();
         if(numero.equals(""))
         {
             Toast.makeText(this,"No se suministro un número de telefono",Toast.LENGTH_LONG);
@@ -393,6 +395,36 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private void abrirVentanaUbicacion() {
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         this.startActivity(intent);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+                case 100: {
+
+                    if (grantResults.length == 0
+                            || grantResults[0] !=
+                            PackageManager.PERMISSION_GRANTED) {
+
+                        // aqui no
+                    } else {
+                        iniciarUbicacion(true);
+                    }
+                    return;
+                }
+                case 101:{
+                    if (grantResults.length == 0
+                            || grantResults[0] !=
+                            PackageManager.PERMISSION_GRANTED) {
+
+                        // aqui no
+                    } else {
+                        llamar();
+                    }
+                    return;
+                }
+        }
     }
 
 }

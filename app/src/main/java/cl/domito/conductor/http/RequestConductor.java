@@ -89,12 +89,13 @@ public class RequestConductor {
 
     public static void actualizarUbicacion(String reqUrl,Location lastLocation) {
         try {
-            List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("lat", lastLocation.getLatitude()+""));
-            params.add(new BasicNameValuePair("lon", lastLocation.getLongitude()+""));
-            params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getId()));
-            Utilidades.enviarPost(reqUrl,params);
-
+            if(lastLocation != null) {
+                List<NameValuePair> params = new ArrayList<NameValuePair>();
+                params.add(new BasicNameValuePair("lat", lastLocation.getLatitude() + ""));
+                params.add(new BasicNameValuePair("lon", lastLocation.getLongitude() + ""));
+                params.add(new BasicNameValuePair("conductor", Conductor.getInstance().getId()));
+                Utilidades.enviarPost(reqUrl, params);
+            }
         }
         catch(Exception e)
         {
