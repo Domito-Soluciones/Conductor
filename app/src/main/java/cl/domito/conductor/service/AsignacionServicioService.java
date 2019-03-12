@@ -171,26 +171,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
             }
             Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             if (mLastLocation != null) {
-                System.out.println("la wea esta wena");
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        Toast.makeText(AsignacionServicioService.this.getApplicationContext(),"la wea este wena",Toast.LENGTH_SHORT).show();
-                    }
-                });
                 Conductor.getInstance().setLocation(mLastLocation);
-            } else {
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        Toast.makeText(AsignacionServicioService.this.getApplicationContext(),"la wea este mala",Toast.LENGTH_SHORT).show();
-                    }
-                });
-                System.out.println("la wea esta mala");
             }
             mGoogleApiClient.disconnect();
         } catch (Exception e) {
