@@ -98,12 +98,12 @@
             android:text="Cancelar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/buttonConfirmar"
+            app:layout_constraintStart_toEndOf="@+id/buttonFinalizar"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
         <Button
-            android:id="@+id/buttonConfirmar"
+            android:id="@+id/buttonFinalizar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/estilo_boton"

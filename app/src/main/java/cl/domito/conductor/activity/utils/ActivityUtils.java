@@ -134,14 +134,14 @@ public class ActivityUtils {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                if(Conductor.getInstance().isConectado())
+                /*if(Conductor.getInstance().isConectado())
                 {
                     finalTextViewError.setVisibility(View.GONE);
                 }
                 else if(!Conductor.getInstance().isConectado())
                 {
                     finalTextViewError.setVisibility(View.VISIBLE);
-                }
+                }*/
             }
         };
         return runnable;
@@ -232,7 +232,7 @@ public class ActivityUtils {
             public void run() {
                 Polyline line = mMap.addPolyline(polylineOptions);
                 line.setColor(activity.getResources().getColor(R.color.colorLinea));
-                line.setWidth(30f);
+                line.setWidth(15f);
                 mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150),1000,null);
 
             }

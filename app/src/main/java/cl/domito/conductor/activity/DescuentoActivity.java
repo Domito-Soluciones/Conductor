@@ -30,9 +30,9 @@ public class DescuentoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_historico);
+        setContentView(R.layout.activity_descuento);
         imageViewAtras = findViewById(R.id.imageViewAtras);
-        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewHistorial);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerViewDescuento);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);

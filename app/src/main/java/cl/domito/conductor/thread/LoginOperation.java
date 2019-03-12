@@ -39,7 +39,6 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
     @Override
     protected Void doInBackground(String... strings) {
         Conductor conductor = Conductor.getInstance();
-        conductor.setConectado(true);
         LoginActivity loginActivity = context.get();
         ProgressBar progressBar = loginActivity.findViewById(R.id.login_progress);
         loginActivity.runOnUiThread(new Runnable() {

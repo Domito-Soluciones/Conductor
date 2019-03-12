@@ -130,7 +130,7 @@ public class RequestConductor {
 
     public static JSONObject cambiarEstadoServicio(String idServicio,String estado) {
         JSONObject jsonObject = null;
-        String url2 = Utilidades.URL_BASE_MOVIL + "ModEstadoServicio.php";
+        String url2 = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicio.php";
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("id",idServicio));
         params.add(new BasicNameValuePair("estado",estado));

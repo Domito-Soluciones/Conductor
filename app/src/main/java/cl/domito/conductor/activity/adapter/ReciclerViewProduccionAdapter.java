@@ -54,18 +54,7 @@ public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<Recicler
         View v = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.recycler_view_programado, viewGroup, false);
         MyViewHolder vh = new MyViewHolder(v);
-        vh.relativeLayout3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity, ServicioDetalleActivity.class);
-                intent.putExtra("fecha",vh.textViewFecha.getText().toString());
-                intent.putExtra("id",vh.textView.getText().toString());
-                activity.startActivity(intent);
-                activity.finish();
-            }
-        });
         return vh;
-
     }
 
     @Override
@@ -77,20 +66,10 @@ public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<Recicler
             texto = Html.fromHtml(mDataset[i]);
         }
         String[] data = mDataset[i].split("%");
-        String estado = data[4];
-        int color = 0;
-        Drawable imagen = null;
+        String fecha = data[0] + " " + data[1];
         Resources resources = myViewHolder.textView.getContext().getResources();
-        if(estado.equals("1"))
-        {
-            imagen = resources.getDrawable(R.drawable.confirmar);
-            color = resources.getColor(R.color.naranjo);
-        }
-        else if (estado.equals("3"))
-        {
-            imagen = resources.getDrawable(R.drawable.arriba);
-            color = resources.getColor(R.color.verde);
-        }
+        int color = resources.getColor(R.color.verde);
+        Drawable imagen = resources.getDrawable(R.drawable.arriba);
         Bundle bundle = activity.getIntent().getExtras();
         String intentId = null;
         String tipo = null;
@@ -98,26 +77,9 @@ public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<Recicler
             intentId = bundle.getString("idServicio");
             tipo = activity.getIntent().getExtras().getString("accion");
         }
-        if(intentId != null && intentId.equals(data[0]))
-        {
-            if(tipo.equals("0")) {
-                imagen = resources.getDrawable(R.drawable.arriba);
-                color = resources.getColor(R.color.verde);
-            }
-            else
-            {
-                imagen = resources.getDrawable(R.drawable.confirmar);
-                color = resources.getColor(R.color.naranjo);
-            }
-        }
         myViewHolder.imageView.setImageDrawable(imagen);
-        myViewHolder.textView.setText(data[0]);
-        myViewHolder.textView.setTextColor(color);
-        myViewHolder.textViewFecha.setText(data[1] + " " + data[2]);
-        myViewHolder.textViewCliente.setText(data[3]);
-
-
-
+        myViewHolder.textViewFecha.setText(fecha);
+        myViewHolder.textViewCliente.setText(data[2]);
     }
 
     @Override

@@ -81,34 +81,14 @@ public class ReciclerViewDescuentoAdapter extends RecyclerView.Adapter<ReciclerV
         int color = 0;
         Drawable imagen = null;
         Resources resources = myViewHolder.textView.getContext().getResources();
-        if(estado.equals("1"))
-        {
-            imagen = resources.getDrawable(R.drawable.confirmar);
-            color = resources.getColor(R.color.naranjo);
-        }
-        else if (estado.equals("3"))
-        {
-            imagen = resources.getDrawable(R.drawable.arriba);
-            color = resources.getColor(R.color.verde);
-        }
+        imagen = resources.getDrawable(R.drawable.arriba);
+        color = resources.getColor(R.color.verde);
         Bundle bundle = activity.getIntent().getExtras();
         String intentId = null;
         String tipo = null;
         if(bundle != null) {
             intentId = bundle.getString("idServicio");
             tipo = activity.getIntent().getExtras().getString("accion");
-        }
-        if(intentId != null && intentId.equals(data[0]))
-        {
-            if(tipo.equals("0")) {
-                imagen = resources.getDrawable(R.drawable.arriba);
-                color = resources.getColor(R.color.verde);
-            }
-            else
-            {
-                imagen = resources.getDrawable(R.drawable.confirmar);
-                color = resources.getColor(R.color.naranjo);
-            }
         }
         myViewHolder.imageView.setImageDrawable(imagen);
         myViewHolder.textView.setText(data[0]);

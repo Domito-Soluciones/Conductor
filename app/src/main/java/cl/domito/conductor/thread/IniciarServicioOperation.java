@@ -70,9 +70,9 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
         });
         ArrayList<String> lista = new ArrayList();
         RequestConductor.obtenerServicioProgramados(idServicio);
-        if(conductor.getServicios() != null) {
+        if(conductor.getServicio() != null) {
             try {
-                JSONObject primero = conductor.getServicios().getJSONObject(0);
+                JSONObject primero = conductor.getServicio().getJSONObject(0);
                 String ruta = primero.getString("servicio_ruta").split("-")[1];
                 if (ruta.equals("ZP")) {
                     String cliente = primero.getString("servicio_cliente");
@@ -85,9 +85,9 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
                 e.printStackTrace();
             }
         }
-        for(int i =  0; i < conductor.getServicios().length();i++ ) {
+        for(int i =  0; i < conductor.getServicio().length();i++ ) {
             try {
-                JSONObject servicio = conductor.getServicios().getJSONObject(i);
+                JSONObject servicio = conductor.getServicio().getJSONObject(i);
                 if (servicio.getString("servicio_id").equals(idServicio)) {
                     String id = servicio.getString("servicio_pasajero_id");
                     String nombre = servicio.getString("servicio_pasajero_nombre");
@@ -98,9 +98,9 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
             }
             catch(Exception e){e.printStackTrace();}
         }
-        if(conductor.getServicios() != null) {
+        if(conductor.getServicio() != null) {
             try {
-                JSONObject ultimo = conductor.getServicios().getJSONObject(conductor.getServicios().length() - 1);
+                JSONObject ultimo = conductor.getServicio().getJSONObject(conductor.getServicio().length() - 1);
                 String ruta = ultimo.getString("servicio_ruta").split("-")[1];
                 if (ruta.equals("RG")) {
                     String cliente = ultimo.getString("servicio_cliente");

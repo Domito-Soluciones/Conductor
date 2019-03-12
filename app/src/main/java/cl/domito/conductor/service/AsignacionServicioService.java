@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -23,20 +21,11 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
-import org.json.JSONObject;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import cl.domito.conductor.R;
 import cl.domito.conductor.activity.MapsActivity;
-import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.CambiarUbicacionOperation;
-import cl.domito.conductor.thread.FinalizarRutaPasajeroOperation;
 import cl.domito.conductor.thread.InsertarNavegacionOperation;
 import cl.domito.conductor.thread.NotificationOperation;
-import cl.domito.conductor.thread.ObtenerServicioEspecialOperation;
 import cl.domito.conductor.thread.ObtenerServicioOperation;
 
 public class AsignacionServicioService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -82,8 +71,6 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                         try {
                             ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
                             conductor.setServicios(obtenerServicioOperation.execute().get());
-                            ObtenerServicioEspecialOperation obtenerServicioEspecialOperation = new ObtenerServicioEspecialOperation();
-                            conductor.setServiciosEspeciales(obtenerServicioEspecialOperation.execute().get());
                             obtenerNotificacion();
                             getUbicacion();
                             //if (conductor.getLocation() != null) {

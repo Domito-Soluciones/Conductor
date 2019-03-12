@@ -2,38 +2,16 @@ package cl.domito.conductor.thread;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.constraint.ConstraintLayout;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.LatLngBounds;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.List;
 
 import cl.domito.conductor.R;
-import cl.domito.conductor.activity.MapsActivity;
 import cl.domito.conductor.activity.ServicioActivity;
 import cl.domito.conductor.activity.ServicioDetalleActivity;
-import cl.domito.conductor.activity.utils.ActivityUtils;
-import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
-import cl.domito.conductor.http.Utilidades;
-import cl.domito.conductor.service.AsignacionServicioService;
 
 public class RealizarServicioOperation extends AsyncTask<Void, Void, Void> {
 
@@ -44,7 +22,8 @@ public class RealizarServicioOperation extends AsyncTask<Void, Void, Void> {
 
     public RealizarServicioOperation(ServicioDetalleActivity activity) {
         context = new WeakReference<ServicioDetalleActivity>(activity);
-        buttonConfirmar = context.get().findViewById(R.id.buttonConfirmar);
+        buttonConfirmar = context.get().findViewById(R.id.buttonFinalizar);
+        textView = context.get().findViewById(R.id.textViewIdServicioValor);
     }
 
     @Override

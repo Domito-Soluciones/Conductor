@@ -10,6 +10,7 @@ import com.google.gson.JsonObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Conductor {
@@ -24,12 +25,12 @@ public class Conductor {
     private String direccion;
     private String servicioActual;
     private String pasajeroActual;
+    private List<String> listaDestinos = new ArrayList();
     private int estado;
     private boolean activo;
     private boolean recordarSession;
     private List<LatLng> latLngs;
     private JSONArray servicios;
-    private JSONArray serviciosEspeciales;
     private boolean ocupado;
     private Location location;
     private Location locationDestino;
@@ -141,16 +142,8 @@ public class Conductor {
         return servicios;
     }
 
-    public JSONArray getServiciosEspeciales() {
-        return serviciosEspeciales;
-    }
-
     public void setServicios(JSONArray servicios) {
         this.servicios = servicios;
-    }
-
-    public void setServiciosEspeciales(JSONArray serviciosEspeciales) {
-        this.serviciosEspeciales = serviciosEspeciales;
     }
 
     public void setOcupado(boolean ocupado) {
@@ -251,6 +244,14 @@ public class Conductor {
 
     public void setContext(Context context) {
         this.context = context;
+    }
+
+    public List<String> getListaDestinos() {
+        return listaDestinos;
+    }
+
+    public void setListaDestinos(List<String> listaDestinos) {
+        this.listaDestinos = listaDestinos;
     }
 }
 

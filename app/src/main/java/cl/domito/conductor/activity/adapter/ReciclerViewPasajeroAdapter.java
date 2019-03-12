@@ -23,6 +23,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,6 +31,8 @@ import java.sql.SQLOutput;
 import java.util.List;
 
 import cl.domito.conductor.R;
+import cl.domito.conductor.activity.FinServicioActivity;
+import cl.domito.conductor.activity.MapsActivity;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.CambiarEstadoServicioOperation;
@@ -55,7 +58,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
             imageViewLlamar = v.findViewById(R.id.imageView2);
             buttonIniciar = v.findViewById(R.id.imageButton);
             buttonCancelar = v.findViewById(R.id.imageButton2);
-            constraintLayoutPasajero = v.findViewById(R.id.constraitLayoutPasajero);
+            constraintLayoutPasajero = v.findViewById(R.id.constraintLayoutTVPasajero);
         }
     }
 
@@ -91,6 +94,11 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         {
             CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
             cambiarEstadoServicioOperation.execute(Conductor.getInstance().getServicioActual(),"5");
+            Intent intent = activity.getIntent();
+            activity.finish();
+            activity.startActivity(intent);
+            Intent mainIntent = new Intent(Conductor.getInstance().getContext(), FinServicioActivity.class);
+            activity.startActivity(mainIntent);
         }
         if(index == myViewHolder.getAdapterPosition())
         {
@@ -99,7 +107,8 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                    @Override
                     public void onClick(View v) {
                        navegar(myViewHolder.getAdapterPosition());
-                       if(Conductor.getInstance().getPasajeroActual() != null) {
+                       String pasajero = Conductor.getInstance().getPasajeroActual();
+                       if(pasajero != null) {
                            FinalizarRutaPasajeroOperation finalizarRutaPasajeroOperation = new FinalizarRutaPasajeroOperation();
                            finalizarRutaPasajeroOperation.execute();
                        }
@@ -125,7 +134,9 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         }
         else
         {
-            myViewHolder.buttonIniciar.setVisibility(View.GONE);
+            if(i < Conductor.getInstance().getIndiceViaje()) {
+                myViewHolder.constraintLayoutPasajero.setVisibility(View.GONE);
+            }
         }
 }
 
@@ -134,50 +145,35 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         return mDataset.length;
     }
 
-    private void navegar(int index)
-    {
+    private void navegar(int index) {
         Conductor conductor = Conductor.getInstance();
-        Conductor.getInstance().setNavegando(true);
-        Conductor.getInstance().setIndiceViaje(index+1);
-        SharedPreferences pref = activity.getApplicationContext().getSharedPreferences
-                ("preferencias", Context.MODE_PRIVATE);
-        String tipoNav = pref.getString("nav", "");
-        if(tipoNav.equals("") || tipoNav.equals("google")) {
+        conductor.setNavegando(true);
+        String destino = conductor.getListaDestinos().get(index);
+        conductor.setIndiceViaje(index + 1);
+        try {
+            Geocoder geocoder = new Geocoder(activity);
+            List<Address> addresses = geocoder.getFromLocationName(destino, 1);
             try {
-                JSONObject jsonObjectPartida = conductor.getServicio().getJSONObject(index);
-                String partida = jsonObjectPartida.getString("servicio_cliente_direccion");
-                String destino = jsonObjectPartida.getString("servicio_destino");
-                Uri gmmIntentUri = Uri.parse("https://www.google.com/maps/dir/?api=1&origin=" + partida + "&destination=" + destino + "&travelmode=driving&dir_action=navigate");
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                activity.startActivity(mapIntent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        else if(tipoNav.equals("waze")) {
-            try {
-                Geocoder geocoder = new Geocoder(activity);
-                List<Address> addresses;
-                JSONObject jsonObjectPartida = conductor.getServicio().getJSONObject(index);
-                String partida = jsonObjectPartida.getString("servicio_cliente_direccion");
-                String destino = jsonObjectPartida.getString("servicio_destino");
-                addresses = geocoder.getFromLocationName(destino, 1);
-                Location location = new Location("dummyprovider");
-                if (addresses.size() > 0) {
-                    location.setLatitude(addresses.get(0).getLatitude());
-                    location.setLongitude(addresses.get(0).getLongitude());
+                String uri = null;
+                SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
+                String tipoNav = pref.getString("nav", "");
+                if(tipoNav.equals("") || tipoNav.equals("google"))
+                {
+                    uri = "google.navigation:q="+addresses.get(0).getLatitude() + "," + addresses.get(0).getLongitude();
                 }
-                conductor.setLocationDestino(location);
-                String uri = "geo: " + conductor.getLocationDestino().getLatitude() + "," + String.valueOf(conductor.getLocationDestino().getLongitude());
+                else if(tipoNav.equals("waze"))
+                {
+                    uri = "geo: " + addresses.get(0).getLatitude() + "," + addresses.get(0).getLongitude();
+                }
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                 activity.startActivity(intent);
             } catch (ActivityNotFoundException ex) {
-                // If Waze is not installed, open it in Google Play:
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.waze"));
                 activity.startActivity(intent);
-            } catch (Exception e) {
             }
+        } catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 

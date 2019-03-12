@@ -17,8 +17,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.ServicioDetalleActivity;
+import cl.domito.conductor.dominio.Conductor;
 
 public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<ReciclerViewProgramadoAdapter.MyViewHolder> {
 
@@ -57,9 +61,28 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
         vh.relativeLayout3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                JSONArray servicio = new JSONArray();
+                Conductor conductor = Conductor.getInstance();
+                JSONArray servicios = conductor.getServicios();
+                for(int i = 0; i < servicios.length();i++)
+                {
+                    try {
+                        JSONObject servicioAux = conductor.getServicios().getJSONObject(i);
+                        String idServicio = vh.textView.getText().toString();
+                        String idAux = servicioAux.getString("servicio_id");
+                        if (idAux.equals(idServicio)) {
+                            servicio.put(servicioAux);
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+                conductor.setServicio(servicio);
                 Intent intent = new Intent(activity, ServicioDetalleActivity.class);
-                intent.putExtra("fecha",vh.textViewFecha.getText().toString());
-                intent.putExtra("id",vh.textView.getText().toString());
+                intent.putExtra("fecha", vh.textViewFecha.getText().toString());
+                intent.putExtra("id", vh.textView.getText().toString());
                 activity.startActivity(intent);
                 activity.finish();
             }

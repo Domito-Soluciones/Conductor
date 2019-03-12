@@ -5,26 +5,17 @@ import android.os.AsyncTask;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import cl.domito.conductor.R;
-import cl.domito.conductor.activity.MapsActivity;
 import cl.domito.conductor.activity.ServicioActivity;
-import cl.domito.conductor.activity.ServicioEspecialActivity;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
-import cl.domito.conductor.http.Utilidades;
 
 public class NotificationOperation extends AsyncTask<String, Void, String[]> {
 
@@ -60,10 +51,6 @@ public class NotificationOperation extends AsyncTask<String, Void, String[]> {
                     if(Math.abs(date.getTime() - dateNow.getTime()) < 1.8e+6) {
                         ActivityUtils.enviarNotificacion(context, "", jsonObject.getString("notificacion_texto"), R.drawable.furgoneta,ServicioActivity.class);
                     }
-                }
-                else if(tipo.equals("2"))
-                {
-                    ActivityUtils.enviarNotificacion(context, "", jsonObject.getString("notificacion_texto"), R.drawable.furgoneta, ServicioEspecialActivity.class);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

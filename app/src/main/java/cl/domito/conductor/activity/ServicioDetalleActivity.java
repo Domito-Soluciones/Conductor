@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -22,7 +21,6 @@ import cl.domito.conductor.R;
 import cl.domito.conductor.activity.adapter.ReciclerViewDetalleAdapter;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.DesAsignarServicioOperation;
-import cl.domito.conductor.thread.IniciarServicioOperation;
 import cl.domito.conductor.thread.RealizarServicioOperation;
 
 public class ServicioDetalleActivity extends AppCompatActivity {
@@ -52,7 +50,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
         layoutManagerDetalle = new LinearLayoutManager(this);
         recyclerViewDetalle.setLayoutManager(layoutManagerDetalle);
         imageViewAtrasInt = findViewById(R.id.imageViewAtrasInt);
-        buttonConfirmar = findViewById(R.id.buttonConfirmar);
+        buttonConfirmar = findViewById(R.id.buttonFinalizar);
         buttonCancelar = findViewById(R.id.buttonCancelar);
         textviewServicioValor = findViewById(R.id.textViewIdServicioValor);
         textviewFechaValor = findViewById(R.id.textViewFechaValor);
@@ -94,40 +92,42 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                 try {
                     int cantidad = 0;
                     ArrayList<String> lista = new ArrayList();
-                    if(conductor.getServicios() != null) {
-                        JSONObject primero =  conductor.getServicios().getJSONObject(0);
-                        String ruta = primero.getString("servicio_ruta").split("-")[1];
-                        if (ruta.equals("ZP")) {
+                if(conductor.getServicio() != null) {
+                    JSONObject primero =  conductor.getServicio().getJSONObject(0);
+                    String ruta = primero.getString("servicio_ruta").split("-")[1];
+                    if (ruta.equals("ZP")) {
                             String cliente = primero.getString("servicio_cliente");
                             String destino = primero.getString("servicio_cliente_direccion");
                             lista.add(cliente + "%%" + destino);
+                            conductor.getListaDestinos().add(destino);
+
                         }
                     }
-                    for(int i =  0; i < conductor.getServicios().length();i++ ) {
-                        JSONObject servicio = conductor.getServicios().getJSONObject(i);
-                        if(servicio.getString("servicio_id").equals(getIntent().getExtras().getString("id"))) {
-                            textviewServicioValor.setText(servicio.getString("servicio_id"));
-                            textviewFechaValor.setText(servicio.getString("servicio_fecha") + " " + servicio.getString("servicio_hora"));
-                            textviewClienteValor.setText(servicio.getString("servicio_cliente"));
-                            textviewRutaValor.setText(servicio.getString("servicio_ruta"));
-                            textviewTarifaValor.setText(servicio.getString("servicio_tarifa"));
-                            textviewObservacionValor.setText(servicio.getString("servicio_observacion").equals("")?"Sin observaciones":servicio.getString("servicio_observacion"));
-                            cantidad++;
-                            estado = servicio.getString("servicio_estado");
-                            String nombre = servicio.getString("servicio_pasajero_nombre");
-                            String celular = servicio.getString("servicio_pasajero_celular");
-                            String destino = servicio.getString("servicio_destino");
-                            String cliente = servicio.getString("servicio_cliente_direccion");
-                            lista.add(nombre + "%"+celular + "%" + destino ) ;
-                        }
+                    for(int i =  0; i < conductor.getServicio().length();i++ ) {
+                        JSONObject servicio = conductor.getServicio().getJSONObject(i);
+                        textviewServicioValor.setText(servicio.getString("servicio_id"));
+                        textviewFechaValor.setText(servicio.getString("servicio_fecha") + " " + servicio.getString("servicio_hora"));
+                        textviewClienteValor.setText(servicio.getString("servicio_cliente"));
+                        textviewRutaValor.setText(servicio.getString("servicio_ruta"));
+                        textviewTarifaValor.setText(servicio.getString("servicio_tarifa"));
+                        textviewObservacionValor.setText(servicio.getString("servicio_observacion").equals("")?"Sin observaciones":servicio.getString("servicio_observacion"));
+                        cantidad++;
+                        estado = servicio.getString("servicio_estado");
+                        String nombre = servicio.getString("servicio_pasajero_nombre");
+                        String celular = servicio.getString("servicio_pasajero_celular");
+                        String destino = servicio.getString("servicio_destino");
+                        String cliente = servicio.getString("servicio_cliente_direccion");
+                        lista.add(nombre + "%"+celular + "%" + destino ) ;
+                        conductor.getListaDestinos().add(destino);
                     }
-                    if(conductor.getServicios() != null) {
-                        JSONObject ultimo =  conductor.getServicios().getJSONObject(conductor.getServicios().length()-1);
+                    if(conductor.getServicio() != null) {
+                        JSONObject ultimo =  conductor.getServicio().getJSONObject(conductor.getServicio().length()-1);
                         String ruta = ultimo.getString("servicio_ruta").split("-")[1];
                         if (ruta.equals("RG")) {
                             String cliente = ultimo.getString("servicio_cliente");
                             String destino = ultimo.getString("servicio_cliente_direccion");
                             lista.add(cliente + "%%" + destino);
+                            conductor.getListaDestinos().add(destino);
                         }
                     }
                     textviewCantidadValor.setText(cantidad+"");
@@ -138,10 +138,6 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                         ReciclerViewDetalleAdapter mAdapter = new ReciclerViewDetalleAdapter(this,array);
                         recyclerViewDetalle.setAdapter(mAdapter);
                         conductor.setOcupado(true);
-                    }
-                    else
-                    {
-                        Toast.makeText(this,"No hay servicios en el historial",Toast.LENGTH_LONG).show();
                     }
                 }
                 catch (Exception e)

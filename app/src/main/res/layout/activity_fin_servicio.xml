@@ -5,7 +5,7 @@
     android:id="@+id/coordinatorLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.ServicioDetalleActivity">
+    tools:context=".activity.FinServicioActivity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constrainLayoutServicio"
@@ -19,7 +19,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.51">
+        app:layout_constraintVertical_bias="0.0">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constrainLayoutTituloInt"
@@ -27,18 +27,16 @@
             android:layout_height="wrap_content"
             android:background="@color/fondo_menu"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/textViewIdServicio"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/textViewTituloInt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/fondo_menu"
-                android:text="Detalle Servicio"
+                android:text="Fin Servicio"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +44,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/imageViewAtrasInt"
+                android:id="@+id/imageViewAtras"
                 android:layout_width="40dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/atras"
@@ -58,63 +56,16 @@
         </android.support.constraint.ConstraintLayout>
 
         <Button
-            android:id="@+id/buttonCancelar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/estilo_boton"
-            android:text="Cancelar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/buttonFinalizar"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <Button
             android:id="@+id/buttonFinalizar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/estilo_boton"
-            android:text="Aceptar"
+            android:text="Finalizar"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/buttonCancelar"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
-
-        <TextView
-            android:id="@+id/textViewIdServicio"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="250dp"
-            android:background="@drawable/estilo_textview"
-            android:gravity="left"
-            android:paddingLeft="@dimen/height_icon"
-            android:text="ID"
-            android:textSize="@dimen/fab_margin"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.13" />
-
-        <TextView
-            android:id="@+id/textViewIdServicioValor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="165dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/estilo_textview"
-            android:gravity="left"
-            android:paddingLeft="@dimen/height_icon"
-            android:textSize="@dimen/fab_margin"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.13" />
 
         <TextView
             android:id="@+id/textViewFecha"
@@ -126,13 +77,14 @@
             android:gravity="left"
             android:paddingLeft="@dimen/height_icon"
             android:text="Fecha"
-            android:textSize="@dimen/fab_margin"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.19" />
+            app:layout_constraintVertical_bias="0.36" />
 
         <TextView
             android:id="@+id/textViewCliente"
@@ -144,30 +96,14 @@
             android:gravity="left"
             android:paddingLeft="@dimen/height_icon"
             android:text="Cliente"
-            android:textSize="@dimen/fab_margin"
+            android:textSize="24sp"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/constrainLayoutTituloInt"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/constrainLayoutTituloInt"
-            app:layout_constraintVertical_bias="0.16000003" />
-
-        <TextView
-            android:id="@+id/textViewRuta"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="250dp"
-            android:background="@drawable/estilo_textview"
-            android:gravity="left"
-            android:paddingLeft="@dimen/height_icon"
-            android:text="Ruta"
-            android:textSize="@dimen/fab_margin"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.22" />
+            app:layout_constraintVertical_bias="0.3" />
 
         <TextView
             android:id="@+id/textViewTarifa"
@@ -179,29 +115,13 @@
             android:gravity="left"
             android:paddingLeft="@dimen/height_icon"
             android:text="Tarifa"
-            android:textSize="@dimen/fab_margin"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.25" />
-
-        <TextView
-            android:id="@+id/textViewCantidad"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="250dp"
-            android:background="@drawable/estilo_textview"
-            android:gravity="left"
-            android:paddingLeft="@dimen/height_icon"
-            android:text="Pasajeros"
-            android:textSize="@dimen/fab_margin"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.28" />
+            app:layout_constraintVertical_bias="0.42000002" />
 
         <TextView
             android:id="@+id/textViewFechaValor"
@@ -212,12 +132,13 @@
             android:background="@drawable/estilo_textview"
             android:gravity="left"
             android:paddingLeft="@dimen/height_icon"
-            android:textSize="@dimen/fab_margin"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.19" />
+            app:layout_constraintVertical_bias="0.36" />
 
         <TextView
             android:id="@+id/textViewClienteValor"
@@ -228,29 +149,13 @@
             android:background="@drawable/estilo_textview"
             android:gravity="left"
             android:paddingLeft="@dimen/height_icon"
-            android:textSize="@dimen/fab_margin"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.16" />
-
-        <TextView
-            android:id="@+id/textViewRutaValor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="165dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/estilo_textview"
-            android:gravity="left"
-            android:paddingLeft="@dimen/height_icon"
-            android:textSize="@dimen/fab_margin"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.22" />
+            app:layout_constraintVertical_bias="0.3" />
 
         <TextView
             android:id="@+id/textViewTarifaValor"
@@ -261,28 +166,13 @@
             android:background="@drawable/estilo_textview"
             android:gravity="left"
             android:paddingLeft="@dimen/height_icon"
-            android:textSize="@dimen/fab_margin"
+            android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.25" />
-
-        <TextView
-            android:id="@+id/textViewCantidadValor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="165dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/estilo_textview"
-            android:gravity="left"
-            android:paddingLeft="@dimen/height_icon"
-            android:textSize="@dimen/fab_margin"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.28" />
+            app:layout_constraintVertical_bias="0.42" />
 
         <View
             android:id="@+id/view"
@@ -296,48 +186,38 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.38" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewDetalle"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/buttonFinalizar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintVertical_bias="0.57" />
 
         <TextView
-            android:id="@+id/textViewObservacion"
-            android:layout_width="0dp"
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="250dp"
-            android:paddingLeft="40dp"
-            android:text="Observaciones"
-            android:textSize="@dimen/fab_margin"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="Servicio Finalizado"
+            android:textSize="@dimen/ancho_menu"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.31" />
+            app:layout_constraintVertical_bias="0.13999999" />
 
         <TextView
-            android:id="@+id/textViewObservacionValor"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="165dp"
+            android:id="@+id/textViewIdServicio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:paddingLeft="40dp"
+            android:layout_marginBottom="8dp"
             android:textSize="@dimen/fab_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.32" />
+            app:layout_constraintVertical_bias="0.19" />
 
     </android.support.constraint.ConstraintLayout>
 

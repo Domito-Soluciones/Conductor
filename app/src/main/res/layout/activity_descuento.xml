@@ -35,7 +35,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
-                android:text="Descuento"
+                android:text="Peoducción"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -57,7 +57,7 @@
 
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerView"
+            android:id="@+id/recyclerViewDescuento"
             android:layout_width="414dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"

@@ -119,6 +119,7 @@ public class Utilidades {
             while ((line = rd.readLine()) != null) {
                 result.append(line);
             }
+            System.out.println(result.toString());
             jsonArray = new JSONArray(result.toString());
         }
         catch (UnknownHostException e)
