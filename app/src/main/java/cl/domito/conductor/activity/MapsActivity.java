@@ -340,7 +340,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     private void llamar()
     {
-        String numero  = "";
+        //String numero  = "";
+        String numero = textViewCelularValor.getText().toString();
         if(numero.equals(""))
         {
             Toast.makeText(this,"No se suministro un número de telefono",Toast.LENGTH_LONG);
@@ -410,17 +411,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                         // aqui no
                     } else {
                         iniciarUbicacion(true);
-                    }
-                    return;
-                }
-                case 101:{
-                    if (grantResults.length == 0
-                            || grantResults[0] !=
-                            PackageManager.PERMISSION_GRANTED) {
-
-                        // aqui no
-                    } else {
-                        llamar();
                     }
                     return;
                 }
