@@ -20,6 +20,7 @@ import java.util.Date;
 
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.adapter.ReciclerViewDetalleAdapter;
+import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.DesAsignarServicioOperation;
 import cl.domito.conductor.thread.RealizarServicioOperation;
@@ -90,70 +91,65 @@ public class ServicioDetalleActivity extends AppCompatActivity {
             Long data = Math.abs(lNow - l);
             //if (data <= 600000) {
             Conductor conductor = Conductor.getInstance();
-                try {
-                    int cantidad = 0;
-                    ArrayList<String> lista = new ArrayList();
-                if(conductor.getServicio() != null) {
-                    JSONObject primero =  conductor.getServicio().getJSONObject(0);
+            try {
+                int cantidad = 0;
+                ArrayList<String> lista = new ArrayList();
+                if (conductor.getServicio() != null) {
+                    JSONObject primero = conductor.getServicio().getJSONObject(0);
                     String ruta = primero.getString("servicio_ruta").split("-")[1];
                     if (ruta.equals("ZP")) {
-                            String cliente = primero.getString("servicio_cliente");
-                            String destino = primero.getString("servicio_cliente_direccion");
-                            lista.add(cliente + "%%" + destino);
-                            conductor.getListaDestinos().add(destino);
+                        String cliente = primero.getString("servicio_cliente");
+                        String destino = primero.getString("servicio_cliente_direccion");
+                        lista.add(cliente + "%%" + destino);
+                        conductor.getListaDestinos().add(destino);
 
-                        }
                     }
-                    for(int i =  0; i < conductor.getServicio().length();i++ ) {
-                        JSONObject servicio = conductor.getServicio().getJSONObject(i);
-                        textviewServicioValor.setText(servicio.getString("servicio_id"));
-                        textviewFechaValor.setText(servicio.getString("servicio_fecha") + " " + servicio.getString("servicio_hora"));
-                        textviewClienteValor.setText(servicio.getString("servicio_cliente"));
-                        textviewRutaValor.setText(servicio.getString("servicio_ruta"));
-                        textviewTarifaValor.setText(servicio.getString("servicio_tarifa"));
-                        textviewObservacionValor.setText(servicio.getString("servicio_observacion").equals("")?"Sin observaciones":servicio.getString("servicio_observacion"));
-                        cantidad++;
-                        estado = servicio.getString("servicio_estado");
-                        String nombre = servicio.getString("servicio_pasajero_nombre");
-                        String celular = servicio.getString("servicio_pasajero_celular");
-                        String destino = servicio.getString("servicio_destino");
-                        String cliente = servicio.getString("servicio_cliente_direccion");
-                        lista.add(nombre + "%"+celular + "%" + destino ) ;
+                }
+                for (int i = 0; i < conductor.getServicio().length(); i++) {
+                    JSONObject servicio = conductor.getServicio().getJSONObject(i);
+                    textviewServicioValor.setText(servicio.getString("servicio_id"));
+                    textviewFechaValor.setText(servicio.getString("servicio_fecha") + " " + servicio.getString("servicio_hora"));
+                    textviewClienteValor.setText(servicio.getString("servicio_cliente"));
+                    textviewRutaValor.setText(servicio.getString("servicio_ruta"));
+                    textviewTarifaValor.setText(servicio.getString("servicio_tarifa"));
+                    textviewObservacionValor.setText(servicio.getString("servicio_observacion").equals("") ? "Sin observaciones" : servicio.getString("servicio_observacion"));
+                    cantidad++;
+                    estado = servicio.getString("servicio_estado");
+                    String nombre = servicio.getString("servicio_pasajero_nombre");
+                    String celular = servicio.getString("servicio_pasajero_celular");
+                    String destino = servicio.getString("servicio_destino");
+                    String cliente = servicio.getString("servicio_cliente_direccion");
+                    lista.add(nombre + "%" + celular + "%" + destino);
+                    conductor.getListaDestinos().add(destino);
+                }
+                if (conductor.getServicio() != null) {
+                    JSONObject ultimo = conductor.getServicio().getJSONObject(conductor.getServicio().length() - 1);
+                    String ruta = ultimo.getString("servicio_ruta").split("-")[1];
+                    if (ruta.equals("RG")) {
+                        String cliente = ultimo.getString("servicio_cliente");
+                        String destino = ultimo.getString("servicio_cliente_direccion");
+                        lista.add(cliente + "%%" + destino);
                         conductor.getListaDestinos().add(destino);
                     }
-                    if(conductor.getServicio() != null) {
-                        JSONObject ultimo =  conductor.getServicio().getJSONObject(conductor.getServicio().length()-1);
-                        String ruta = ultimo.getString("servicio_ruta").split("-")[1];
-                        if (ruta.equals("RG")) {
-                            String cliente = ultimo.getString("servicio_cliente");
-                            String destino = ultimo.getString("servicio_cliente_direccion");
-                            lista.add(cliente + "%%" + destino);
-                            conductor.getListaDestinos().add(destino);
-                        }
-                    }
-                    textviewCantidadValor.setText(cantidad+"");
-                    Conductor.getInstance().setCantidadPasajeros(cantidad);
-                    if(lista.size() > 0 ) {
-                        String[] array = new String[lista.size()];
-                        array  = lista.toArray(array);
-                        ReciclerViewDetalleAdapter mAdapter = new ReciclerViewDetalleAdapter(this,array);
-                        recyclerViewDetalle.setAdapter(mAdapter);
-                        conductor.setOcupado(true);
-                    }
                 }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
+                textviewCantidadValor.setText(cantidad + "");
+                Conductor.getInstance().setCantidadPasajeros(cantidad);
+                if (lista.size() > 0) {
+                    String[] array = new String[lista.size()];
+                    array = lista.toArray(array);
+                    ReciclerViewDetalleAdapter mAdapter = new ReciclerViewDetalleAdapter(this, array);
+                    recyclerViewDetalle.setAdapter(mAdapter);
+                    conductor.setOcupado(true);
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
-                if(estado.equals("1"))
-                {
-                    buttonConfirmar.setText("Aceptar");
-                }
-                else if(estado.equals("3"))
-                {
-                    buttonConfirmar.setText("Iniciar");
-                }
+            if (estado.equals("1")) {
+                buttonConfirmar.setText("Aceptar");
+            } else if (estado.equals("3")) {
+                buttonConfirmar.setText("Iniciar");
+            }
             conductor.setServicioActual(null);
             //activity.finish();
             //} else {
@@ -172,20 +168,17 @@ public class ServicioDetalleActivity extends AppCompatActivity {
         });
     }
 
-    private void volver()
-    {
+    private void volver() {
         this.finish();
-        Intent intent = new Intent(this,ServicioActivity.class);
+        Intent intent = new Intent(this, ServicioActivity.class);
         startActivity(intent);
     }
 
     private void aceptarServicio() {
-        if(estado.equals("1")) {
+        if (estado.equals("1")) {
             RealizarServicioOperation realizarServicioOperation = new RealizarServicioOperation(this);
             realizarServicioOperation.execute();
-        }
-        else if(estado.equals("3"))
-        {
+        } else if (estado.equals("3")) {
             try {
                 TextView textView = findViewById(R.id.textViewFechaValor);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -198,14 +191,11 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     Conductor.getInstance().setServicioActual(textviewServicioValor.getText().toString());
                     Conductor.getInstance().setServicioAceptado(true);
                     this.finish();
-                }
-                else {
+                } else {
                     Toast.makeText(getApplicationContext(),
                             "Falta mas de 30 minutos para el inicio del servicio", Toast.LENGTH_LONG).show();
                 }
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -221,20 +211,26 @@ public class ServicioDetalleActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
-            case 101:{
+            case 101: {
                 if (grantResults.length == 0
                         || grantResults[0] !=
                         PackageManager.PERMISSION_GRANTED) {
 
                     // aqui no
                 } else {
-                    llamar();
+
                 }
                 return;
             }
         }
+    }
 
-
-
+    private void llamar(String numero) {
+        if (numero.equals("")) {
+            Toast.makeText(this, "No se suministro un número de telefono", Toast.LENGTH_LONG);
+        } else {
+            ActivityUtils.llamar(this, numero);
+        }
+    }
 
 }

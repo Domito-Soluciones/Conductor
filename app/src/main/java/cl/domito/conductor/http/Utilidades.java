@@ -25,8 +25,8 @@ import cl.domito.conductor.dominio.Conductor;
 
 public class Utilidades {
 
-    public static String URL_BASE = "https://www.domito.cl/GpsVan/source/httprequest/";
-    //public static String URL_BASE = "http://192.168.43.136/GpsVan/source/httprequest/";
+    //public static String URL_BASE = "https://www.domito.cl/GpsVan/source/httprequest/";
+    public static String URL_BASE = "http://192.168.43.136/GpsVan/source/httprequest/";
     public static String URL_BASE_CLIENTE = URL_BASE +  "cliente/";
     public static String URL_BASE_CONDUCTOR = URL_BASE + "conductor/";
     public static String URL_BASE_ESTADISTICA = URL_BASE + "estaditica/";
@@ -42,20 +42,20 @@ public class Utilidades {
     public static int ASIGNADO = 2;
     public static int ACEPTADO = 3;
     public static int EN_PROGRESO = 4;
-    public static int FINALIZADO = 5;
-    public static int CANCELADO = 6;
+        public static int FINALIZADO = 5;
+        public static int CANCELADO = 6;
 
 
-    public static JSONObject enviarPost(String urlDest,List<NameValuePair> params) throws IOException {
-        if(!ActivityUtils.checkNetworkAvailable(Conductor.getInstance().getContext()))
-        {
-            return null;
-        }
-        JSONObject jsonObject = null;
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpPost post = new HttpPost(urlDest);
-        post.setHeader("User-Agent", "");
-        post.addHeader("Referer", "app-cliente");
+        public static JSONObject enviarPost(String urlDest,List<NameValuePair> params) throws IOException {
+            if(!ActivityUtils.checkNetworkAvailable(Conductor.getInstance().getContext()))
+            {
+                return null;
+            }
+            JSONObject jsonObject = null;
+            HttpClient client = HttpClientBuilder.create().build();
+            HttpPost post = new HttpPost(urlDest);
+            post.setHeader("User-Agent", "");
+            post.addHeader("Referer", "app-cliente");
         try {
             if(params != null) {
                 params.add(new BasicNameValuePair("app","app"));

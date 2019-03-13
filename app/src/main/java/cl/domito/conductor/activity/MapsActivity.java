@@ -2,26 +2,17 @@ package cl.domito.conductor.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.location.Address;
-import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,17 +23,12 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -311,23 +297,23 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     private boolean getMenuContextual(MenuItem menuItem) {
         int id = menuItem.getItemId();
         if (id == R.id.servicio) {
-            Intent mainIntent = new Intent(this,ServicioActivity.class);
+            Intent mainIntent = new Intent(this, ServicioActivity.class);
             this.startActivity(mainIntent);
         }
         if (id == R.id.historico) {
-            Intent mainIntent = new Intent(this,HistoricoActivity.class);
+            Intent mainIntent = new Intent(this, HistoricoActivity.class);
             this.startActivity(mainIntent);
         }
         if (id == R.id.configuracion) {
-            Intent mainIntent = new Intent(this,ConfiguracionActivity.class);
+            Intent mainIntent = new Intent(this, ConfiguracionActivity.class);
             this.startActivity(mainIntent);
         }
         if (id == R.id.produccion) {
-            Intent mainIntent = new Intent(this,ProduccionActivity.class);
+            Intent mainIntent = new Intent(this, ProduccionActivity.class);
             this.startActivity(mainIntent);
         }
         if (id == R.id.descuento) {
-            Intent mainIntent = new Intent(this,DescuentoActivity.class);
+            Intent mainIntent = new Intent(this, DescuentoActivity.class);
             this.startActivity(mainIntent);
         }
         if (id == R.id.salir) {
@@ -336,19 +322,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void llamar()
-    {
-        //String numero  = "";
-        String numero = textViewCelularValor.getText().toString();
-        if(numero.equals(""))
-        {
-            Toast.makeText(this,"No se suministro un número de telefono",Toast.LENGTH_LONG);
-        }
-        else {
-            ActivityUtils.llamar(this, numero);
-        }
     }
 
     private void notificar(String titulo,String valor)

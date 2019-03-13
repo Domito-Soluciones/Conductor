@@ -36,6 +36,7 @@ import cl.domito.conductor.activity.MapsActivity;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.CambiarEstadoServicioOperation;
+import cl.domito.conductor.thread.CancelarRutaPasajeroOperation;
 import cl.domito.conductor.thread.FinalizarRutaPasajeroOperation;
 
 public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerViewPasajeroAdapter.MyViewHolder> {
@@ -128,7 +129,10 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
             myViewHolder.buttonCancelar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    myViewHolder.constraintLayoutPasajero.setVisibility(View.GONE);
+                    Conductor.getInstance().setPasajeroActual(data[3]);
+                    CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
+                    cancelarRutaPasajeroOperation.execute();
                 }
             });
         }

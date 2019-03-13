@@ -185,18 +185,12 @@ public class ActivityUtils {
     public static void llamar(Activity activity,String numero)
     {
         String dial = numero;
-        if (ContextCompat.checkSelfPermission(activity,
-                Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(activity,
-                    new String[]{Manifest.permission.CALL_PHONE},
-                    101);
-            activity.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CALL_PHONE}, 101);
+            return;
 
         } else {
             activity.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
-            //requestPermissions(new String[]{CALL_PHONE}, 1);
         }
 
     }

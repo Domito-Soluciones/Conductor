@@ -144,12 +144,13 @@ public class RequestConductor {
     }
 
 
-    public static void finalizarservicio() {
+    public static void finalizarServicio(String estado) {
         Conductor conductor = Conductor.getInstance();
         String url = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicioPasajero.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("idServicio",conductor.getServicioActual()));
         params.add(new BasicNameValuePair("idPasajero",conductor.getPasajeroActual()));
+        params.add(new BasicNameValuePair("estado",estado));
         try {
             Utilidades.enviarPost(url,params);
         } catch (IOException e) {

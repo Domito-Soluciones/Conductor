@@ -68,7 +68,6 @@ public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<Recicler
         String[] data = mDataset[i].split("%");
         String fecha = data[0] + " " + data[1];
         Resources resources = myViewHolder.textView.getContext().getResources();
-        int color = resources.getColor(R.color.verde);
         Drawable imagen = resources.getDrawable(R.drawable.arriba);
         Bundle bundle = activity.getIntent().getExtras();
         String intentId = null;
