@@ -92,8 +92,15 @@ public class ServicioActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Conductor.getInstance().setVolver(true);
+        super.onBackPressed();
+    }
+
     private void volver()
     {
+        Conductor.getInstance().setVolver(true);
         this.finish();
     }
 

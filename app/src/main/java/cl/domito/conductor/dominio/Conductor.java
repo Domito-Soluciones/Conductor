@@ -42,6 +42,7 @@ public class Conductor {
     private int cantidadPasajeros;
     private GoogleApiClient googleApiClient;
     private Context context;
+    private boolean volver;
 
     public static synchronized Conductor getInstance(){
         if(instance == null){
@@ -252,6 +253,14 @@ public class Conductor {
 
     public void setListaDestinos(List<String> listaDestinos) {
         this.listaDestinos = listaDestinos;
+    }
+
+    public boolean isVolver() {
+        return volver;
+    }
+
+    public void setVolver(boolean volver) {
+        this.volver = volver;
     }
 }
 

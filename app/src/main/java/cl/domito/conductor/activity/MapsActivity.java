@@ -29,6 +29,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -37,34 +38,18 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.gson.JsonObject;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.List;
 
 import cl.domito.conductor.R;
-import cl.domito.conductor.activity.adapter.ReciclerViewPasajeroAdapter;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
-import cl.domito.conductor.http.Utilidades;
 import cl.domito.conductor.service.AsignacionServicioService;
 import cl.domito.conductor.thread.CambiarEstadoOperation;
-import cl.domito.conductor.thread.CambiarUbicacionOperation;
 import cl.domito.conductor.thread.DatosConductorOperation;
-import cl.domito.conductor.thread.DesAsignarServicioOperation;
 import cl.domito.conductor.thread.IniciarServicioOperation;
-import cl.domito.conductor.thread.InsertarNavegacionOperation;
 import cl.domito.conductor.thread.LogoutOperation;
 import cl.domito.conductor.thread.NotificationOperation;
-import cl.domito.conductor.thread.RealizarServicioOperation;
-
 
 public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback,GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,LocationListener
 {
@@ -128,10 +113,14 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     @Override
     protected void onResume() {
+        Conductor conductor = Conductor.getInstance();
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 broadcastReceiver, new IntentFilter("custom-event-name"));
+        if(conductor.isVolver()) {
+            abrirMenuContextual();
+            conductor.setVolver(false);
+        }
         super.onResume();
-        Conductor conductor = Conductor.getInstance();
         if(conductor.isServicioAceptado())
         {
             IniciarServicioOperation realizarServicioOperation = new IniciarServicioOperation(this);

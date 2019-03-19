@@ -6,16 +6,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 import cl.domito.conductor.R;
-import cl.domito.conductor.activity.adapter.ReciclerViewHistorialAdapter;
-import cl.domito.conductor.activity.adapter.ReciclerViewProgramadoAdapter;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.ObtenerHistorialOperation;
 
@@ -49,8 +41,15 @@ public class HistoricoActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        Conductor.getInstance().setVolver(true);
+        super.onBackPressed();
+    }
+
     private void volver()
     {
+        Conductor.getInstance().setVolver(true);
         this.finish();
     }
 

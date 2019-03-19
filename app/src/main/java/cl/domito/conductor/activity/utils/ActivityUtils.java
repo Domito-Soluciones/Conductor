@@ -264,4 +264,9 @@ public class ActivityUtils {
         }
         return networkStatus;
     }
+
+    public static void volver(Activity activity)
+    {
+        activity.finish();
+    }
 }

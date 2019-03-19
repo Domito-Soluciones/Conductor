@@ -148,5 +148,7 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
 
     @Override
     protected void onPostExecute(String aString) {
-         }
+        CambiarMovilOperation cambiarMovilOperation = new CambiarMovilOperation();
+        cambiarMovilOperation.execute(Conductor.getInstance().getServicioActual());
+    }
 }

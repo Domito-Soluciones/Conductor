@@ -129,6 +129,20 @@ public class RequestConductor {
         return jsonObject;
     }
 
+    public static JSONObject cambiarServicioMovil(String servicio) {
+        JSONObject jsonObject = null;
+        String url = Utilidades.URL_BASE_MOVIL + "ModServicioMovil.php";
+        List<NameValuePair> params = new ArrayList();
+        params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getId()));
+        params.add(new BasicNameValuePair("servicio",servicio));
+        try {
+            jsonObject = Utilidades.enviarPost(url,params);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
     public static JSONObject cambiarEstadoServicio(String idServicio,String estado) {
         JSONObject jsonObject = null;
         String url2 = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicio.php";
