@@ -20,22 +20,17 @@ public class Conductor {
     private String id;
     private String nombre;
     private String nick;
-    private String password;
-    private String celular;
-    private String direccion;
     private String servicioActual;
     private String pasajeroActual;
     private List<String> listaDestinos = new ArrayList();
     private int estado;
     private boolean activo;
     private boolean recordarSession;
-    private List<LatLng> latLngs;
     private JSONArray servicios;
     private boolean ocupado;
     private Location location;
     private Location locationDestino;
     private boolean servicioAceptado;
-    private boolean servicioCancelado;
     private JSONArray servicio;
     private int indiceViaje = 0;
     private boolean navegando;
@@ -83,29 +78,6 @@ public class Conductor {
         this.nick = nick;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getCelular() {
-        return celular;
-    }
-
-    public void setCelular(String celular) {
-        this.celular = celular;
-    }
-
-    public String getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
-    }
 
     public int getEstado() {
         return estado;
@@ -131,14 +103,6 @@ public class Conductor {
         this.recordarSession = recordarSession;
     }
 
-    public List<LatLng> getLatLngs() {
-        return latLngs;
-    }
-
-    public void setLatLngs(List<LatLng> latLngs) {
-        this.latLngs = latLngs;
-    }
-
     public JSONArray getServicios() {
         return servicios;
     }
@@ -151,16 +115,8 @@ public class Conductor {
         this.ocupado = ocupado;
     }
 
-    public boolean getOcupado() {
-        return ocupado;
-    }
-
     public Location getLocationDestino() {
         return locationDestino;
-    }
-
-    public void setLocationDestino(Location locationDestino) {
-        this.locationDestino = locationDestino;
     }
 
     public Location getLocation() {
@@ -179,24 +135,12 @@ public class Conductor {
         this.servicioActual = servicioActual;
     }
 
-    public boolean isOcupado() {
-        return ocupado;
-    }
-
     public boolean isServicioAceptado() {
         return servicioAceptado;
     }
 
     public void setServicioAceptado(boolean servicioAceptado) {
         this.servicioAceptado = servicioAceptado;
-    }
-
-    public boolean isServicioCancelado() {
-        return servicioCancelado;
-    }
-
-    public void setServicioCancelado(boolean servicioCancelado) {
-        this.servicioCancelado = servicioCancelado;
     }
 
     public JSONArray getServicio() {
@@ -231,10 +175,6 @@ public class Conductor {
         this.cantidadPasajeros = cantidadPasajeros;
     }
 
-    public GoogleApiClient getGoogleApiClient() {
-        return googleApiClient;
-    }
-
     public void setGoogleApiClient(GoogleApiClient googleApiClient) {
         this.googleApiClient = googleApiClient;
     }
@@ -249,10 +189,6 @@ public class Conductor {
 
     public List<String> getListaDestinos() {
         return listaDestinos;
-    }
-
-    public void setListaDestinos(List<String> listaDestinos) {
-        this.listaDestinos = listaDestinos;
     }
 
     public boolean isVolver() {

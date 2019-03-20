@@ -210,8 +210,8 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         mMap = googleMap;
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setCompassEnabled(true);
-        boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-                this, R.raw.map_style));
+        //boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
+        //this, R.raw.map_style));
         googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
