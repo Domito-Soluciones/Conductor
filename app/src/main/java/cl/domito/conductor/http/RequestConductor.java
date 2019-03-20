@@ -21,6 +21,8 @@ import cl.domito.conductor.dominio.Conductor;
 public class RequestConductor {
 
     private static JSONObject RESPUESTA;
+    private static double latAnterior;
+    private static double lngAnterior;
 
     public static boolean loginConductor(String usuario, String password)
     {
@@ -221,7 +223,12 @@ public class RequestConductor {
         params.add(new BasicNameValuePair("lat",conductor.getLocation().getLatitude()+""));
         params.add(new BasicNameValuePair("lon",conductor.getLocation().getLatitude()+""));
         try {
-            Utilidades.enviarPost(url,params);
+            if(conductor.getLocation().getLatitude() != latAnterior &&
+                conductor.getLocation().getLongitude() != lngAnterior) {
+                Utilidades.enviarPost(url, params);
+                latAnterior = conductor.getLocation().getLatitude();
+                lngAnterior = conductor.getLocation().getLongitude();
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

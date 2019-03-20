@@ -95,6 +95,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         {
             CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
             cambiarEstadoServicioOperation.execute(Conductor.getInstance().getServicioActual(),"5");
+            Conductor.getInstance().getListaDestinos().clear();
             Intent intent = activity.getIntent();
             activity.finish();
             activity.startActivity(intent);
