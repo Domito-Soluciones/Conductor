@@ -65,10 +65,10 @@ public class NotificationOperation extends AsyncTask<String, Void, String[]> {
 
     @Override
     protected void onPostExecute(String[] aString) {
-        //if(aString[1].equals("0")) {
+        if(aString != null) {
             CambiarEstadoNotificacionOperation cambiarEstadoNotificacionOperation = new CambiarEstadoNotificacionOperation();
             cambiarEstadoNotificacionOperation.execute(aString[0]);
-        //}
+        }
     }
 
 }

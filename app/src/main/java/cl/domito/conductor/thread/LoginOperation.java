@@ -48,8 +48,6 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             }
         });
         boolean login = RequestConductor.loginConductor(strings[0],strings[1]);
-        //boolean login = true;
-        loginActivity.runOnUiThread(ActivityUtils.mensajeError(loginActivity));
         if (login) {
             conductor.setActivo(true);
             conductor.setNick(strings[0]);
@@ -90,7 +88,6 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             Intent i = new Intent(context.get(), AsignacionServicioService.class);
             if (!ActivityUtils.isRunning(asignacionServicioService.getClass(), context.get())) {
                 context.get().startService(i);
-                Toast.makeText(context.get(),"servicio iniciado",Toast.LENGTH_LONG).show();
             }
             AsignacionServicioService.IS_INICIADO = true;
         }

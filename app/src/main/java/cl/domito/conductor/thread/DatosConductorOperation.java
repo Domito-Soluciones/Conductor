@@ -41,7 +41,6 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
             List<NameValuePair> params = new ArrayList();
             params.add(new BasicNameValuePair("id",conductor.getNick()));
             JSONObject jsonObject = RequestConductor.datosConductor(url,params);
-            context.get().runOnUiThread(ActivityUtils.mensajeError(context.get()));
             if(jsonObject != null) {
                 conductor.setNombre(jsonObject.getString("conductor_nombre"));
                 conductor.setEstado(jsonObject.getInt("conductor_estado"));

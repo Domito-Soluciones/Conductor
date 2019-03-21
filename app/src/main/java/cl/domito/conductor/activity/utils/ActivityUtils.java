@@ -72,7 +72,7 @@ public class ActivityUtils {
             CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(17).build();
             googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         } else {
-            Toast.makeText(activity, "mal", Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, "Ocurrio un problema al obtener la ubicación", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -116,35 +116,6 @@ public class ActivityUtils {
         background.draw(canvas);
         vectorDrawable.draw(canvas);
         return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
-
-    public static Runnable mensajeError(Activity activity)
-    {
-        TextView textViewError = null;
-        String nombre = activity.getComponentName().getClassName();
-        if(nombre.equals("cl.domito.conductor.activity.MapsActivity"))
-        {
-            textViewError = activity.findViewById(R.id.textViewError);
-        }
-        else if(nombre.equals("cl.domito.conductor.activity.LoginActivity"))
-        {
-            textViewError = activity.findViewById(R.id.textViewError2);
-        }
-        TextView finalTextViewError = textViewError;
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                /*if(Conductor.getInstance().isConectado())
-                {
-                    finalTextViewError.setVisibility(View.GONE);
-                }
-                else if(!Conductor.getInstance().isConectado())
-                {
-                    finalTextViewError.setVisibility(View.VISIBLE);
-                }*/
-            }
-        };
-        return runnable;
     }
 
     public static List<LatLng> decodePolyline(final String encodedPath) {

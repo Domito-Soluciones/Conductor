@@ -34,9 +34,11 @@ public class RequestConductor {
             String base64 = android.util.Base64.encodeToString(data, android.util.Base64.NO_WRAP);
             params.add(new BasicNameValuePair("password",base64));
             RESPUESTA = Utilidades.enviarPost(url,params);
-            if (!RESPUESTA.getString("conductor_id").equals("0")) {
-                Conductor.getInstance().setId(RESPUESTA.getString("conductor_id"));
-                return true;
+            if(RESPUESTA != null) {
+                if (!RESPUESTA.getString("conductor_id").equals("0")) {
+                    Conductor.getInstance().setId(RESPUESTA.getString("conductor_id"));
+                    return true;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

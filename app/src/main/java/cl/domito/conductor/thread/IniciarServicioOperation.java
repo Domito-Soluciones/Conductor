@@ -56,8 +56,18 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
         Conductor conductor = Conductor.getInstance();
         GoogleMap map = (GoogleMap) objects[0];
         String idServicio = (String) objects[1];
-        JSONArray route = RequestConductor.getRoute(idServicio);
-        ActivityUtils.dibujarRuta(context.get(),map,route);
+        if(!conductor.isRutaDibujada()) {
+            JSONArray route = RequestConductor.getRoute(idServicio);
+            ActivityUtils.dibujarRuta(context.get(), map, route);
+            conductor.setRutaDibujada(true);
+            context.get().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    progressBar.setVisibility(View.GONE);
+                    constraintLayoutPasajero.setVisibility(View.VISIBLE);
+                }
+            });
+        }
         RecyclerView recyclerView = context.get().findViewById(R.id.recyclerViewPasajero);
         final RecyclerView.LayoutManager[] layoutManager = new RecyclerView.LayoutManager[1];
         context.get().runOnUiThread(new Runnable() {
@@ -124,13 +134,6 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
                 }
             });
         }
-        context.get().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                progressBar.setVisibility(View.GONE);
-                constraintLayoutPasajero.setVisibility(View.VISIBLE);
-            }
-        });
         return idServicio;
     }
     @Override
@@ -139,8 +142,9 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
             context.get().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    progressBar.setVisibility(View.VISIBLE);
-                  //  buttonConfirmar.setText("En Proceso...");
+                    if(!Conductor.getInstance().isRutaDibujada()) {
+                        progressBar.setVisibility(View.VISIBLE);
+                    }
                 }
             });
         }

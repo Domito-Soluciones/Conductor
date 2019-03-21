@@ -38,6 +38,7 @@ public class Conductor {
     private GoogleApiClient googleApiClient;
     private Context context;
     private boolean volver;
+    private boolean rutaDibujada;
 
     public static synchronized Conductor getInstance(){
         if(instance == null){
@@ -197,6 +198,14 @@ public class Conductor {
 
     public void setVolver(boolean volver) {
         this.volver = volver;
+    }
+
+    public boolean isRutaDibujada() {
+        return rutaDibujada;
+    }
+
+    public void setRutaDibujada(boolean rutaDibujada) {
+        this.rutaDibujada = rutaDibujada;
     }
 }
 

@@ -30,7 +30,7 @@ public class FinServicioActivity extends AppCompatActivity {
         buttonFinalizar = findViewById(R.id.buttonFinalizar);
         Conductor.getInstance().setServicioAceptado(false);
         Conductor.getInstance().setIndiceViaje(0);
-
+        Conductor.getInstance().setRutaDibujada(false);
         try {
             textView.setText(Conductor.getInstance().getServicio().getJSONObject(0).get("servicio_id").toString());
             textViewCliente.setText(Conductor.getInstance().getServicio().getJSONObject(0).get("servicio_cliente").toString());

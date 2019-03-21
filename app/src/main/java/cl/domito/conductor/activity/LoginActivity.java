@@ -4,16 +4,19 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
+import cl.domito.conductor.http.Utilidades;
 import cl.domito.conductor.thread.LoginOperation;
 
 public class LoginActivity extends AppCompatActivity {
@@ -22,6 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordView;
     private Button mEmailSignInButton;
     private CheckBox checkBoxRec;
+    private TextView textViewError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,9 +40,17 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView = findViewById(R.id.password);
         mEmailSignInButton = findViewById(R.id.login_button);
         checkBoxRec = findViewById(R.id.checkBox);
+        textViewError = findViewById(R.id.textViewError);
 
-        Conductor.getInstance().setContext(getApplicationContext());
-
+        Conductor.getInstance().setContext(LoginActivity.this);
+        if(Utilidades.validarConexion())
+        {
+            textViewError.setVisibility(View.GONE);
+        }
+        else
+        {
+            textViewError.setVisibility(View.VISIBLE);
+        }
 
         mUserView.setText(idConductor);
         mPasswordView.setText(clave);

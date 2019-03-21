@@ -9,7 +9,7 @@
     tools:context="cl.domito.conductor.activity.LoginActivity">
 
     <TextView
-        android:id="@+id/textViewError2"
+        android:id="@+id/textViewError"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_gravity="bottom"

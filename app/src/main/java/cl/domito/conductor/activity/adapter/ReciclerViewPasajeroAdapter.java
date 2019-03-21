@@ -162,11 +162,11 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                 String uri = null;
                 SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
                 String tipoNav = pref.getString("nav", "");
-                if(tipoNav.equals("") || tipoNav.equals("google"))
+                if(tipoNav.equals("google"))
                 {
                     uri = "google.navigation:q="+addresses.get(0).getLatitude() + "," + addresses.get(0).getLongitude();
                 }
-                else if(tipoNav.equals("waze"))
+                else if(tipoNav.equals("") || tipoNav.equals("waze"))
                 {
                     uri = "geo: " + addresses.get(0).getLatitude() + "," + addresses.get(0).getLongitude();
                 }

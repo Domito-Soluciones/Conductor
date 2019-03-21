@@ -8,6 +8,25 @@
     android:visibility="visible"
     tools:context=".activity.ServicioActivity">
 
+    <TextView
+        android:id="@+id/textViewError"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="8dp"
+        android:background="@color/rojo"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/fab_margin"
+        android:text="@string/error_internet"
+        android:textColor="@color/blanco"
+        android:textSize="@dimen/input_texto_login"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constrainLayoutProgramado"
         android:layout_width="match_parent"
@@ -81,7 +100,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.25" />
+            app:layout_constraintVertical_bias="0.31" />
 
         <RadioGroup
             android:layout_width="0dp"
@@ -94,7 +113,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView3"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintVertical_bias="0.050000012">
 
             <RadioButton
                 android:id="@+id/radioButton2"
@@ -113,6 +132,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="100dp"
                 android:layout_weight="1"
+                android:checked="true"
                 android:clickable="true"
                 android:paddingLeft="50dp"
                 android:text="Waze" />

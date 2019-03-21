@@ -89,13 +89,16 @@ public class ObtenerDescuentoOperation extends AsyncTask<Void, Void, JSONArray> 
             String[] array = new String[lista.size()];
             array  = lista.toArray(array);
             ReciclerViewHistorialAdapter mAdapter = new ReciclerViewHistorialAdapter(context.get(),array);
-            context.get().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    recyclerView.setAdapter(mAdapter);
-                    progressBar.setVisibility(View.GONE);
-                }
-            });
+            try {
+                context.get().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.setAdapter(mAdapter);
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
+            }
+            catch (Exception e){}
         }
         else
         {

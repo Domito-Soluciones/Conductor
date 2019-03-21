@@ -127,57 +127,57 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
         if (TERMINAR) {
             Intent broadcastIntent = new Intent(this, RestartBroadcastReceived.class);
             sendBroadcast(broadcastIntent);
-        }
+}
     }
 
-    private void sendMessage(String message, String value) {
+private void sendMessage(String message, String value) {
         Intent intent = new Intent("custom-event-name");
         // You can also include some extra data.
         intent.putExtra("message", message);
         intent.putExtra("value", value);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-    }
+        }
 
-    private void obtenerNotificacion() {
+private void obtenerNotificacion() {
         NotificationOperation notificationOperation = new NotificationOperation(this);
         notificationOperation.execute();
-    }
+        }
 
-    private void insertarNavegacion() {
+private void insertarNavegacion() {
         InsertarNavegacionOperation insertarNavegacionOperation = new InsertarNavegacionOperation();
         insertarNavegacionOperation.execute();
-    }
+        }
 
-    private void getUbicacion() throws InterruptedException {
+private void getUbicacion() throws InterruptedException {
         CambiarUbicacionOperation cambiarUbicacionOperation = new CambiarUbicacionOperation();
         cambiarUbicacionOperation.execute();
         GoogleApiClient mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(LocationServices.API)
-                .build();
+        .addConnectionCallbacks(this)
+        .addOnConnectionFailedListener(this)
+        .addApi(LocationServices.API)
+        .build();
         mGoogleApiClient.connect();
         Thread.sleep(500);
         try {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
-            }
-            Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-            if (mLastLocation != null) {
-                Conductor.getInstance().setLocation(mLastLocation);
-            }
-            mGoogleApiClient.disconnect();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        // TODO: Consider calling
+        //    ActivityCompat#requestPermissions
+        // here to request the missing permissions, and then overriding
+        //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+        //                                          int[] grantResults)
+        // to handle the case where the user grants the permission. See the documentation
+        // for ActivityCompat#requestPermissions for more details.
+        return;
         }
-    }
+        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+        Conductor.getInstance().setLocation(mLastLocation);
+        }
+        mGoogleApiClient.disconnect();
+        } catch (Exception e) {
+        e.printStackTrace();
+        }
+        }
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
@@ -186,10 +186,10 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
     }
 
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
+@Override
+public void onConnected(@Nullable Bundle bundle) {
 
-    }
+        }
 
     @Override
     public void onConnectionSuspended(int i) {

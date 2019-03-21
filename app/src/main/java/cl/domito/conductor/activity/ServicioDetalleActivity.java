@@ -61,7 +61,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
         textviewTarifaValor = findViewById(R.id.textViewTarifaValor);
         textviewCantidadValor = findViewById(R.id.textViewCantidadValor);
         textviewObservacionValor = findViewById(R.id.textViewObservacionValor);
-        Conductor.getInstance().setContext(getApplicationContext());
+        Conductor.getInstance().setContext(ServicioDetalleActivity.this);
 
         buttonConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -139,7 +139,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     array = lista.toArray(array);
                     ReciclerViewDetalleAdapter mAdapter = new ReciclerViewDetalleAdapter(this, array);
                     recyclerViewDetalle.setAdapter(mAdapter);
-                    conductor.setOcupado(true);
+                    //conductor.setOcupado(true);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

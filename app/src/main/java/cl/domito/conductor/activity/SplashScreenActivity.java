@@ -11,6 +11,7 @@ import android.view.View;
 
 import cl.domito.conductor.R;
 import cl.domito.conductor.dominio.Conductor;
+import cl.domito.conductor.http.Utilidades;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -23,7 +24,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         this.getSupportActionBar().hide();
         View v = View.inflate(getApplicationContext(), R.layout.activity_splash, null);
-        Conductor.getInstance().setContext(getApplicationContext());
+        Conductor.getInstance().setContext(SplashScreenActivity.this);
+
         setContentView(R.layout.activity_splash);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

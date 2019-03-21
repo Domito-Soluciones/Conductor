@@ -28,7 +28,7 @@ public class HistoricoActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        Conductor.getInstance().setContext(getApplicationContext());
+        Conductor.getInstance().setContext(HistoricoActivity.this);
 
         ObtenerHistorialOperation obtenerHistorialOperation = new ObtenerHistorialOperation(this);
         obtenerHistorialOperation.execute();

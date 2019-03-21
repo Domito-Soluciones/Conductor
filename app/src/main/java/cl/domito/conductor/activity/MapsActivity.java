@@ -76,7 +76,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         constraintLayoutEstado = findViewById(R.id.constrainLayoutEstado);
         constraintLayoutPasajero = findViewById(R.id.constraitLayoutPasajero);
 
-        Conductor.getInstance().setContext(getApplicationContext());
+        Conductor.getInstance().setContext(MapsActivity.this);
 
         if(savedInstanceState!=null)
         {
@@ -114,6 +114,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     @Override
     protected void onResume() {
         Conductor conductor = Conductor.getInstance();
+        conductor.setContext(MapsActivity.this);
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 broadcastReceiver, new IntentFilter("custom-event-name"));
         if(conductor.isVolver()) {

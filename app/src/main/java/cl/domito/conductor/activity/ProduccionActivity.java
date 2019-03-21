@@ -27,7 +27,7 @@ public class ProduccionActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        Conductor.getInstance().setContext(getApplicationContext());
+        Conductor.getInstance().setContext(ProduccionActivity.this);
 
         ObtenerProduccionOperation obtenerProduccionOperation = new ObtenerProduccionOperation(this);
         obtenerProduccionOperation.execute();
