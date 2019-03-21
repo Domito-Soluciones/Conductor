@@ -1,14 +1,22 @@
 package cl.domito.conductor.http;
 
+import android.app.Activity;
+import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -20,14 +28,17 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.domito.conductor.R;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 
 public class Utilidades {
 
+    public static int reintentos = 0;
+
     public static String URL_BASE = "https://www.domito.cl/GpsVan/source/httprequest/";
     //public static String URL_BASE = "http://192.168.43.136/GpsVan/source/httprequest/";
-    public static String URL_BASE_CLIENTE = URL_BASE +  "cliente/";
+    public static String URL_BASE_CLIENTE = URL_BASE + "cliente/";
     public static String URL_BASE_CONDUCTOR = URL_BASE + "conductor/";
     public static String URL_BASE_ESTADISTICA = URL_BASE + "estaditica/";
     public static String URL_BASE_MOVIL = URL_BASE + "movil/";
@@ -46,25 +57,25 @@ public class Utilidades {
     public static int CANCELADO = 6;
 
 
-    public static JSONObject enviarPost(String urlDest,List<NameValuePair> params) throws IOException {
-        if(!ActivityUtils.checkNetworkAvailable(Conductor.getInstance().getContext()))
-        {
+    public static JSONObject enviarPost(String urlDest, List<NameValuePair> params) throws IOException {
+        JSONObject jsonObject = null;
+        if (!ActivityUtils.checkNetworkAvailable(Conductor.getInstance().getContext())) {
             return null;
         }
-        JSONObject jsonObject = null;
-        HttpClient client = HttpClientBuilder.create().build();
+        HttpParams httpParams = new BasicHttpParams();
+        HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
+        HttpConnectionParams.setSoTimeout(httpParams, 3000);
+        HttpClient client = new DefaultHttpClient(httpParams);
         HttpPost post = new HttpPost(urlDest);
         post.setHeader("User-Agent", "");
         post.addHeader("Referer", "app-cliente");
         try {
-            if(params != null) {
-                params.add(new BasicNameValuePair("app","app"));
+            if (params != null) {
+                params.add(new BasicNameValuePair("app", "app"));
                 post.setEntity(new UrlEncodedFormEntity(params));
-            }
-            else
-            {
+            } else {
                 params = new ArrayList();
-                params.add(new BasicNameValuePair("app","app"));
+                params.add(new BasicNameValuePair("app", "app"));
             }
             HttpResponse response = client.execute(post);
             BufferedReader rd = new BufferedReader(
@@ -77,61 +88,51 @@ public class Utilidades {
                 System.out.println(line);
             }
             jsonObject = new JSONObject(result.toString());
-        }
-        catch (UnknownHostException e)
-        {
-        }
-        catch (IOException ioe)
-        {
-            throw new IOException(ioe.getMessage(), ioe);
-        }
-        catch (Exception e) {
+        } catch (UnknownHostException e) {
+        } catch (IOException ioe) {
+            reintentos++;
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return  jsonObject;
+        return jsonObject;
     }
 
     public static JSONArray enviarPostArray(String urlDest, List<NameValuePair> params) {
-        if(!ActivityUtils.checkNetworkAvailable(Conductor.getInstance().getContext()))
-        {
-            return null;
-        }
         JSONArray jsonArray = null;
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpPost post = new HttpPost(urlDest);
-        post.setHeader("User-Agent", "");
-                post.addHeader("Referer", "app-cliente");
-                try {
-                    if(params != null) {
-                        params.add(new BasicNameValuePair("app","app"));
-                        post.setEntity(new UrlEncodedFormEntity(params));
-                    }
-                    else
-                    {
-                params = new ArrayList();
-                params.add(new BasicNameValuePair("app","app"));
+            if (!ActivityUtils.checkNetworkAvailable(Conductor.getInstance().getContext())) {
+                return null;
             }
-            HttpResponse response = client.execute(post);
-            BufferedReader rd = new BufferedReader(
-                    new InputStreamReader(response.getEntity().getContent()));
+            HttpParams httpParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
+            HttpConnectionParams.setSoTimeout(httpParams, 3000);
+            HttpClient client = new DefaultHttpClient(httpParams);
+            HttpPost post = new HttpPost(urlDest);
+            post.setHeader("User-Agent", "");
+            post.addHeader("Referer", "app-cliente");
+            try {
+                if (params != null) {
+                    params.add(new BasicNameValuePair("app", "app"));
+                    post.setEntity(new UrlEncodedFormEntity(params));
+                } else {
+                    params = new ArrayList();
+                    params.add(new BasicNameValuePair("app", "app"));
+                }
+                HttpResponse response = client.execute(post);
+                BufferedReader rd = new BufferedReader(
+                        new InputStreamReader(response.getEntity().getContent()));
 
-            String line = "";
-            StringBuilder result = new StringBuilder();
-            while ((line = rd.readLine()) != null) {
-                result.append(line);
+                String line = "";
+                StringBuilder result = new StringBuilder();
+                while ((line = rd.readLine()) != null) {
+                    result.append(line);
+                }
+                System.out.println(result.toString());
+                jsonArray = new JSONArray(result.toString());
+            } catch (UnknownHostException e) {
+            } catch (Exception e) {
+                //e.printStackTrace();
             }
-            System.out.println(result.toString());
-            jsonArray = new JSONArray(result.toString());
-        }
-        catch (UnknownHostException e)
-        {
-        }
-        catch (Exception e) {
-            //e.printStackTrace();
-        }
-        return  jsonArray;
+
+        return jsonArray;
     }
-
-
-
 }

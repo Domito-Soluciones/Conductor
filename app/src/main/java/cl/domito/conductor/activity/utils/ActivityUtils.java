@@ -224,11 +224,12 @@ public class ActivityUtils {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Polyline line = mMap.addPolyline(polylineOptions);
-                line.setColor(activity.getResources().getColor(R.color.colorLinea));
-                line.setWidth(15f);
-                mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150),1000,null);
-
+                if(mMap != null) {
+                    Polyline line = mMap.addPolyline(polylineOptions);
+                    line.setColor(activity.getResources().getColor(R.color.colorLinea));
+                    line.setWidth(15f);
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150), 1000, null);
+                }
             }
         });
 

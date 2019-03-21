@@ -32,6 +32,10 @@ public class NotificationOperation extends AsyncTask<String, Void, String[]> {
         String[] respuesta = new String[2];
         Conductor conductor = Conductor.getInstance();
         JSONArray jsonArray = RequestConductor.obtenerNotificaciones();
+        if(jsonArray == null)
+        {
+            return null;
+        }
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);

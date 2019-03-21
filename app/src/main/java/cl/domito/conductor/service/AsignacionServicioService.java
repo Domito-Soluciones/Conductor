@@ -179,6 +179,12 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
         }
     }
 
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        super.onTaskRemoved(rootIntent);
+        stopSelf();
+    }
+
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {

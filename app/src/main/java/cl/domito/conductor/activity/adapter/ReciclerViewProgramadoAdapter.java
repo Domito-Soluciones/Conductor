@@ -114,6 +114,11 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
             imagen = resources.getDrawable(R.drawable.arriba);
             color = resources.getColor(R.color.verde);
         }
+        else if (estado.equals("4"))
+        {
+            imagen = resources.getDrawable(R.drawable.furgon);
+            color = resources.getColor(R.color.azul);
+        }
         Bundle bundle = activity.getIntent().getExtras();
         String intentId = null;
         String tipo = null;
@@ -127,10 +132,15 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
                 imagen = resources.getDrawable(R.drawable.arriba);
                 color = resources.getColor(R.color.verde);
             }
-            else
+            else if (estado.equals("3"))
             {
                 imagen = resources.getDrawable(R.drawable.confirmar);
                 color = resources.getColor(R.color.naranjo);
+            }
+            else if (estado.equals("4"))
+            {
+                imagen = resources.getDrawable(R.drawable.furgon);
+                color = resources.getColor(R.color.azul);
             }
         }
         myViewHolder.imageView.setImageDrawable(imagen);
