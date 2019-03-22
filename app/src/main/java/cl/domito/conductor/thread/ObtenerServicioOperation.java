@@ -28,7 +28,7 @@ public class ObtenerServicioOperation extends AsyncTask<Void, Void, JSONArray> {
         Conductor conductor = Conductor.getInstance();
         String url = Utilidades.URL_BASE_SERVICIO + "GetServiciosProgramados.php";
         List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("conductor",conductor.getNick()));
+        params.add(new BasicNameValuePair("conductor",conductor.getId()));
         JSONArray jsonArray = RequestConductor.getServicios(url,params);
         return jsonArray;
     }

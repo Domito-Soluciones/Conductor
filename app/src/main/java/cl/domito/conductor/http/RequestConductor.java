@@ -73,7 +73,7 @@ public class RequestConductor {
         try {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("id", idServicio));
-            params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getNick()));
+            params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getId()));
             Utilidades.enviarPost(reqUrl,params);
 
         }
@@ -180,14 +180,14 @@ public class RequestConductor {
         String url = Utilidades.URL_BASE_SERVICIO + "GetServicioProgramado.php";
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("id",idServicio));
-        params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getNick()));
+        params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getId()));
         Conductor.getInstance().setServicio(Utilidades.enviarPostArray(url, params));
     }
 
     public static JSONArray obtenerNotificaciones() {
         String url = Utilidades.URL_BASE_NOTIFICACION + "GetNotificaciones.php";
         List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("llave", Conductor.getInstance().getNick()));
+        params.add(new BasicNameValuePair("llave", Conductor.getInstance().getId()));
         JSONArray jsonArray = Utilidades.enviarPostArray(url, params);
         return jsonArray;
     }

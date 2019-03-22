@@ -51,7 +51,7 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
         params.add(new BasicNameValuePair("desde",fechaDesde));
         params.add(new BasicNameValuePair("hasta",fechaHasta));
         params.add(new BasicNameValuePair("estado","5"));
-        params.add(new BasicNameValuePair("conductor",conductor.getNick()));
+        params.add(new BasicNameValuePair("conductor",conductor.getId()));
         JSONArray jsonObject = RequestConductor.getServicios(url,params);
         return jsonObject;
     }
