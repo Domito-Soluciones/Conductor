@@ -1,73 +1,44 @@
 package cl.domito.conductor.thread;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.List;
 
 import cl.domito.conductor.R;
-import cl.domito.conductor.activity.MapsActivity;
-import cl.domito.conductor.activity.ServicioActivity;
-import cl.domito.conductor.activity.ServicioDetalleActivity;
-import cl.domito.conductor.activity.adapter.ReciclerViewDetalleAdapter;
+import cl.domito.conductor.activity.MainActivity;
+import cl.domito.conductor.activity.PasajeroActivity;
 import cl.domito.conductor.activity.adapter.ReciclerViewPasajeroAdapter;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
-import cl.domito.conductor.http.Utilidades;
-import okhttp3.internal.Util;
 
-public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
+public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
 
-    private WeakReference<MapsActivity> context;
-    private ProgressBar progressBar;
+    private WeakReference<PasajeroActivity> context;
     ConstraintLayout constraintLayoutPasajero;
     ConstraintLayout constraintLayoutEstado;
 
 
-    public IniciarServicioOperation(MapsActivity activity) {
-        context = new WeakReference<MapsActivity>(activity);
-        progressBar = context.get().findViewById(R.id.progressBarGeneral);
-        constraintLayoutPasajero = context.get().findViewById(R.id.constraitLayoutPasajero);
+    public IniciarServicioOperation(PasajeroActivity activity) {
+        context = new WeakReference<PasajeroActivity>(activity);
+        constraintLayoutPasajero = context.get().findViewById(R.id.constrainLayoutPasajero);
         constraintLayoutEstado = context.get().findViewById(R.id.constrainLayoutEstado);
     }
 
     @Override
-    protected String doInBackground(Object... objects) {
+    protected String doInBackground(Void... voids) {
         Conductor conductor = Conductor.getInstance();
-        GoogleMap map = (GoogleMap) objects[0];
-        String idServicio = (String) objects[1];
-        if(!conductor.isRutaDibujada()) {
-            JSONArray route = RequestConductor.getRoute(idServicio);
-            ActivityUtils.dibujarRuta(context.get(), map, route);
-            conductor.setRutaDibujada(true);
-            context.get().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    progressBar.setVisibility(View.GONE);
-                    constraintLayoutPasajero.setVisibility(View.VISIBLE);
-                }
-            });
-        }
+        String idServicio = conductor.getServicioActual();
         RecyclerView recyclerView = context.get().findViewById(R.id.recyclerViewPasajero);
         final RecyclerView.LayoutManager[] layoutManager = new RecyclerView.LayoutManager[1];
         context.get().runOnUiThread(new Runnable() {
@@ -103,7 +74,8 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
                     String nombre = servicio.getString("servicio_pasajero_nombre");
                     String celular = servicio.getString("servicio_pasajero_celular");
                     String destino = servicio.getString("servicio_destino");
-                    lista.add(nombre + "%" + celular + "%" + destino + "%" + id);
+                    String estado = servicio.getString("servicio_pasajero_estado");
+                    lista.add(nombre + "%" + celular + "%" + destino + "%" + "%"+ estado +"%"+ id);
                 }
             }
             catch(Exception e){e.printStackTrace();}
@@ -138,16 +110,7 @@ public class IniciarServicioOperation extends AsyncTask<Object, Void, String> {
     }
     @Override
     protected void onPreExecute() {
-        if(context != null) {
-            context.get().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if(!Conductor.getInstance().isRutaDibujada()) {
-                        progressBar.setVisibility(View.VISIBLE);
-                    }
-                }
-            });
-        }
+
     }
 
     @Override

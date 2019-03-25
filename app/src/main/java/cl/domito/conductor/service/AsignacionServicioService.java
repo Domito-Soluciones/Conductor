@@ -7,21 +7,18 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
-import cl.domito.conductor.activity.MapsActivity;
+import cl.domito.conductor.activity.MainActivity;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.CambiarUbicacionOperation;
 import cl.domito.conductor.thread.InsertarNavegacionOperation;
@@ -114,7 +111,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
     }
 
     private void abrirActivity() {
-        Intent dialogIntent = new Intent(this, MapsActivity.class);
+        Intent dialogIntent = new Intent(this, MainActivity.class);
         dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
         dialogIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(dialogIntent);

@@ -18,7 +18,7 @@ public class FinalizarRutaPasajeroOperation extends AsyncTask<String, Void, Void
 
     @Override
     protected Void doInBackground(String... strings) {
-        RequestConductor.finalizarServicio("1");
+        RequestConductor.cambiarEstadoPasajero("3");
         return null;
     }
 

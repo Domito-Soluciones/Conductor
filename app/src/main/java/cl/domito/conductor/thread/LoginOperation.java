@@ -8,24 +8,14 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.LoginActivity;
-import cl.domito.conductor.activity.MapsActivity;
-import cl.domito.conductor.activity.ServicioActivity;
+import cl.domito.conductor.activity.MainActivity;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
-import cl.domito.conductor.http.Utilidades;
 import cl.domito.conductor.service.AsignacionServicioService;
 
 public class LoginOperation extends AsyncTask<String, Void, Void> {
@@ -65,7 +55,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
                 ActivityUtils.eliminarSharedPreferences(context.get().getSharedPreferences
                         ("preferencias", Context.MODE_PRIVATE),"claveUsuario");
             }
-            Intent mainIntent = new Intent(loginActivity, ServicioActivity.class);
+            Intent mainIntent = new Intent(loginActivity, MainActivity.class);
             loginActivity.startActivity(mainIntent);
             loginActivity.finish();
             RequestConductor.cambiarEstadoMovil("1");

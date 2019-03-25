@@ -2,22 +2,19 @@ package cl.domito.conductor.thread;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 import cl.domito.conductor.R;
-import cl.domito.conductor.activity.MapsActivity;
+import cl.domito.conductor.activity.MainActivity;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
@@ -26,11 +23,11 @@ import cl.domito.conductor.service.AsignacionServicioService;
 
 public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
 
-    private WeakReference<MapsActivity> context;
+    private WeakReference<MainActivity> context;
     TextView textViewError;
 
-    public DatosConductorOperation(MapsActivity activity) {
-        context = new WeakReference<MapsActivity>(activity);
+    public DatosConductorOperation(MainActivity activity) {
+        context = new WeakReference<MainActivity>(activity);
     }
 
     @Override

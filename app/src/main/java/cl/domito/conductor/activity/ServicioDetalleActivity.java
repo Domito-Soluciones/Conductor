@@ -82,14 +82,10 @@ public class ServicioDetalleActivity extends AppCompatActivity {
             //vh.imageView.setImageDrawable(vh.textView.getContext().getResources().getDrawable(R.drawable.arriba));
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             Date date = sdf.parse(getIntent().getExtras().getString("fecha"));
-            System.out.println(date);
             Long l = date.getTime();
             Date dateNow = new Date();
-            System.out.println(dateNow);
             Long lNow = dateNow.getTime();
-            //if(date.before(dateNow)) {
             Long data = Math.abs(lNow - l);
-            //if (data <= 600000) {
             Conductor conductor = Conductor.getInstance();
             try {
                 int cantidad = 0;
@@ -190,6 +186,8 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                 if (data <= 1.8e+6 || dateNow.after(date)) {
                     Conductor.getInstance().setServicioActual(textviewServicioValor.getText().toString());
                     Conductor.getInstance().setServicioAceptado(true);
+                    Intent mainIntent = new Intent(this, PasajeroActivity.class);
+                    startActivity(mainIntent);
                     this.finish();
                 } else {
                     Toast.makeText(getApplicationContext(),

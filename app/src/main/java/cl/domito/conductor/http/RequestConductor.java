@@ -162,7 +162,7 @@ public class RequestConductor {
     }
 
 
-    public static void finalizarServicio(String estado) {
+    public static void cambiarEstadoPasajero(String estado) {
         Conductor conductor = Conductor.getInstance();
         String url = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicioPasajero.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();

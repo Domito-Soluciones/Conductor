@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class Utilidades {
 
     public static int reintentos = 0;
 
-    public static String URL_BASE = "https://www.domito.cl/GpsVan2/source/httprequest/";
+    public static String URL_BASE = "https://www.domito.cl/Test3/source/httprequest/";
     //public static String URL_BASE = "http://192.168.43.136/GpsVan/source/httprequest/";
     public static String URL_BASE_CLIENTE = URL_BASE + "cliente/";
     public static String URL_BASE_CONDUCTOR = URL_BASE + "conductor/";
@@ -49,6 +50,7 @@ public class Utilidades {
     public static String URL_BASE_SERVICIO = URL_BASE + "servicio/";
     public static String URL_BASE_TRANSPORTISTA = URL_BASE + "transportista/";
     public static String URL_BASE_USUARIO = URL_BASE + "pasajero/";
+    public static SimpleDateFormat FORMAT = new SimpleDateFormat("dd-MM-yyyy");
 
 
     public static JSONObject enviarPost(String urlDest, List<NameValuePair> params) throws IOException {

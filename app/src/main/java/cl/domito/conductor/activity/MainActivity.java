@@ -13,6 +13,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,12 +24,17 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -37,56 +43,63 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.MapStyleOptions;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import cl.domito.conductor.R;
+import cl.domito.conductor.activity.adapter.ReciclerViewProgramadoAdapter;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
+import cl.domito.conductor.http.Utilidades;
 import cl.domito.conductor.service.AsignacionServicioService;
 import cl.domito.conductor.thread.CambiarEstadoOperation;
 import cl.domito.conductor.thread.DatosConductorOperation;
 import cl.domito.conductor.thread.IniciarServicioOperation;
 import cl.domito.conductor.thread.LogoutOperation;
 import cl.domito.conductor.thread.NotificationOperation;
+import cl.domito.conductor.thread.ObtenerServicioOperation;
 
-public class MapsActivity extends FragmentActivity  implements OnMapReadyCallback,GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,LocationListener
+public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,LocationListener
 {
 
-    private GoogleMap mMap;
     private GoogleApiClient apiClient;
-    private SupportMapFragment mapFragment;
-    private ImageButton buttonNavegar;
     private ImageView imageButton;
     private DrawerLayout drawerLayout;
     private NavigationView  navigationView;
     private LocationManager locationManager;
-    private ConstraintLayout constraintLayoutPasajero;
-    private ConstraintLayout constraintLayoutEstado;
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private TextView textViewError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        apiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage((FragmentActivity) this, this)
+                .addConnectionCallbacks(this)
+                .addApi(LocationServices.API)
+                .build();
+
+        Conductor.getInstance().setGoogleApiClient(apiClient);
         imageButton = findViewById(R.id.imageViewMenu);
         navigationView = findViewById(R.id.nav_view);
-        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        constraintLayoutEstado = findViewById(R.id.constrainLayoutEstado);
-        constraintLayoutPasajero = findViewById(R.id.constraitLayoutPasajero);
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        swipeRefreshLayout = findViewById(R.id.swiperefresh);
+        textViewError = findViewById(R.id.textViewError);
 
-        Conductor.getInstance().setContext(MapsActivity.this);
-
-        if(savedInstanceState!=null)
-        {
-            ArrayList<String> lista = new ArrayList();
-            Conductor conductor = Conductor.getInstance();
-            int estadoVisible = Integer.parseInt(savedInstanceState.getString("clEstado"));
-            int pasajeroVisible = Integer.parseInt(savedInstanceState.getString("clEstado"));
-            constraintLayoutEstado.setVisibility(estadoVisible);
-            constraintLayoutPasajero.setVisibility(pasajeroVisible);
-        }
+        obtenerServicos();
 
         DatosConductorOperation datosConductorOperation = new DatosConductorOperation(this);
         datosConductorOperation.execute();
@@ -105,7 +118,13 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             }
         });
 
-        mapFragment.getMapAsync(this);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
+
         navigationView.setItemIconTintList(null);
 
 
@@ -114,7 +133,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
     @Override
     protected void onResume() {
         Conductor conductor = Conductor.getInstance();
-        conductor.setContext(MapsActivity.this);
+        conductor.setContext(MainActivity.this);
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 broadcastReceiver, new IntentFilter("custom-event-name"));
         if(conductor.isVolver()) {
@@ -122,24 +141,15 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             conductor.setVolver(false);
         }
         super.onResume();
-        if(conductor.isServicioAceptado())
-        {
-            IniciarServicioOperation realizarServicioOperation = new IniciarServicioOperation(this);
-            realizarServicioOperation.execute(mMap,conductor.getServicioActual());
-            //conductor.setServicioAceptado(false);
-        }
-        //if(mMap != null) {
-        //mMap.clear();
-        //}
     }
 
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        int clEstado = constraintLayoutEstado.getVisibility();
+        /*int clEstado = constraintLayoutEstado.getVisibility();
         int clPasajero = constraintLayoutPasajero.getVisibility();
         outState.putString("clEstadoVisible", clEstado+"");
-        outState.putString("clPasajeroVisible", clPasajero+"");
+        outState.putString("clPasajeroVisible", clPasajero+"");*/
         super.onSaveInstanceState(outState);
     }
 
@@ -160,7 +170,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        iniciarUbicacion(true);
+        iniciarUbicacion();
     }
 
     @Override
@@ -206,36 +216,6 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(this.getResources().getColor(R.color.colorPrimary));
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.getUiSettings().setMyLocationButtonEnabled(true);
-        mMap.getUiSettings().setCompassEnabled(true);
-        //boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(
-        //this, R.raw.map_style));
-        googleMap.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
-            @Override
-            public void onCameraIdle() {
-
-            }
-        });
-
-        googleMap.setOnCameraMoveStartedListener(new GoogleMap.OnCameraMoveStartedListener() {
-            @Override
-            public void onCameraMoveStarted(int i) {
-
-            }
-        });
-
-        apiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage((FragmentActivity) this, this)
-                .addConnectionCallbacks(this)
-                .addApi(LocationServices.API)
-                .build();
-
-        Conductor.getInstance().setGoogleApiClient(apiClient);
-    }
-
     private void cambiarEstadoConductor() {
         Conductor conductor = Conductor.getInstance();
         CambiarEstadoOperation cambiarEstadoOperation = new CambiarEstadoOperation(this);
@@ -252,7 +232,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         }
     }
 
-    public void iniciarUbicacion(boolean updateUI)
+    public void iniciarUbicacion()
     {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
@@ -264,16 +244,12 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
         {
 
         }
-        mMap.setMyLocationEnabled(true);
         locationManager = (LocationManager) getApplicationContext().getSystemService(this.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 1000, this);
 
         Location lastLocation =
                 LocationServices.FusedLocationApi.getLastLocation(apiClient);
         Conductor.getInstance().setLocation(lastLocation);
-        if(updateUI) {
-            ActivityUtils.updateUI(this, mMap, lastLocation);
-        }
     }
 
     private void abrirMenuContextual() {
@@ -328,14 +304,14 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
             switch (message)
             {
                 case AsignacionServicioService.OCULTAR_LAYOUT_SERVICIO:
-                    MapsActivity.this.runOnUiThread(new Runnable() {
+                    MainActivity.this.runOnUiThread(new Runnable() {
                         public void run() {
                             //servicioLayout.setVisibility(View.GONE);
                         }
                     });
                 break;
                 case AsignacionServicioService.MOSTRAR_LAYOUT_SERVICIO:
-                    MapsActivity.this.runOnUiThread(new Runnable() {
+                    MainActivity.this.runOnUiThread(new Runnable() {
                         public void run() {
                            // servicioLayout.setVisibility(View.VISIBLE);
                         }
@@ -347,7 +323,7 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
                 case AsignacionServicioService.LLENAR_LAYOUT_SERVICIO:
                 break;
                 case AsignacionServicioService.CAMBIAR_UBICACION:
-                    iniciarUbicacion(false);
+                    iniciarUbicacion();
                 break;
                 case AsignacionServicioService.CALCULAR_DISTACIA:
 
@@ -373,11 +349,68 @@ public class MapsActivity extends FragmentActivity  implements OnMapReadyCallbac
 
                         // aqui no
                     } else {
-                        iniciarUbicacion(true);
+                        iniciarUbicacion();
                     }
                     return;
                 }
         }
     }
 
-}
+    private void obtenerServicos()
+    {
+        Conductor.getInstance().setContext(MainActivity.this);
+        ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
+        JSONArray jsonArray = null;
+        try {
+            jsonArray = obtenerServicioOperation.execute().get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ArrayList<String> lista = new ArrayList();
+        String ant = "";
+        if(jsonArray != null) {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                try {
+                    JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                    String servicioId = jsonObject.getString("servicio_id");
+                    String servicioFecha = jsonObject.getString("servicio_fecha");
+                    Date date = Utilidades.FORMAT.parse(servicioFecha);
+                    String servicioHora = jsonObject.getString("servicio_hora");
+                    String servicioCliente = jsonObject.getString("servicio_cliente");
+                    String servicioEstado = jsonObject.getString("servicio_estado");
+                    if (!servicioId.equals(ant)) {
+                        lista.add(servicioId + "%" + Utilidades.FORMAT.format(date) + "%" + servicioHora + "%" + servicioCliente + "%" + servicioEstado);
+                    }
+                    ant = servicioId;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if(lista.size() > 0 ) {
+            String[] array = new String[lista.size()];
+            array = lista.toArray(array);
+            mAdapter = new ReciclerViewProgramadoAdapter(this, array);
+
+            recyclerView.setAdapter(mAdapter);
+        }
+        else
+        {
+            Toast.makeText(this,"No hay servicios programados",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void refreshContent() {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                obtenerServicos();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+
+    }
