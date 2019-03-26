@@ -39,7 +39,7 @@ public class Utilidades {
 
     public static int reintentos = 0;
 
-    public static String URL_BASE = "https://www.domito.cl/GpsVan2/source/httprequest/";
+    public static String URL_BASE = "https://www.domito.cl/GpsVan/source/httprequest/";
     //public static String URL_BASE = "http://192.168.43.136/GpsVan/source/httprequest/";
     public static String URL_BASE_CLIENTE = URL_BASE + "cliente/";
     public static String URL_BASE_CONDUCTOR = URL_BASE + "conductor/";
@@ -53,7 +53,7 @@ public class Utilidades {
 
     public static JSONObject enviarPost(String urlDest, List<NameValuePair> params) throws IOException {
         JSONObject jsonObject = null;
-        Activity activity = (Activity) Conductor.getInstance().getContext();
+        /*Activity activity = (Activity) Conductor.getInstance().getContext();
         TextView textViewError = activity.findViewById(R.id.textViewError);
         if (!validarConexion()) {
             activity.runOnUiThread(new Runnable() {
@@ -72,7 +72,7 @@ public class Utilidades {
                     textViewError.setVisibility(View.GONE);
                 }
             });
-        }
+        }*/
         HttpParams httpParams = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
         HttpConnectionParams.setSoTimeout(httpParams, 3000);
@@ -110,7 +110,7 @@ public class Utilidades {
 
     public static JSONArray enviarPostArray(String urlDest, List<NameValuePair> params) {
         JSONArray jsonArray = null;
-        Activity activity = (Activity) Conductor.getInstance().getContext();
+        /*Activity activity = (Activity) Conductor.getInstance().getContext();
         TextView textViewError = activity.findViewById(R.id.textViewError);
         if (!validarConexion()) {
             activity.runOnUiThread(new Runnable() {
@@ -129,7 +129,7 @@ public class Utilidades {
                     textViewError.setVisibility(View.GONE);
                 }
             });
-        }
+        }*/
         HttpParams httpParams = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
         HttpConnectionParams.setSoTimeout(httpParams, 3000);

@@ -187,13 +187,13 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                 Date dateNow = new Date();
                 Long lNow = dateNow.getTime();
                 Long data = Math.abs(lNow - l);
-                if (data <= 1.8e+6 || dateNow.after(date)) {
+                if (data <= 3.6e+6 || dateNow.after(date)) {
                     Conductor.getInstance().setServicioActual(textviewServicioValor.getText().toString());
                     Conductor.getInstance().setServicioAceptado(true);
                     this.finish();
                 } else {
                     Toast.makeText(getApplicationContext(),
-                            "Falta mas de 30 minutos para el inicio del servicio", Toast.LENGTH_LONG).show();
+                            "Falta mas de 1 hora para el inicio del servicio", Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
