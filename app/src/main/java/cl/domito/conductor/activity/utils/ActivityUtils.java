@@ -25,7 +25,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -41,15 +40,10 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
 import cl.domito.conductor.R;
-import cl.domito.conductor.activity.MapsActivity;
-import cl.domito.conductor.activity.ServicioActivity;
-import cl.domito.conductor.dominio.Conductor;
-import cl.domito.conductor.http.Utilidades;
 
 public class ActivityUtils {
 
@@ -62,17 +56,6 @@ public class ActivityUtils {
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
-    }
-
-
-    public static void updateUI(Activity activity,GoogleMap googleMap,Location loc) {
-        if (loc != null) {
-            LatLng latLng = new LatLng(loc.getLatitude(), loc.getLongitude());
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(17).build();
-            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        } else {
-            Toast.makeText(activity, "Ocurrio un problema al obtener la ubicación", Toast.LENGTH_LONG).show();
         }
     }
 

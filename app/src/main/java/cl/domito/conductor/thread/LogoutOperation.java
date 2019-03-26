@@ -1,35 +1,22 @@
 package cl.domito.conductor.thread;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
-import cl.domito.conductor.R;
 import cl.domito.conductor.activity.LoginActivity;
-import cl.domito.conductor.activity.MapsActivity;
-import cl.domito.conductor.activity.utils.ActivityUtils;
+import cl.domito.conductor.activity.MainActivity;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
-import cl.domito.conductor.http.Utilidades;
 import cl.domito.conductor.service.AsignacionServicioService;
 
 public class LogoutOperation extends AsyncTask<String, Void, Void> {
 
-    WeakReference<MapsActivity> context;
+    WeakReference<MainActivity> context;
 
-    public LogoutOperation(MapsActivity activity) {
-        context = new WeakReference<MapsActivity>(activity);
+    public LogoutOperation(MainActivity activity) {
+        context = new WeakReference<MainActivity>(activity);
     }
 
     @Override

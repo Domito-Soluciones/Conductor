@@ -64,27 +64,26 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
                 JSONArray servicio = new JSONArray();
                 Conductor conductor = Conductor.getInstance();
                 JSONArray servicios = conductor.getServicios();
-                for(int i = 0; i < servicios.length();i++)
-                {
-                    try {
-                        JSONObject servicioAux = conductor.getServicios().getJSONObject(i);
-                        String idServicio = vh.textView.getText().toString();
-                        String idAux = servicioAux.getString("servicio_id");
-                        if (idAux.equals(idServicio)) {
-                            servicio.put(servicioAux);
+                if (servicios != null) {
+                    for (int i = 0; i < servicios.length(); i++) {
+                        try {
+                            JSONObject servicioAux = conductor.getServicios().getJSONObject(i);
+                            String idServicio = vh.textView.getText().toString();
+                            String idAux = servicioAux.getString("servicio_id");
+                            if (idAux.equals(idServicio)) {
+                                servicio.put(servicioAux);
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
-                    catch(Exception e)
-                    {
-                        e.printStackTrace();
-                    }
+                    conductor.setServicio(servicio);
+                    Intent intent = new Intent(activity, ServicioDetalleActivity.class);
+                    intent.putExtra("fecha", vh.textViewFecha.getText().toString());
+                    intent.putExtra("id", vh.textView.getText().toString());
+                    activity.startActivity(intent);
+                    activity.finish();
                 }
-                conductor.setServicio(servicio);
-                Intent intent = new Intent(activity, ServicioDetalleActivity.class);
-                intent.putExtra("fecha", vh.textViewFecha.getText().toString());
-                intent.putExtra("id", vh.textView.getText().toString());
-                activity.startActivity(intent);
-                activity.finish();
             }
         });
         return vh;

@@ -1,39 +1,25 @@
 package cl.domito.conductor.thread;
 
-import android.app.ActivityManager;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
-import cl.domito.conductor.R;
-import cl.domito.conductor.activity.MapsActivity;
-import cl.domito.conductor.activity.utils.ActivityUtils;
+import cl.domito.conductor.activity.MainActivity;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
-import cl.domito.conductor.http.Utilidades;
-import cl.domito.conductor.service.AsignacionServicioService;
 
 public class CambiarEstadoOperation extends AsyncTask<Void, Void, Void> {
 
-    private WeakReference<MapsActivity> context;
+    private WeakReference<MainActivity> context;
     private Button buttonConfirmar;
     private TextView textViewEstadoValor;
 
-    public CambiarEstadoOperation(MapsActivity activity) {
-        context = new WeakReference<MapsActivity>(activity);
+    public CambiarEstadoOperation(MainActivity activity) {
+        context = new WeakReference<MainActivity>(activity);
     }
 
     @Override
