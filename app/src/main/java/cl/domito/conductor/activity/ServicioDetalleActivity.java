@@ -103,6 +103,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                 }
                 for (int i = 0; i < conductor.getServicio().length(); i++) {
                     JSONObject servicio = conductor.getServicio().getJSONObject(i);
+                    conductor.setServicioActual(servicio.getString("servicio_id"));
                     textviewServicioValor.setText(servicio.getString("servicio_id"));
                     textviewFechaValor.setText(servicio.getString("servicio_fecha") + " " + servicio.getString("servicio_hora"));
                     textviewClienteValor.setText(servicio.getString("servicio_cliente"));
@@ -145,8 +146,11 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                 buttonConfirmar.setText("Aceptar");
             } else if (estado.equals("3")) {
                 buttonConfirmar.setText("Iniciar");
+            } else if (estado.equals("4")) {
+                    buttonConfirmar.setText("Continuar");
             }
-            conductor.setServicioActual(null);
+
+            //conductor.setServicioActual(null);
             //activity.finish();
             //} else {
             //    System.out.println("la diferencia es de mas de 10 minutos");
@@ -196,6 +200,10 @@ public class ServicioDetalleActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }else if (estado.equals("4")) {
+            Intent mainIntent = new Intent(this, PasajeroActivity.class);
+            startActivity(mainIntent);
+            this.finish();
         }
     }
 

@@ -58,7 +58,7 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
                 if (ruta.equals("ZP")) {
                     String cliente = primero.getString("servicio_cliente");
                     String destino = primero.getString("servicio_cliente_direccion");
-                    lista.add(cliente + "%%" + destino + "%0");
+                    lista.add(cliente + "%%" + destino + "%0%0");
                 }
             }
             catch (Exception e)
@@ -75,7 +75,8 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
                     String celular = servicio.getString("servicio_pasajero_celular");
                     String destino = servicio.getString("servicio_destino");
                     String estado = servicio.getString("servicio_pasajero_estado");
-                    lista.add(nombre + "%" + celular + "%" + destino + "%" + "%"+ estado +"%"+ id);
+                    System.out.println("este es el estado: "+estado +" del pasajero " + nombre);
+                    lista.add(nombre + "%" + celular + "%" + destino + "%" + estado +"%"+ id);
                 }
             }
             catch(Exception e){e.printStackTrace();}
@@ -87,7 +88,7 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
                 if (ruta.equals("RG")) {
                     String cliente = ultimo.getString("servicio_cliente");
                     String destino = ultimo.getString("servicio_cliente_direccion");
-                    lista.add(cliente + "%%" + destino + "%0");
+                    lista.add(cliente + "%%" + destino + "%0%0");
                 }
             }
             catch (Exception e)
@@ -115,7 +116,9 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String aString) {
-        CambiarMovilOperation cambiarMovilOperation = new CambiarMovilOperation();
-        cambiarMovilOperation.execute(Conductor.getInstance().getServicioActual());
+        if(aString != null) {
+            CambiarMovilOperation cambiarMovilOperation = new CambiarMovilOperation();
+            cambiarMovilOperation.execute(aString);
+        }
     }
 }

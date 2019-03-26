@@ -19,7 +19,7 @@ public class TomarPasajeroOperation extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        RequestConductor.cambiarEstadoPasajero("2");
+        RequestConductor.cambiarEstadoPasajero("1");
         return null;
     }
 

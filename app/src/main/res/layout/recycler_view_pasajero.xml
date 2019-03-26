@@ -55,17 +55,20 @@
         app:layout_constraintVertical_bias="0.96" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/imageButtonAceptar"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:background="@color/colorFondo"
         android:src="@drawable/confirmar"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
-        app:layout_constraintHorizontal_bias="0.873"
-        app:layout_constraintStart_toEndOf="@+id/imageLlamar2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.27"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textviewDireccion"
-        app:layout_constraintVertical_bias="0.32" />
+        app:layout_constraintVertical_bias="0.307" />
 
     <ImageButton
         android:id="@+id/imageLlamar2"
@@ -82,17 +85,33 @@
         app:layout_constraintVertical_bias="0.72" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/imageButtonTerminar"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:layout_marginStart="8dp"
+        android:background="@color/colorFondo"
+        android:src="@drawable/terminar"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textviewDireccion"
+        app:layout_constraintVertical_bias="0.307" />
+
+    <ImageButton
+        android:id="@+id/imageButtonCancelar"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="8dp"
         android:background="@color/colorFondo"
         android:src="@drawable/cerrar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.953"
-        app:layout_constraintStart_toStartOf="@+id/textviewDireccion"
+        app:layout_constraintHorizontal_bias="0.78"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textviewDireccion"
-        app:layout_constraintVertical_bias="0.32" />
+        app:layout_constraintVertical_bias="0.307" />
 
     <TextView
         android:id="@+id/textView"

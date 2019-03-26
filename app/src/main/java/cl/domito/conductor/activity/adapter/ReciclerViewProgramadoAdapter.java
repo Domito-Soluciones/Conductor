@@ -82,7 +82,7 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
                     intent.putExtra("fecha", vh.textViewFecha.getText().toString());
                     intent.putExtra("id", vh.textView.getText().toString());
                     activity.startActivity(intent);
-                    activity.finish();
+                    //activity.finish();
                 }
             }
         });
