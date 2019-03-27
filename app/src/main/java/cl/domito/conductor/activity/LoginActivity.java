@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button mEmailSignInButton;
     private CheckBox checkBoxRec;
     private TextView textViewError;
+    private Conductor conductor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,9 @@ public class LoginActivity extends AppCompatActivity {
         checkBoxRec = findViewById(R.id.checkBox);
         textViewError = findViewById(R.id.textViewError);
 
-        Conductor.getInstance().setContext(LoginActivity.this);
+        conductor = Conductor.getInstance();
+
+        conductor.setContext(LoginActivity.this);
         if(Utilidades.validarConexion())
         {
             textViewError.setVisibility(View.GONE);
@@ -56,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView.setText(clave);
         if(!idConductor.equals("") && !clave.equals(""))
         {
-            Conductor.getInstance().setRecordarSession(true);
+            conductor.setRecordarSession(true);
             checkBoxRec.setChecked(true);
         }
 
@@ -98,11 +101,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void recordarInicioSesion() {
-        Conductor.getInstance().setRecordarSession(true);
+        conductor.setRecordarSession(true);
     }
 
     private void olvidarInicioSesion() {
-        Conductor.getInstance().setRecordarSession(false);
+        conductor.setRecordarSession(false);
     }
 
 }

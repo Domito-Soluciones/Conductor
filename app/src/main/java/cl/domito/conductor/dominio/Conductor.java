@@ -21,24 +21,20 @@ public class Conductor {
     private String nombre;
     private String nick;
     private String servicioActual;
+    private String servicioActualRuta;
     private String pasajeroActual;
-    private List<String> listaDestinos = new ArrayList();
     private int estado;
     private boolean activo;
     private boolean recordarSession;
     private JSONArray servicios;
-    private boolean ocupado;
     private Location location;
     private Location locationDestino;
-    private boolean servicioAceptado;
     private JSONArray servicio;
-    private int indiceViaje = 0;
     private boolean navegando;
     private int cantidadPasajeros;
     private GoogleApiClient googleApiClient;
     private Context context;
     private boolean volver;
-    private boolean rutaDibujada;
 
     public static synchronized Conductor getInstance(){
         if(instance == null){
@@ -112,10 +108,6 @@ public class Conductor {
         this.servicios = servicios;
     }
 
-    public void setOcupado(boolean ocupado) {
-        this.ocupado = ocupado;
-    }
-
     public Location getLocationDestino() {
         return locationDestino;
     }
@@ -136,28 +128,12 @@ public class Conductor {
         this.servicioActual = servicioActual;
     }
 
-    public boolean isServicioAceptado() {
-        return servicioAceptado;
-    }
-
-    public void setServicioAceptado(boolean servicioAceptado) {
-        this.servicioAceptado = servicioAceptado;
-    }
-
     public JSONArray getServicio() {
         return servicio;
     }
 
     public void setServicio(JSONArray servicio) {
         this.servicio = servicio;
-    }
-
-    public int getIndiceViaje() {
-        return indiceViaje;
-    }
-
-    public void setIndiceViaje(int indiceViaje) {
-        this.indiceViaje = indiceViaje;
     }
 
     public boolean isNavegando() {
@@ -188,10 +164,6 @@ public class Conductor {
         this.context = context;
     }
 
-    public List<String> getListaDestinos() {
-        return listaDestinos;
-    }
-
     public boolean isVolver() {
         return volver;
     }
@@ -200,12 +172,12 @@ public class Conductor {
         this.volver = volver;
     }
 
-    public boolean isRutaDibujada() {
-        return rutaDibujada;
+    public String getServicioActualRuta() {
+        return servicioActualRuta;
     }
 
-    public void setRutaDibujada(boolean rutaDibujada) {
-        this.rutaDibujada = rutaDibujada;
+    public void setServicioActualRuta(String servicioActualRuta) {
+        this.servicioActualRuta = servicioActualRuta;
     }
 }
 

@@ -54,7 +54,7 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
         if(conductor.getServicio() != null) {
             try {
                 JSONObject primero = conductor.getServicio().getJSONObject(0);
-                String ruta = primero.getString("servicio_ruta").split("-")[1];
+                String ruta = primero.getString("servicio_truta").split("-")[0];
                 if (ruta.equals("ZP")) {
                     String cliente = primero.getString("servicio_cliente");
                     String destino = primero.getString("servicio_cliente_direccion");
@@ -76,7 +76,10 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
                     String destino = servicio.getString("servicio_destino");
                     String estado = servicio.getString("servicio_pasajero_estado");
                     System.out.println("este es el estado: "+estado +" del pasajero " + nombre);
-                    lista.add(nombre + "%" + celular + "%" + destino + "%" + estado +"%"+ id);
+                    if(!estado.equals("3"))
+                    {
+                        lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                    }
                 }
             }
             catch(Exception e){e.printStackTrace();}
@@ -84,7 +87,7 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
         if(conductor.getServicio() != null) {
             try {
                 JSONObject ultimo = conductor.getServicio().getJSONObject(conductor.getServicio().length() - 1);
-                String ruta = ultimo.getString("servicio_ruta").split("-")[1];
+                String ruta = ultimo.getString("servicio_truta").split("-")[0];
                 if (ruta.equals("RG")) {
                     String cliente = ultimo.getString("servicio_cliente");
                     String destino = ultimo.getString("servicio_cliente_direccion");

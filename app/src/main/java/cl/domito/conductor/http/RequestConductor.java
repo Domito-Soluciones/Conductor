@@ -23,6 +23,7 @@ public class RequestConductor {
     private static JSONObject RESPUESTA;
     private static double latAnterior;
     private static double lngAnterior;
+    private static Conductor conductor = Conductor.getInstance();
 
     public static boolean loginConductor(String usuario, String password)
     {
@@ -36,7 +37,7 @@ public class RequestConductor {
             RESPUESTA = Utilidades.enviarPost(url,params);
             if(RESPUESTA != null) {
                 if (!RESPUESTA.getString("conductor_id").equals("0")) {
-                    Conductor.getInstance().setId(RESPUESTA.getString("conductor_id"));
+                    conductor.setId(RESPUESTA.getString("conductor_id"));
                     return true;
                 }
             }
@@ -73,7 +74,7 @@ public class RequestConductor {
         try {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("id", idServicio));
-            params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getId()));
+            params.add(new BasicNameValuePair("conductor",conductor.getId()));
             Utilidades.enviarPost(reqUrl,params);
 
         }
@@ -97,7 +98,7 @@ public class RequestConductor {
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 params.add(new BasicNameValuePair("lat", lastLocation.getLatitude() + ""));
                 params.add(new BasicNameValuePair("lon", lastLocation.getLongitude() + ""));
-                params.add(new BasicNameValuePair("conductor", Conductor.getInstance().getId()));
+                params.add(new BasicNameValuePair("conductor", conductor.getId()));
                 Utilidades.enviarPost(reqUrl, params);
             }
         }
@@ -123,7 +124,7 @@ public class RequestConductor {
         JSONObject jsonObject = null;
         String url2 = Utilidades.URL_BASE_MOVIL + "ModEstadoMovil.php";
         List<NameValuePair> params2 = new ArrayList();
-        params2.add(new BasicNameValuePair("conductor",Conductor.getInstance().getId()));
+        params2.add(new BasicNameValuePair("conductor",conductor.getId()));
         params2.add(new BasicNameValuePair("estado",estado));
         try {
             jsonObject = Utilidades.enviarPost(url2,params2);
@@ -137,7 +138,7 @@ public class RequestConductor {
         JSONObject jsonObject = null;
         String url = Utilidades.URL_BASE_MOVIL + "ModServicioMovil.php";
         List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getId()));
+        params.add(new BasicNameValuePair("conductor",conductor.getId()));
         params.add(new BasicNameValuePair("servicio",servicio));
         try {
             jsonObject = Utilidades.enviarPost(url,params);
@@ -163,7 +164,6 @@ public class RequestConductor {
 
 
     public static void cambiarEstadoPasajero(String estado) {
-        Conductor conductor = Conductor.getInstance();
         String url = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicioPasajero.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("idServicio",conductor.getServicioActual()));
@@ -180,14 +180,14 @@ public class RequestConductor {
         String url = Utilidades.URL_BASE_SERVICIO + "GetServicioProgramado.php";
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("id",idServicio));
-        params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getId()));
-        Conductor.getInstance().setServicio(Utilidades.enviarPostArray(url, params));
+        params.add(new BasicNameValuePair("conductor",conductor.getId()));
+        conductor.setServicio(Utilidades.enviarPostArray(url, params));
     }
 
     public static JSONArray obtenerNotificaciones() {
         String url = Utilidades.URL_BASE_NOTIFICACION + "GetNotificaciones.php";
         List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("llave", Conductor.getInstance().getId()));
+        params.add(new BasicNameValuePair("llave", conductor.getId()));
         JSONArray jsonArray = Utilidades.enviarPostArray(url, params);
         return jsonArray;
     }
@@ -195,7 +195,7 @@ public class RequestConductor {
     public static void logOut() {
         String url = Utilidades.URL_BASE_MOVIL + "ModEstadoMovil.php";
         List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("conductor",Conductor.getInstance().getId()));
+        params.add(new BasicNameValuePair("conductor",conductor.getId()));
         params.add(new BasicNameValuePair("estado","0"));
         try {
             Utilidades.enviarPost(url,params);
@@ -218,7 +218,6 @@ public class RequestConductor {
     }
 
     public static void insertarNavegacion() {
-        Conductor conductor = Conductor.getInstance();
         String url = Utilidades.URL_BASE_SERVICIO + "AddServicioDetalleReal.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("servicio",conductor.getServicioActual()));

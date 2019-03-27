@@ -17,6 +17,7 @@ public class ProduccionActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ImageView imageViewAtras;
+    private Conductor conductor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,10 @@ public class ProduccionActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-        Conductor.getInstance().setContext(ProduccionActivity.this);
+
+        conductor = Conductor.getInstance();
+
+        conductor.setContext(ProduccionActivity.this);
 
         ObtenerProduccionOperation obtenerProduccionOperation = new ObtenerProduccionOperation(this);
         obtenerProduccionOperation.execute();
@@ -42,13 +46,13 @@ public class ProduccionActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Conductor.getInstance().setVolver(true);
+        conductor.setVolver(true);
         super.onBackPressed();
     }
 
     private void volver()
     {
-        Conductor.getInstance().setVolver(true);
+        conductor.setVolver(true);
         this.finish();
     }
 

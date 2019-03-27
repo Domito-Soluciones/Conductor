@@ -22,14 +22,15 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
 
     WeakReference<LoginActivity> context;
     TextView textViewError;
+    Conductor conductor;
 
     public LoginOperation(LoginActivity activity) {
         context = new WeakReference<LoginActivity>(activity);
+        conductor = Conductor.getInstance();
     }
 
     @Override
     protected Void doInBackground(String... strings) {
-        Conductor conductor = Conductor.getInstance();
         LoginActivity loginActivity = context.get();
         ProgressBar progressBar = loginActivity.findViewById(R.id.login_progress);
         loginActivity.runOnUiThread(new Runnable() {
@@ -74,7 +75,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        if(Conductor.getInstance().isActivo()) {
+        if(conductor.isActivo()) {
             AsignacionServicioService asignacionServicioService = new AsignacionServicioService(context.get());
             Intent i = new Intent(context.get(), AsignacionServicioService.class);
             if (!ActivityUtils.isRunning(asignacionServicioService.getClass(), context.get())) {

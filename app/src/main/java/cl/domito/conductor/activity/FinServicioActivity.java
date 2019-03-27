@@ -1,5 +1,6 @@
 package cl.domito.conductor.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -17,6 +18,7 @@ public class FinServicioActivity extends AppCompatActivity {
     private TextView textViewFecha;
     private TextView textViewTarifa;
     private TextView buttonFinalizar;
+    private Conductor conductor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +30,16 @@ public class FinServicioActivity extends AppCompatActivity {
         textViewFecha = findViewById(R.id.textViewFechaValor);
         textViewTarifa = findViewById(R.id.textViewTarifaValor);
         buttonFinalizar = findViewById(R.id.buttonFinalizar);
-        Conductor.getInstance().setServicioAceptado(false);
-        Conductor.getInstance().setIndiceViaje(0);
-        Conductor.getInstance().setRutaDibujada(false);
+
+        conductor = Conductor.getInstance();
+
         try {
-            textView.setText(Conductor.getInstance().getServicio().getJSONObject(0).get("servicio_id").toString());
-            textViewCliente.setText(Conductor.getInstance().getServicio().getJSONObject(0).get("servicio_cliente").toString());
-            textViewFecha.setText(Conductor.getInstance().getServicio().getJSONObject(0).get("servicio_fecha").toString());
-            textViewTarifa.setText(Conductor.getInstance().getServicio().getJSONObject(0).get("servicio_tarifa").toString());
+            Bundle bundle = getIntent().getExtras();
+            textView.setText(conductor.getServicioActual());
+            textViewCliente.setText(bundle.getString("cliente"));
+            textViewFecha.setText(bundle.getString("fecha"));
+            textViewTarifa.setText(bundle.getString("tarifa"));
+            conductor.setServicioActual(null);
         }
         catch(Exception e)
         {

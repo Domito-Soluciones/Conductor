@@ -41,6 +41,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
     private TextView textviewCantidadValor;
     private TextView textviewObservacionValor;
     private String estado = "";
+    private Conductor conductor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,10 @@ public class ServicioDetalleActivity extends AppCompatActivity {
         textviewTarifaValor = findViewById(R.id.textViewTarifaValor);
         textviewCantidadValor = findViewById(R.id.textViewCantidadValor);
         textviewObservacionValor = findViewById(R.id.textViewObservacionValor);
-        Conductor.getInstance().setContext(ServicioDetalleActivity.this);
+
+        conductor = Conductor.getInstance();
+
+        conductor.setContext(ServicioDetalleActivity.this);
 
         buttonConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,18 +90,16 @@ public class ServicioDetalleActivity extends AppCompatActivity {
             Date dateNow = new Date();
             Long lNow = dateNow.getTime();
             Long data = Math.abs(lNow - l);
-            Conductor conductor = Conductor.getInstance();
             try {
                 int cantidad = 0;
                 ArrayList<String> lista = new ArrayList();
                 if (conductor.getServicio() != null) {
                     JSONObject primero = conductor.getServicio().getJSONObject(0);
-                    String ruta = primero.getString("servicio_ruta").split("-")[1];
+                    String ruta = primero.getString("servicio_truta").split("-")[0];
                     if (ruta.equals("ZP")) {
                         String cliente = primero.getString("servicio_cliente");
                         String destino = primero.getString("servicio_cliente_direccion");
                         lista.add(cliente + "%%" + destino);
-                        conductor.getListaDestinos().add(destino);
 
                     }
                 }
@@ -116,21 +118,21 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     String celular = servicio.getString("servicio_pasajero_celular");
                     String destino = servicio.getString("servicio_destino");
                     String cliente = servicio.getString("servicio_cliente_direccion");
+                    conductor.setServicioActual(servicio.getString("servicio_id"));
+                    conductor.setServicioActualRuta(servicio.getString("servicio_truta"));
                     lista.add(nombre + "%" + celular + "%" + destino);
-                    conductor.getListaDestinos().add(destino);
                 }
                 if (conductor.getServicio() != null) {
                     JSONObject ultimo = conductor.getServicio().getJSONObject(conductor.getServicio().length() - 1);
-                    String ruta = ultimo.getString("servicio_ruta").split("-")[1];
+                    String ruta = ultimo.getString("servicio_truta").split("-")[0];
                     if (ruta.equals("RG")) {
                         String cliente = ultimo.getString("servicio_cliente");
                         String destino = ultimo.getString("servicio_cliente_direccion");
                         lista.add(cliente + "%%" + destino);
-                        conductor.getListaDestinos().add(destino);
                     }
                 }
                 textviewCantidadValor.setText(cantidad + "");
-                Conductor.getInstance().setCantidadPasajeros(cantidad);
+                conductor.setCantidadPasajeros(cantidad);
                 if (lista.size() > 0) {
                     String[] array = new String[lista.size()];
                     array = lista.toArray(array);
@@ -188,8 +190,6 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                 Long lNow = dateNow.getTime();
                 Long data = Math.abs(lNow - l);
                 if (data <= 3.6e+6 || dateNow.after(date)) {
-                    Conductor.getInstance().setServicioActual(textviewServicioValor.getText().toString());
-                    Conductor.getInstance().setServicioAceptado(true);
                     Intent mainIntent = new Intent(this, PasajeroActivity.class);
                     startActivity(mainIntent);
                     this.finish();

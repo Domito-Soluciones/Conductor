@@ -11,6 +11,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
@@ -30,19 +31,21 @@ import java.util.List;
 
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.FinServicioActivity;
+import cl.domito.conductor.activity.PasajeroActivity;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
-import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.thread.CambiarEstadoServicioOperation;
 import cl.domito.conductor.thread.CancelarRutaPasajeroOperation;
 import cl.domito.conductor.thread.FinalizarRutaPasajeroOperation;
 import cl.domito.conductor.thread.ObtenerServicioOperation;
+import cl.domito.conductor.thread.ObtenerServiciosOperation;
 import cl.domito.conductor.thread.TomarPasajeroOperation;
 
 public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerViewPasajeroAdapter.MyViewHolder> {
 
     Activity activity;
     private String[] mDataset;
+    Conductor conductor;
 
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -69,6 +72,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
     public ReciclerViewPasajeroAdapter(Activity activity, String[] myDataset) {
         this.activity = activity;
         mDataset = myDataset;
+        conductor = Conductor.getInstance();
     }
 
 
@@ -106,33 +110,35 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
             myViewHolder.buttonTerminar.setVisibility(View.VISIBLE);
         }
 
-        /*CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-        cambiarEstadoServicioOperation.execute(Conductor.getInstance().getServicioActual(),"5");
-        Conductor.getInstance().getListaDestinos().clear();
-        conductor.setServicioActual(null);
-        Intent intent = activity.getIntent();
-        activity.finish();
-        activity.startActivity(intent);
-        Intent mainIntent = new Intent(Conductor.getInstance().getContext(), FinServicioActivity.class);
-        activity.startActivity(mainIntent);*/
         myViewHolder.buttonIniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (estadoPasajero.equals("0")) {
-                    Conductor.getInstance().setPasajeroActual(idPasajero);
-                    TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation();
+                    if(idPasajero.equals("0"))
+                    {
+                        String ruta = conductor.getServicioActualRuta();
+                        if(ruta.contains("RG-"))
+                        {
+                            finalizar();
+                        }
+                        else if(ruta.contains("ZP-"))
+                        {
+
+                        }
+                    }
+                    conductor.setPasajeroActual(idPasajero);
+                    TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
                     tomarPasajeroOperation.execute();
                     recargarPasajeros();
                 } else if (estadoPasajero.equals("1")) {
                     myViewHolder.buttonTerminar.setVisibility(View.VISIBLE);
-                    navegar(myViewHolder.getAdapterPosition());
-                    Conductor.getInstance().setPasajeroActual(idPasajero);
+                    navegar(direccionPasajero);
                     if (myViewHolder.getAdapterPosition() == 0) {
                         CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-                        cambiarEstadoServicioOperation.execute(Conductor.getInstance().getServicioActual(), "4");
+                        cambiarEstadoServicioOperation.execute(conductor.getServicioActual(), "4");
                     }
-                    if (myViewHolder.getAdapterPosition() == Conductor.getInstance().getCantidadPasajeros() - 1) {
-                        Conductor.getInstance().setNavegando(false);
+                    if (myViewHolder.getAdapterPosition() == conductor.getCantidadPasajeros() - 1) {
+                        conductor.setNavegando(false);
                     }
                 } else if (estadoPasajero.equals("2")) {
                     Resources resources = myViewHolder.textViewDireccion.getContext().getResources();
@@ -149,7 +155,8 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         myViewHolder.buttonTerminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FinalizarRutaPasajeroOperation finalizarRutaPasajeroOperation = new FinalizarRutaPasajeroOperation();
+                conductor.setPasajeroActual(idPasajero);
+                FinalizarRutaPasajeroOperation finalizarRutaPasajeroOperation = new FinalizarRutaPasajeroOperation((PasajeroActivity) activity);
                 finalizarRutaPasajeroOperation.execute();
                 recargarPasajeros();
             }
@@ -166,7 +173,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
             @Override
             public void onClick(View v) {
                 myViewHolder.constraintLayoutPasajero.setVisibility(View.GONE);
-                Conductor.getInstance().setPasajeroActual(idPasajero);
+                conductor.setPasajeroActual(idPasajero);
                 CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
                 cancelarRutaPasajeroOperation.execute();
             }
@@ -179,11 +186,8 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         return mDataset.length;
     }
 
-    private void navegar(int index) {
-        Conductor conductor = Conductor.getInstance();
+    private void navegar(String destino) {
         conductor.setNavegando(true);
-        String destino = conductor.getListaDestinos().get(index);
-        conductor.setIndiceViaje(index + 1);
         try {
             Geocoder geocoder = new Geocoder(activity);
             List<Address> addresses = geocoder.getFromLocationName(destino, 1);
@@ -213,13 +217,11 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
 
     public void recargarPasajeros()
     {
-        Conductor conductor = Conductor.getInstance();
         ArrayList<String> lista = new ArrayList();
-        ArrayList<String> listaFinalizados = new ArrayList();
         String idServicio = conductor.getServicioActual();
         try {
             ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
-            Conductor.getInstance().setServicio(obtenerServicioOperation.execute().get());
+            conductor.setServicio(obtenerServicioOperation.execute(conductor.getServicioActual()).get());
         }
         catch(Exception e)
         {
@@ -228,7 +230,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         if(conductor.getServicio() != null) {
             try {
                 JSONObject primero = conductor.getServicio().getJSONObject(0);
-                String ruta = primero.getString("servicio_ruta").split("-")[1];
+                String ruta = primero.getString("servicio_truta").split("-")[0];
                 if (ruta.equals("ZP")) {
                     String cliente = primero.getString("servicio_cliente");
                     String destino = primero.getString("servicio_cliente_direccion");
@@ -245,19 +247,15 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                 JSONObject servicio = conductor.getServicio().getJSONObject(i);
                 if (servicio.getString("servicio_id").equals(idServicio)) {
                     String id = servicio.getString("servicio_pasajero_id");
-                    String nombre = servicio.getString("servicio_pasajero_nombre");
-                    String celular = servicio.getString("servicio_pasajero_celular");
-                    String destino = servicio.getString("servicio_destino");
-                    String estado = servicio.getString("servicio_pasajero_estado");
-                    System.out.println("este es el estado: "+estado +" del pasajero " + nombre);
-                    if (estado.equals("3"))
-                    {
-                        listaFinalizados.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
-                    }
-                    else
-                    {
-                        lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
-                    }
+                        String nombre = servicio.getString("servicio_pasajero_nombre");
+                        String celular = servicio.getString("servicio_pasajero_celular");
+                        String destino = servicio.getString("servicio_destino");
+                        String estado = servicio.getString("servicio_pasajero_estado");
+                        System.out.println("este es el estado: "+estado +" del pasajero " + nombre);
+                        if (!estado.equals("3"))
+                        {
+                            lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                        }
                 }
             }
             catch(Exception e){e.printStackTrace();}
@@ -265,7 +263,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         if(conductor.getServicio() != null) {
             try {
                 JSONObject ultimo = conductor.getServicio().getJSONObject(conductor.getServicio().length() - 1);
-                String ruta = ultimo.getString("servicio_ruta").split("-")[1];
+                String ruta = ultimo.getString("servicio_truta").split("-")[0];
                 if (ruta.equals("RG")) {
                     String cliente = ultimo.getString("servicio_cliente");
                     String destino = ultimo.getString("servicio_cliente_direccion");
@@ -291,5 +289,25 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         }
     }
 
+    private void finalizar()
+    {
+        try {
+            JSONObject json = conductor.getServicio().getJSONObject(0);
+            Intent intent = new Intent(conductor.getContext(), FinServicioActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("cliente", json.getString("servicio_cliente"));
+            bundle.putString("fecha", json.getString("servicio_fecha"));
+            bundle.putString("tarifa", json.getString("servicio_tarifa"));
+            intent.putExtras(bundle);
+            CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
+            cambiarEstadoServicioOperation.execute(conductor.getServicioActual(), "5");
+            activity.finish();
+            activity.startActivity(intent);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -29,6 +29,7 @@ public class ServicioActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private ImageView imageViewAtras;
     private ImageView imageViewAtrasInt;
+    Conductor conductor;
 
     ConstraintLayout constraintLayoutProgramado;
     ConstraintLayout constraintLayoutDetalle;
@@ -39,6 +40,7 @@ public class ServicioActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_servicio);
 
+            conductor = Conductor.getInstance();
             recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
             recyclerView.setHasFixedSize(true);
             layoutManager = new LinearLayoutManager(this);
@@ -47,8 +49,8 @@ public class ServicioActivity extends AppCompatActivity {
             imageViewAtrasInt = findViewById(R.id.imageViewAtrasInt);
             constraintLayoutProgramado = findViewById(R.id.constrainLayoutProgramado);
             constraintLayoutDetalle = findViewById(R.id.constrainLayoutServicio);
-            JSONArray jsonArray = Conductor.getInstance().getServicios();
-            Conductor.getInstance().setContext(ServicioActivity.this);
+            JSONArray jsonArray =conductor.getServicios();
+            conductor.setContext(ServicioActivity.this);
 
             ArrayList<String> lista = new ArrayList();
             String ant = "";
@@ -93,13 +95,13 @@ public class ServicioActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Conductor.getInstance().setVolver(true);
+        conductor.setVolver(true);
         super.onBackPressed();
     }
 
     private void volver()
     {
-        Conductor.getInstance().setVolver(true);
+        conductor.setVolver(true);
         this.finish();
     }
 

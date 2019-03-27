@@ -24,15 +24,16 @@ import cl.domito.conductor.service.AsignacionServicioService;
 public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
 
     private WeakReference<MainActivity> context;
+    Conductor conductor;
     TextView textViewError;
 
     public DatosConductorOperation(MainActivity activity) {
         context = new WeakReference<MainActivity>(activity);
+        conductor = Conductor.getInstance();
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
-        Conductor conductor = Conductor.getInstance();
         String url = Utilidades.URL_BASE_CONDUCTOR + "GetConductor.php";
         try {
             List<NameValuePair> params = new ArrayList();
@@ -53,14 +54,11 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Conductor conductor = Conductor.getInstance();
                 TextView textView = context.get().findViewById(R.id.textViewNombreUsuario);
-                //Button buttonEstado = context.get().findViewById(R.id.buttonEstado);
                 TextView textViewEstado = context.get().findViewById(R.id.textViewEstadoValor);
                 textView.setText(conductor.getNombre());
                 if(conductor.getEstado() == 1)
                 {
-                    //buttonEstado.setText("Terminar");
                     textViewEstado.setText("Conectado");
                     AsignacionServicioService asignacionServicioService = new AsignacionServicioService(context.get());
                     Intent i = new Intent(context.get(), AsignacionServicioService.class);
@@ -72,7 +70,6 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
                 }
                 else if(conductor.getEstado() == 0)
                 {
-                    //buttonEstado.setText("Iniciar");
                     textViewEstado.setText("Desconectado");
                 }
             }

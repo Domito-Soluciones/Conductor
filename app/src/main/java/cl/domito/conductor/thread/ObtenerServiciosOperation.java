@@ -13,18 +13,16 @@ import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.http.Utilidades;
 
-public class ObtenerServicioOperation extends AsyncTask<String, Void, JSONArray> {
+public class ObtenerServiciosOperation extends AsyncTask<Void, Void, JSONArray> {
 
 
 
     @Override
-    protected JSONArray doInBackground(String... strings) {
+    protected JSONArray doInBackground(Void... voids) {
         Conductor conductor = Conductor.getInstance();
-        String idServicio = strings[0];
-        String url = Utilidades.URL_BASE_SERVICIO + "GetServicioProgramado.php";
+        String url = Utilidades.URL_BASE_SERVICIO + "GetServiciosProgramados.php";
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("conductor",conductor.getId()));
-        params.add(new BasicNameValuePair("id",idServicio));
         JSONArray jsonArray = RequestConductor.getServicios(url,params);
         return jsonArray;
     }

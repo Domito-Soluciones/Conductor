@@ -47,17 +47,20 @@ public class Utilidades {
     public static String URL_BASE_NOTIFICACION = URL_BASE + "notificacion/";
     public static String URL_BASE_SERVICIO = URL_BASE + "servicio/";
     public static SimpleDateFormat FORMAT = new SimpleDateFormat("dd-MM-yyyy");
+    private static Conductor conductor = Conductor.getInstance();
 
 
     public static JSONObject enviarPost(String urlDest, List<NameValuePair> params) throws IOException {
         JSONObject jsonObject = null;
-        /*Activity activity = (Activity) Conductor.getInstance().getContext();
+        Activity activity = (Activity) conductor.getContext();
         TextView textViewError = activity.findViewById(R.id.textViewError);
         if (!validarConexion()) {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    textViewError.setVisibility(View.VISIBLE);
+                    if(textViewError != null) {
+                        textViewError.setVisibility(View.VISIBLE);
+                    }
                 }
             });
             return null;
@@ -67,10 +70,12 @@ public class Utilidades {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    textViewError.setVisibility(View.GONE);
+                    if(textViewError != null) {
+                        textViewError.setVisibility(View.GONE);
+                    }
                 }
             });
-        }*/
+        }
         HttpParams httpParams = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
         HttpConnectionParams.setSoTimeout(httpParams, 3000);
@@ -108,13 +113,15 @@ public class Utilidades {
 
     public static JSONArray enviarPostArray(String urlDest, List<NameValuePair> params) {
         JSONArray jsonArray = null;
-        /*Activity activity = (Activity) Conductor.getInstance().getContext();
+        Activity activity = (Activity) conductor.getContext();
         TextView textViewError = activity.findViewById(R.id.textViewError);
         if (!validarConexion()) {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    textViewError.setVisibility(View.VISIBLE);
+                    if(textViewError != null) {
+                        textViewError.setVisibility(View.VISIBLE);
+                    }
                 }
             });
             return null;
@@ -124,10 +131,12 @@ public class Utilidades {
             activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    textViewError.setVisibility(View.GONE);
+                    if(textViewError != null) {
+                        textViewError.setVisibility(View.GONE);
+                    }
                 }
             });
-        }*/
+        }
         HttpParams httpParams = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
         HttpConnectionParams.setSoTimeout(httpParams, 3000);
@@ -169,10 +178,7 @@ public class Utilidades {
     {
         if(isNetDisponible())
         {
-            if(isOnlineNet())
-            {
-                return true;
-            }
+            return true;
         }
         return false;
     }
@@ -192,7 +198,7 @@ public class Utilidades {
 
     private static boolean isNetDisponible() {
         ConnectivityManager connectivityManager = (ConnectivityManager)
-                Conductor.getInstance().getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                conductor.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo actNetInfo = connectivityManager.getActiveNetworkInfo();
         return (actNetInfo != null && actNetInfo.isConnected());
     }

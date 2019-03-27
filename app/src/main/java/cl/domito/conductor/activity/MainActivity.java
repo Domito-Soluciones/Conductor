@@ -17,7 +17,6 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -32,7 +31,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,9 +38,6 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -53,16 +48,14 @@ import java.util.concurrent.ExecutionException;
 
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.adapter.ReciclerViewProgramadoAdapter;
-import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.Utilidades;
 import cl.domito.conductor.service.AsignacionServicioService;
 import cl.domito.conductor.thread.CambiarEstadoOperation;
 import cl.domito.conductor.thread.DatosConductorOperation;
-import cl.domito.conductor.thread.IniciarServicioOperation;
 import cl.domito.conductor.thread.LogoutOperation;
 import cl.domito.conductor.thread.NotificationOperation;
-import cl.domito.conductor.thread.ObtenerServicioOperation;
+import cl.domito.conductor.thread.ObtenerServiciosOperation;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,LocationListener
 {
@@ -77,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private RecyclerView.LayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView textViewError;
+    private Conductor conductor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +83,9 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                 .addApi(LocationServices.API)
                 .build();
 
-        Conductor.getInstance().setGoogleApiClient(apiClient);
+        conductor = Conductor.getInstance();
+
+        conductor.setGoogleApiClient(apiClient);
         imageButton = findViewById(R.id.imageViewMenu);
         navigationView = findViewById(R.id.nav_view);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -132,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     @Override
     protected void onResume() {
-        Conductor conductor = Conductor.getInstance();
         conductor.setContext(MainActivity.this);
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 broadcastReceiver, new IntentFilter("custom-event-name"));
@@ -217,7 +212,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     }
 
     private void cambiarEstadoConductor() {
-        Conductor conductor = Conductor.getInstance();
         CambiarEstadoOperation cambiarEstadoOperation = new CambiarEstadoOperation(this);
         cambiarEstadoOperation.execute();
     }
@@ -249,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         Location lastLocation =
                 LocationServices.FusedLocationApi.getLastLocation(apiClient);
-        Conductor.getInstance().setLocation(lastLocation);
+        conductor.setLocation(lastLocation);
     }
 
     private void abrirMenuContextual() {
@@ -358,11 +352,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private void obtenerServicos()
     {
-        Conductor.getInstance().setContext(MainActivity.this);
-        ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
+        conductor.setContext(MainActivity.this);
+        ObtenerServiciosOperation obtenerServiciosOperation = new ObtenerServiciosOperation();
         JSONArray jsonArray = null;
         try {
-            jsonArray = obtenerServicioOperation.execute().get();
+            jsonArray = obtenerServiciosOperation.execute().get();
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

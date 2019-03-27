@@ -17,6 +17,7 @@ public class DescuentoActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ImageView imageViewAtras;
+    private Conductor conductor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,9 @@ public class DescuentoActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        Conductor.getInstance().setContext(DescuentoActivity.this);
+        conductor = Conductor.getInstance();
+
+        conductor.setContext(DescuentoActivity.this);
 
         ObtenerDescuentoOperation obtenerDescuentoOperation = new ObtenerDescuentoOperation(this);
         obtenerDescuentoOperation.execute();
@@ -43,13 +46,13 @@ public class DescuentoActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Conductor.getInstance().setVolver(true);
+        conductor.setVolver(true);
         super.onBackPressed();
     }
 
     private void volver()
     {
-        Conductor.getInstance().setVolver(true);
+        conductor.setVolver(true);
         this.finish();
     }
 

@@ -7,12 +7,15 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -23,7 +26,7 @@ import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.CambiarUbicacionOperation;
 import cl.domito.conductor.thread.InsertarNavegacionOperation;
 import cl.domito.conductor.thread.NotificationOperation;
-import cl.domito.conductor.thread.ObtenerServicioOperation;
+import cl.domito.conductor.thread.ObtenerServiciosOperation;
 
 public class AsignacionServicioService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -35,7 +38,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
     public static final String CALCULAR_DISTACIA = "5";
     public static boolean LAYOUT_SERVICIO_VISIBLE = false;
     public static boolean IS_INICIADO = false;
-    public static boolean TERMINAR = true;
+    Conductor conductor = Conductor.getInstance();
 
 
     public AsignacionServicioService(Context applicationContext) {
@@ -61,47 +64,44 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                Conductor conductor = Conductor.getInstance();
-                while (IS_INICIADO) {
-                    while (conductor.isActivo()) {
-                        Log.i("I", "servicio corriendo correctmente");
-                        try {
-                            ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
-                            conductor.setServicios(obtenerServicioOperation.execute().get());
-                            obtenerNotificacion();
-                            getUbicacion();
-                            //if (conductor.getLocation() != null) {
-                            if (Conductor.getInstance().isNavegando() && Conductor.getInstance().getLocation() != null) {
-                                insertarNavegacion();
-                            }
-                            Location location = Conductor.getInstance().getLocation();
-                            Location locationDestino = Conductor.getInstance().getLocationDestino();
-                            if (location != null && locationDestino != null) {
-                                float distancia = location.distanceTo(locationDestino);
-                                System.out.println("esta es distancia " + distancia + " -------------------------------------");
-                                if (distancia < 50f) {
-                                    abrirActivity();
-                                }
-                            }
-                            //}
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                        }
-                    }
-                    while (!conductor.isActivo() && IS_INICIADO) {
-                        try {
-                            System.out.println("servicio a la espera");
-                            Thread.sleep(1000);
-                        } catch (InterruptedException e) {
-                        }
-                    }
+                while (true) {
+                    Log.i("I", "servicio corriendo correctmente");
                     try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
+                        ObtenerServiciosOperation obtenerServiciosOperation = new ObtenerServiciosOperation();
+                        conductor.setServicios(obtenerServiciosOperation.execute().get());
+                        obtenerNotificacion();
+                        getUbicacion();
+                        //if (conductor.getLocation() != null) {
+                        if (conductor.isNavegando() && conductor.getLocation() != null) {
+                            insertarNavegacion();
+                        }
+
+                        Location location = conductor.getLocation();
+                        Location locationDestino = conductor.getLocationDestino();
+                        if (location != null && locationDestino != null) {
+                            float distancia = location.distanceTo(locationDestino);
+                            System.out.println("esta es distancia " + distancia + " -------------------------------------");
+                            Handler handler = new Handler(Looper.getMainLooper());
+                            handler.post(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    Toast.makeText(AsignacionServicioService.this.getApplicationContext(),"distancia "+distancia+" l "+location+" lD "+locationDestino,Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            if (distancia < 50f) {
+                                abrirActivity();
+                            }
+                        }
+                        //}
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    finally {
+                        try {
+                            Thread.sleep(2000);
+                        } catch (InterruptedException e) {
+                        }
                     }
                 }
             }
@@ -121,10 +121,13 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
     public void onDestroy() {
         super.onDestroy();
         System.out.println("El servicio a Terminado");
-        if (TERMINAR) {
-            Intent broadcastIntent = new Intent(this, RestartBroadcastReceived.class);
-            sendBroadcast(broadcastIntent);
-}
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Intent broadcastIntent = new Intent(this, RestartBroadcastReceived.class);
+        sendBroadcast(broadcastIntent);
     }
 
 private void sendMessage(String message, String value) {
@@ -168,7 +171,7 @@ private void getUbicacion() throws InterruptedException {
         }
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
-        Conductor.getInstance().setLocation(mLastLocation);
+        conductor.setLocation(mLastLocation);
         }
         mGoogleApiClient.disconnect();
         } catch (Exception e) {

@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import cl.domito.conductor.R;
@@ -18,6 +19,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
     private ImageView imageViewAtras;
     private RadioButton radioButtonGMaps;
     private RadioButton radioButtonWaze;
+    private Conductor conductor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +29,9 @@ public class ConfiguracionActivity extends AppCompatActivity {
         radioButtonGMaps = findViewById(R.id.radioButton2);
         radioButtonWaze = findViewById(R.id.radioButton);
 
-        Conductor.getInstance().setContext(ConfiguracionActivity.this);
+        conductor = Conductor.getInstance();
+
+        conductor.setContext(ConfiguracionActivity.this);
 
         imageViewAtras.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,7 +58,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Conductor.getInstance().setVolver(true);
+        conductor.setVolver(true);
         super.onBackPressed();
     }
 
@@ -74,7 +78,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
     private void volver()
     {
-        Conductor.getInstance().setVolver(true);
+        conductor.setVolver(true);
         this.finish();
     }
 
