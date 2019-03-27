@@ -75,7 +75,6 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
                     String celular = servicio.getString("servicio_pasajero_celular");
                     String destino = servicio.getString("servicio_destino");
                     String estado = servicio.getString("servicio_pasajero_estado");
-                    System.out.println("este es el estado: "+estado +" del pasajero " + nombre);
                     if(!estado.equals("3"))
                     {
                         lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);

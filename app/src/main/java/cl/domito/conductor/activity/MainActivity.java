@@ -151,7 +151,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        System.out.println("");
     }
 
 
@@ -366,7 +365,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         String ant = "";
         if(jsonArray != null) {
             for (int i = 0; i < jsonArray.length(); i++) {
-                try {
+                try
+                {
                     JSONObject jsonObject = (JSONObject) jsonArray.get(i);
                     String servicioId = jsonObject.getString("servicio_id");
                     String servicioFecha = jsonObject.getString("servicio_fecha");
@@ -392,6 +392,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         }
         else
         {
+            mAdapter = new ReciclerViewProgramadoAdapter(this, new String[0]);
             Toast.makeText(this,"No hay servicios programados",Toast.LENGTH_LONG).show();
         }
     }

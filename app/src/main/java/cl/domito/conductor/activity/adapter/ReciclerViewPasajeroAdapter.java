@@ -9,6 +9,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -191,6 +192,10 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         try {
             Geocoder geocoder = new Geocoder(activity);
             List<Address> addresses = geocoder.getFromLocationName(destino, 1);
+            Location location = new Location("");
+            location.setLatitude(addresses.get(0).getLatitude());
+            location.setLongitude(addresses.get(0).getLongitude());
+            conductor.setLocationDestino(location);
             try {
                 String uri = null;
                 SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
@@ -251,7 +256,6 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                         String celular = servicio.getString("servicio_pasajero_celular");
                         String destino = servicio.getString("servicio_destino");
                         String estado = servicio.getString("servicio_pasajero_estado");
-                        System.out.println("este es el estado: "+estado +" del pasajero " + nombre);
                         if (!estado.equals("3"))
                         {
                             lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);

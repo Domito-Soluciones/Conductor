@@ -112,6 +112,10 @@ public class Conductor {
         return locationDestino;
     }
 
+    public void setLocationDestino(Location locationDestino) {
+        this.locationDestino = locationDestino;
+    }
+
     public Location getLocation() {
         return location;
     }

@@ -22,6 +22,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
 import cl.domito.conductor.activity.MainActivity;
+import cl.domito.conductor.activity.PasajeroActivity;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.CambiarUbicacionOperation;
 import cl.domito.conductor.thread.InsertarNavegacionOperation;
@@ -80,7 +81,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                         Location locationDestino = conductor.getLocationDestino();
                         if (location != null && locationDestino != null) {
                             float distancia = location.distanceTo(locationDestino);
-                            System.out.println("esta es distancia " + distancia + " -------------------------------------");
+                            //System.out.println("esta es distancia " + distancia + " -------------------------------------");
                             Handler handler = new Handler(Looper.getMainLooper());
                             handler.post(new Runnable() {
 
@@ -111,7 +112,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
     }
 
     private void abrirActivity() {
-        Intent dialogIntent = new Intent(this, MainActivity.class);
+        Intent dialogIntent = new Intent(this, PasajeroActivity.class);
         dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
         dialogIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(dialogIntent);

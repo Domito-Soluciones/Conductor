@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ImageView;
 
 import org.json.JSONObject;
 
@@ -14,11 +16,13 @@ import cl.domito.conductor.R;
 import cl.domito.conductor.activity.adapter.ReciclerViewPasajeroAdapter;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.IniciarServicioOperation;
+import cl.domito.conductor.thread.ObtenerServicioOperation;
 import cl.domito.conductor.thread.ObtenerServiciosOperation;
 
 public class PasajeroActivity extends AppCompatActivity {
 
     SwipeRefreshLayout swipeRefreshLayout;
+    ImageView imageView;
     RecyclerView recyclerView;
     Conductor conductor;
 
@@ -29,6 +33,7 @@ public class PasajeroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pasajero);
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         recyclerView = this.findViewById(R.id.recyclerViewPasajero);
+        imageView = this.findViewById(R.id.imageView3);
         IniciarServicioOperation iniciarServicioOperation = new IniciarServicioOperation(this);
         iniciarServicioOperation.execute();
 
@@ -42,6 +47,14 @@ public class PasajeroActivity extends AppCompatActivity {
                 refreshContent();
             }
         });
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                volver();
+            }
+        });
+
 
     }
 
@@ -72,8 +85,8 @@ public class PasajeroActivity extends AppCompatActivity {
         ArrayList<String> lista = new ArrayList();
         String idServicio = conductor.getServicioActual();
         try {
-            ObtenerServiciosOperation obtenerServiciosOperation = new ObtenerServiciosOperation();
-            conductor.setServicio(obtenerServiciosOperation.execute().get());
+            ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
+            conductor.setServicio(obtenerServicioOperation.execute(conductor.getServicioActual()).get());
         }
         catch(Exception e)
         {
@@ -103,7 +116,6 @@ public class PasajeroActivity extends AppCompatActivity {
                     String celular = servicio.getString("servicio_pasajero_celular");
                     String destino = servicio.getString("servicio_destino");
                     String estado = servicio.getString("servicio_pasajero_estado");
-                    System.out.println("este es el estado: " + estado + " del pasajero " + nombre);
                     if (!estado.equals("3"))
                     {
                         lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
