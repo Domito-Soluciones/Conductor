@@ -82,14 +82,6 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                         if (location != null && locationDestino != null) {
                             float distancia = location.distanceTo(locationDestino);
                             //System.out.println("esta es distancia " + distancia + " -------------------------------------");
-                            Handler handler = new Handler(Looper.getMainLooper());
-                            handler.post(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    Toast.makeText(AsignacionServicioService.this.getApplicationContext(),"distancia "+distancia+" l "+location+" lD "+locationDestino,Toast.LENGTH_SHORT).show();
-                                }
-                            });
                             if (distancia < 50f) {
                                 abrirActivity();
                             }

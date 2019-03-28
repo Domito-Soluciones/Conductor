@@ -38,6 +38,7 @@ import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.CambiarEstadoServicioOperation;
 import cl.domito.conductor.thread.CancelarRutaPasajeroOperation;
 import cl.domito.conductor.thread.FinalizarRutaPasajeroOperation;
+import cl.domito.conductor.thread.IniciarServicioOperation;
 import cl.domito.conductor.thread.ObtenerServicioOperation;
 import cl.domito.conductor.thread.ObtenerServiciosOperation;
 import cl.domito.conductor.thread.TomarPasajeroOperation;
@@ -89,12 +90,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
 
     @Override
         public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-            Spanned texto = null;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                texto = Html.fromHtml(mDataset[i],Html.FROM_HTML_MODE_LEGACY);
-            } else {
-                texto = Html.fromHtml(mDataset[i]);
-            }
+            Spanned texto = Html.fromHtml(mDataset[i]);
             String[] data = mDataset[i].split("%");
             String nombrePasajero = data[0];
             String celularPasajero = data[1];
@@ -111,6 +107,11 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
             myViewHolder.buttonTerminar.setVisibility(View.VISIBLE);
         }
 
+        if(idPasajero.equals("0"))
+        {
+            myViewHolder.buttonCancelar.setVisibility(View.GONE);
+        }
+
         myViewHolder.buttonIniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -124,7 +125,8 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                         }
                         else if(ruta.contains("ZP-"))
                         {
-
+                            CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
+                            cambiarEstadoServicioOperation.execute(conductor.getServicioActual(), "4");
                         }
                     }
                     conductor.setPasajeroActual(idPasajero);
@@ -159,7 +161,15 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                 conductor.setPasajeroActual(idPasajero);
                 FinalizarRutaPasajeroOperation finalizarRutaPasajeroOperation = new FinalizarRutaPasajeroOperation((PasajeroActivity) activity);
                 finalizarRutaPasajeroOperation.execute();
-                recargarPasajeros();
+                String ruta = conductor.getServicioActualRuta();
+                if(ruta.contains("ZP") && i == getItemCount()- 1)
+                {
+                    finalizar();
+                }
+                else
+                {
+                    recargarPasajeros();
+                }
             }
         });
 

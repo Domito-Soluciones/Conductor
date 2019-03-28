@@ -66,7 +66,10 @@ public class RequestConductor {
 
     public static JSONObject obtenerServicioAsignado(String reqUrl, List<NameValuePair> params) throws IOException {
         JSONObject jsonObject = null;
-        jsonObject = Utilidades.enviarPost(reqUrl,params);
+        try {
+            jsonObject = Utilidades.enviarPost(reqUrl, params);
+        }
+        catch (Exception e){e.printStackTrace();}
         return jsonObject;
     }
 
@@ -86,10 +89,19 @@ public class RequestConductor {
 
     public static JSONArray getRoute(String idServicio)
     {
+        JSONArray jsonArray = null;
         String url = Utilidades.URL_BASE_SERVICIO + "GetDetalleServicio.php";
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("id", idServicio));
-        return Utilidades.enviarPostArray(url,params);
+        try
+        {
+            jsonArray = Utilidades.enviarPostArray(url,params);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return jsonArray;
     }
 
     public static void actualizarUbicacion(String reqUrl,Location lastLocation) {
@@ -181,14 +193,25 @@ public class RequestConductor {
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("id",idServicio));
         params.add(new BasicNameValuePair("conductor",conductor.getId()));
-        conductor.setServicio(Utilidades.enviarPostArray(url, params));
+        try {
+            conductor.setServicio(Utilidades.enviarPostArray(url, params));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public static JSONArray obtenerNotificaciones() {
+        JSONArray jsonArray = null;
         String url = Utilidades.URL_BASE_NOTIFICACION + "GetNotificaciones.php";
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("llave", conductor.getId()));
-        JSONArray jsonArray = Utilidades.enviarPostArray(url, params);
+        try {
+            jsonArray = Utilidades.enviarPostArray(url, params);
+        }
+        catch(Exception e)
+        {e.printStackTrace();}
         return jsonArray;
     }
 
