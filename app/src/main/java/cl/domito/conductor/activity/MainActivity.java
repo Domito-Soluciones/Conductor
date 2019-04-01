@@ -271,10 +271,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             Intent mainIntent = new Intent(this, ProduccionActivity.class);
             this.startActivity(mainIntent);
         }
-        if (id == R.id.descuento) {
-            Intent mainIntent = new Intent(this, DescuentoActivity.class);
-            this.startActivity(mainIntent);
-        }
         if (id == R.id.salir) {
             LogoutOperation logoutOperation = new LogoutOperation(this);
             logoutOperation.execute();
@@ -394,6 +390,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         {
             mAdapter = new ReciclerViewProgramadoAdapter(this, new String[0]);
             Toast.makeText(this,"No hay servicios programados",Toast.LENGTH_LONG).show();
+            recyclerView.setAdapter(mAdapter);
         }
     }
 

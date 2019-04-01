@@ -35,6 +35,7 @@ public class Conductor {
     private GoogleApiClient googleApiClient;
     private Context context;
     private boolean volver;
+    private int indicePasajeroActual = 0;
 
     public static synchronized Conductor getInstance(){
         if(instance == null){
@@ -182,6 +183,14 @@ public class Conductor {
 
     public void setServicioActualRuta(String servicioActualRuta) {
         this.servicioActualRuta = servicioActualRuta;
+    }
+
+    public int getIndicePasajeroActual() {
+        return indicePasajeroActual;
+    }
+
+    public void setIndicePasajeroActual(int indicePasajeroActual) {
+        this.indicePasajeroActual = indicePasajeroActual;
     }
 }
 

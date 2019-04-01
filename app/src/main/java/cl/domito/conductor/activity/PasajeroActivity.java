@@ -116,7 +116,7 @@ public class PasajeroActivity extends AppCompatActivity {
                     String celular = servicio.getString("servicio_pasajero_celular");
                     String destino = servicio.getString("servicio_destino");
                     String estado = servicio.getString("servicio_pasajero_estado");
-                    if (!estado.equals("3"))
+                    if (!estado.equals("3") && !estado.equals("2"))
                     {
                         lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
                     }

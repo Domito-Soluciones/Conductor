@@ -24,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -89,17 +90,17 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
     }
 
     @Override
-        public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-            Spanned texto = Html.fromHtml(mDataset[i]);
-            String[] data = mDataset[i].split("%");
-            String nombrePasajero = data[0];
-            String celularPasajero = data[1];
-            String direccionPasajero = data[2];
-            String estadoPasajero = data[3];
-            String idPasajero = data[4];
-            myViewHolder.textViewNombre.setText(nombrePasajero);
-            myViewHolder.textViewDireccion.setText(direccionPasajero);
-            Resources resources = myViewHolder.textViewNombre.getContext().getResources();
+    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
+        Spanned texto = Html.fromHtml(mDataset[i]);
+        String[] data = mDataset[i].split("%");
+        String nombrePasajero = data[0];
+        String celularPasajero = data[1];
+        String direccionPasajero = data[2];
+        String estadoPasajero = data[3];
+        String idPasajero = data[4];
+        myViewHolder.textViewNombre.setText(nombrePasajero);
+        myViewHolder.textViewDireccion.setText(direccionPasajero);
+        Resources resources = myViewHolder.textViewNombre.getContext().getResources();
         if(estadoPasajero.equals("1"))
         {
             Drawable imagen = resources.getDrawable(R.drawable.navegar);
@@ -110,6 +111,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         if(idPasajero.equals("0"))
         {
             myViewHolder.buttonCancelar.setVisibility(View.GONE);
+            myViewHolder.imageViewLlamar.setVisibility(View.INVISIBLE);
         }
 
         myViewHolder.buttonIniciar.setOnClickListener(new View.OnClickListener() {
@@ -121,12 +123,14 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                         String ruta = conductor.getServicioActualRuta();
                         if(ruta.contains("RG-"))
                         {
+                            navegar(direccionPasajero);
                             finalizar();
                         }
                         else if(ruta.contains("ZP-"))
                         {
                             CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
                             cambiarEstadoServicioOperation.execute(conductor.getServicioActual(), "4");
+
                         }
                     }
                     conductor.setPasajeroActual(idPasajero);
@@ -183,10 +187,16 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         myViewHolder.buttonCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myViewHolder.constraintLayoutPasajero.setVisibility(View.GONE);
-                conductor.setPasajeroActual(idPasajero);
-                CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
-                cancelarRutaPasajeroOperation.execute();
+                //if(i == getItemCount()- 1) {
+                    CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
+                    cancelarRutaPasajeroOperation.execute();
+                    Toast.makeText(activity, "Pasajero cancelado", Toast.LENGTH_SHORT).show();
+                    recargarPasajeros();
+                //}
+                //else
+                //{
+                //    Toast.makeText(activity,"Priemr debe terminar con los pasajeros anteriores",Toast.LENGTH_SHORT).show();
+                //}
             }
         });
 
@@ -266,7 +276,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                         String celular = servicio.getString("servicio_pasajero_celular");
                         String destino = servicio.getString("servicio_destino");
                         String estado = servicio.getString("servicio_pasajero_estado");
-                        if (!estado.equals("3"))
+                        if (!estado.equals("3") && !estado.equals("2"))
                         {
                             lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
                         }

@@ -22,10 +22,6 @@
             android:label="@string/title_activity_fin_servicio"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".activity.DescuentoActivity"
-            android:label="@string/title_activity_descuento"
-            android:theme="@style/NoActionBar" />
-        <activity
             android:name=".activity.ProduccionActivity"
             android:label="@string/title_activity_produccion"
             android:theme="@style/NoActionBar" />

@@ -245,7 +245,7 @@ public class RequestConductor {
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("servicio",conductor.getServicioActual()));
         params.add(new BasicNameValuePair("lat",conductor.getLocation().getLatitude()+""));
-        params.add(new BasicNameValuePair("lon",conductor.getLocation().getLatitude()+""));
+        params.add(new BasicNameValuePair("lon",conductor.getLocation().getLongitude()+""));
         try {
             if(conductor.getLocation().getLatitude() != latAnterior &&
                 conductor.getLocation().getLongitude() != lngAnterior) {
