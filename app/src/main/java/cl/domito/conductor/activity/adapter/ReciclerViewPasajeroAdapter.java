@@ -117,6 +117,11 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         myViewHolder.buttonIniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(i > 0)
+                {
+                    Toast.makeText(activity,"aun no ",Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (estadoPasajero.equals("0")) {
                     if(idPasajero.equals("0"))
                     {
