@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
 
         conductor = Conductor.getInstance();
 
-        conductor.setContext(LoginActivity.this);
+        conductor.context = LoginActivity.this;
         if(Utilidades.validarConexion())
         {
             textViewError.setVisibility(View.GONE);
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         mPasswordView.setText(clave);
         if(!idConductor.equals("") && !clave.equals(""))
         {
-            conductor.setRecordarSession(true);
+            conductor.recordarSession = true;
             checkBoxRec.setChecked(true);
         }
 
@@ -101,11 +101,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void recordarInicioSesion() {
-        conductor.setRecordarSession(true);
+        conductor.recordarSession = true;
     }
 
     private void olvidarInicioSesion() {
-        conductor.setRecordarSession(false);
+        conductor.recordarSession = false;
     }
 
 }

@@ -31,7 +31,7 @@ public class ProduccionActivity extends AppCompatActivity {
 
         conductor = Conductor.getInstance();
 
-        conductor.setContext(ProduccionActivity.this);
+        conductor.context = ProduccionActivity.this;
 
         ObtenerProduccionOperation obtenerProduccionOperation = new ObtenerProduccionOperation(this);
         obtenerProduccionOperation.execute();
@@ -46,13 +46,13 @@ public class ProduccionActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        conductor.setVolver(true);
+        conductor.volver = true;
         super.onBackPressed();
     }
 
     private void volver()
     {
-        conductor.setVolver(true);
+        conductor.volver = true;
         this.finish();
     }
 

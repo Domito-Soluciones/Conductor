@@ -37,11 +37,11 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
         String url = Utilidades.URL_BASE_CONDUCTOR + "GetConductor.php";
         try {
             List<NameValuePair> params = new ArrayList();
-            params.add(new BasicNameValuePair("id",conductor.getNick()));
+            params.add(new BasicNameValuePair("id",conductor.nick));
             JSONObject jsonObject = RequestConductor.datosConductor(url,params);
             if(jsonObject != null) {
-                conductor.setNombre(jsonObject.getString("conductor_nombre"));
-                conductor.setEstado(jsonObject.getInt("conductor_estado"));
+                conductor.nombre = jsonObject.getString("conductor_nombre");
+                conductor.estado = jsonObject.getInt("conductor_estado");
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -56,8 +56,8 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
             public void run() {
                 TextView textView = context.get().findViewById(R.id.textViewNombreUsuario);
                 TextView textViewEstado = context.get().findViewById(R.id.textViewEstadoValor);
-                textView.setText(conductor.getNombre());
-                if(conductor.getEstado() == 1)
+                textView.setText(conductor.nombre);
+                if(conductor.estado == 1)
                 {
                     textViewEstado.setText("Conectado");
                     AsignacionServicioService asignacionServicioService = new AsignacionServicioService(context.get());
@@ -66,9 +66,9 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
                         context.get().startService(i);
                     }
                     AsignacionServicioService.IS_INICIADO = true;
-                    conductor.setActivo(true);
+                    conductor.activo = true;
                 }
-                else if(conductor.getEstado() == 0)
+                else if(conductor.estado == 0)
                 {
                     textViewEstado.setText("Desconectado");
                 }

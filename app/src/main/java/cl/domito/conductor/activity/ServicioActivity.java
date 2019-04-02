@@ -49,8 +49,8 @@ public class ServicioActivity extends AppCompatActivity {
             imageViewAtrasInt = findViewById(R.id.imageViewAtrasInt);
             constraintLayoutProgramado = findViewById(R.id.constrainLayoutProgramado);
             constraintLayoutDetalle = findViewById(R.id.constrainLayoutServicio);
-            JSONArray jsonArray =conductor.getServicios();
-            conductor.setContext(ServicioActivity.this);
+            JSONArray jsonArray =conductor.servicios;
+            conductor.context = ServicioActivity.this;
 
             ArrayList<String> lista = new ArrayList();
             String ant = "";
@@ -95,13 +95,13 @@ public class ServicioActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        conductor.setVolver(true);
+        conductor.volver = true;
         super.onBackPressed();
     }
 
     private void volver()
     {
-        conductor.setVolver(true);
+        conductor.volver = true;
         this.finish();
     }
 

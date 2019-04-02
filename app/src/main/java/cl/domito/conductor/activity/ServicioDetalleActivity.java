@@ -65,7 +65,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
 
         conductor = Conductor.getInstance();
 
-        conductor.setContext(ServicioDetalleActivity.this);
+        conductor.context = ServicioDetalleActivity.this;
 
         buttonConfirmar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,8 +93,8 @@ public class ServicioDetalleActivity extends AppCompatActivity {
             try {
                 int cantidad = 0;
                 ArrayList<String> lista = new ArrayList();
-                if (conductor.getServicio() != null) {
-                    JSONObject primero = conductor.getServicio().getJSONObject(0);
+                if (conductor.servicio != null) {
+                    JSONObject primero = conductor.servicio.getJSONObject(0);
                     String ruta = primero.getString("servicio_truta").split("-")[0];
                     if (ruta.equals("ZP")) {
                         String cliente = primero.getString("servicio_cliente");
@@ -103,9 +103,9 @@ public class ServicioDetalleActivity extends AppCompatActivity {
 
                     }
                 }
-                for (int i = 0; i < conductor.getServicio().length(); i++) {
-                    JSONObject servicio = conductor.getServicio().getJSONObject(i);
-                    conductor.setServicioActual(servicio.getString("servicio_id"));
+                for (int i = 0; i < conductor.servicio.length(); i++) {
+                    JSONObject servicio = conductor.servicio.getJSONObject(i);
+                    conductor.servicioActual = servicio.getString("servicio_id");
                     textviewServicioValor.setText(servicio.getString("servicio_id"));
                     textviewFechaValor.setText(servicio.getString("servicio_fecha") + " " + servicio.getString("servicio_hora"));
                     textviewClienteValor.setText(servicio.getString("servicio_cliente"));
@@ -118,12 +118,12 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     String celular = servicio.getString("servicio_pasajero_celular");
                     String destino = servicio.getString("servicio_destino");
                     String cliente = servicio.getString("servicio_cliente_direccion");
-                    conductor.setServicioActual(servicio.getString("servicio_id"));
-                    conductor.setServicioActualRuta(servicio.getString("servicio_truta"));
+                    conductor.servicioActual = servicio.getString("servicio_id");
+                    conductor.servicioActualRuta = servicio.getString("servicio_truta");
                     lista.add(nombre + "%" + celular + "%" + destino);
                 }
-                if (conductor.getServicio() != null) {
-                    JSONObject ultimo = conductor.getServicio().getJSONObject(conductor.getServicio().length() - 1);
+                if (conductor.servicio != null) {
+                    JSONObject ultimo = conductor.servicio.getJSONObject(conductor.servicio.length() - 1);
                     String ruta = ultimo.getString("servicio_truta").split("-")[0];
                     if (ruta.equals("RG")) {
                         String cliente = ultimo.getString("servicio_cliente");
@@ -132,7 +132,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     }
                 }
                 textviewCantidadValor.setText(cantidad + "");
-                conductor.setCantidadPasajeros(cantidad);
+                conductor.cantidadPasajeros = cantidad;
                 if (lista.size() > 0) {
                     String[] array = new String[lista.size()];
                     array = lista.toArray(array);

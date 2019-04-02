@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         conductor = Conductor.getInstance();
 
-        conductor.setGoogleApiClient(apiClient);
+        conductor.googleApiClient = apiClient;
         imageButton = findViewById(R.id.imageViewMenu);
         navigationView = findViewById(R.id.nav_view);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -128,12 +128,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     @Override
     protected void onResume() {
-        conductor.setContext(MainActivity.this);
+        conductor.context = MainActivity.this;
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 broadcastReceiver, new IntentFilter("custom-event-name"));
-        if(conductor.isVolver()) {
+        if(conductor.volver) {
             abrirMenuContextual();
-            conductor.setVolver(false);
+            conductor.volver = false;
         }
         super.onResume();
     }
@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         Location lastLocation =
                 LocationServices.FusedLocationApi.getLastLocation(apiClient);
-        conductor.setLocation(lastLocation);
+        conductor.location = lastLocation;
     }
 
     private void abrirMenuContextual() {
@@ -347,7 +347,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private void obtenerServicos()
     {
-        conductor.setContext(MainActivity.this);
+        conductor.context = MainActivity.this;
         ObtenerServiciosOperation obtenerServiciosOperation = new ObtenerServiciosOperation();
         JSONArray jsonArray = null;
         try {

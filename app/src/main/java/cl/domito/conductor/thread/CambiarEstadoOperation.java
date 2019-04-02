@@ -26,15 +26,15 @@ public class CambiarEstadoOperation extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
         Conductor conductor = Conductor.getInstance();
         JSONObject jsonObject = null;
-        if(conductor.getEstado() == 0)
+        if(conductor.estado == 0)
         {
             jsonObject = RequestConductor.cambiarEstadoMovil("1");
-            conductor.setEstado(1);
+            conductor.estado = 1;
         }
-        else if(conductor.getEstado() == 1)
+        else if(conductor.estado == 1)
         {
             jsonObject = RequestConductor.cambiarEstadoMovil("0");
-            conductor.setEstado(0);
+            conductor.estado = 0;
         }
         return null;
     }

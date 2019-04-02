@@ -41,9 +41,9 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
         });
         boolean login = RequestConductor.loginConductor(strings[0],strings[1]);
         if (login) {
-            conductor.setActivo(true);
-            conductor.setNick(strings[0]);
-            if(conductor.isRecordarSession()) {
+            conductor.activo = true;
+            conductor.nick = strings[0];
+            if(conductor.recordarSession) {
                 SharedPreferences pref = loginActivity.getApplicationContext().getSharedPreferences
                         ("preferencias",Context.MODE_PRIVATE);
                 ActivityUtils.guardarSharedPreferences(pref,"idUsuario",strings[0]);
@@ -75,7 +75,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        if(conductor.isActivo()) {
+        if(conductor.activo) {
             AsignacionServicioService asignacionServicioService = new AsignacionServicioService(context.get());
             Intent i = new Intent(context.get(), AsignacionServicioService.class);
             if (!ActivityUtils.isRunning(asignacionServicioService.getClass(), context.get())) {

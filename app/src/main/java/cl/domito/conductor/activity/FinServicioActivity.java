@@ -35,11 +35,11 @@ public class FinServicioActivity extends AppCompatActivity {
 
         try {
             Bundle bundle = getIntent().getExtras();
-            textView.setText(conductor.getServicioActual());
+            textView.setText(conductor.servicioActual);
             textViewCliente.setText(bundle.getString("cliente"));
             textViewFecha.setText(bundle.getString("fecha"));
             textViewTarifa.setText(bundle.getString("tarifa"));
-            conductor.setServicioActual(null);
+            conductor.servicioActual = null;
         }
         catch(Exception e)
         {

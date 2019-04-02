@@ -69,16 +69,16 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                     Log.i("I", "servicio corriendo correctmente");
                     try {
                         ObtenerServiciosOperation obtenerServiciosOperation = new ObtenerServiciosOperation();
-                        conductor.setServicios(obtenerServiciosOperation.execute().get());
+                        conductor.servicios = obtenerServiciosOperation.execute().get();
                         obtenerNotificacion();
                         getUbicacion();
                         //if (conductor.getLocation() != null) {
-                        if (conductor.isNavegando() && conductor.getLocation() != null) {
+                        if (conductor.navegando && conductor.location != null) {
                             insertarNavegacion();
                         }
 
-                        Location location = conductor.getLocation();
-                        Location locationDestino = conductor.getLocationDestino();
+                        Location location = conductor.location;
+                        Location locationDestino = conductor.locationDestino;
                         if (location != null && locationDestino != null) {
                             float distancia = location.distanceTo(locationDestino);
                             //System.out.println("esta es distancia " + distancia + " -------------------------------------");
@@ -164,7 +164,7 @@ private void getUbicacion() throws InterruptedException {
         }
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
-        conductor.setLocation(mLastLocation);
+        conductor.location = mLastLocation;
         }
         mGoogleApiClient.disconnect();
         } catch (Exception e) {

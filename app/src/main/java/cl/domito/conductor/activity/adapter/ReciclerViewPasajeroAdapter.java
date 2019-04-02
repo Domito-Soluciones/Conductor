@@ -101,7 +101,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         myViewHolder.textViewNombre.setText(nombrePasajero);
         myViewHolder.textViewDireccion.setText(direccionPasajero);
         Resources resources = myViewHolder.textViewNombre.getContext().getResources();
-        if(estadoPasajero.equals("1"))
+        if(estadoPasajero.equals("1") || (conductor.servicioActualRuta.contains("RG") && idPasajero.equals("0")))
         {
             Drawable imagen = resources.getDrawable(R.drawable.navegar);
             myViewHolder.buttonIniciar.setImageDrawable(imagen);
@@ -120,20 +120,19 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                 if (estadoPasajero.equals("0")) {
                     if(idPasajero.equals("0"))
                     {
-                        String ruta = conductor.getServicioActualRuta();
+                        String ruta = conductor.servicioActualRuta;
                         if(ruta.contains("RG-"))
                         {
                             navegar(direccionPasajero);
-                            finalizar();
                         }
                         else if(ruta.contains("ZP-"))
                         {
                             CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-                            cambiarEstadoServicioOperation.execute(conductor.getServicioActual(), "4");
+                            cambiarEstadoServicioOperation.execute(conductor.servicioActual, "4");
 
                         }
                     }
-                    conductor.setPasajeroActual(idPasajero);
+                    conductor.pasajeroActual = idPasajero;
                     TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
                     tomarPasajeroOperation.execute();
                     recargarPasajeros();
@@ -142,10 +141,10 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                     navegar(direccionPasajero);
                     if (myViewHolder.getAdapterPosition() == 0) {
                         CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-                        cambiarEstadoServicioOperation.execute(conductor.getServicioActual(), "4");
+                        cambiarEstadoServicioOperation.execute(conductor.servicioActual, "4");
                     }
-                    if (myViewHolder.getAdapterPosition() == conductor.getCantidadPasajeros() - 1) {
-                        conductor.setNavegando(false);
+                    if (myViewHolder.getAdapterPosition() == conductor.cantidadPasajeros - 1) {
+                        conductor.navegando = false;
                     }
                 } else if (estadoPasajero.equals("2")) {
                     Resources resources = myViewHolder.textViewDireccion.getContext().getResources();
@@ -162,11 +161,15 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         myViewHolder.buttonTerminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                conductor.setPasajeroActual(idPasajero);
+                conductor.pasajeroActual = idPasajero;
                 FinalizarRutaPasajeroOperation finalizarRutaPasajeroOperation = new FinalizarRutaPasajeroOperation((PasajeroActivity) activity);
                 finalizarRutaPasajeroOperation.execute();
-                String ruta = conductor.getServicioActualRuta();
+                String ruta = conductor.servicioActualRuta;
                 if(ruta.contains("ZP") && i == getItemCount()- 1)
+                {
+                    finalizar();
+                }
+                else if(ruta.contains("RG") && i == getItemCount()- 1)
                 {
                     finalizar();
                 }
@@ -208,14 +211,14 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
     }
 
     private void navegar(String destino) {
-        conductor.setNavegando(true);
+        conductor.navegando = true;
         try {
             Geocoder geocoder = new Geocoder(activity);
             List<Address> addresses = geocoder.getFromLocationName(destino, 1);
             Location location = new Location("");
             location.setLatitude(addresses.get(0).getLatitude());
             location.setLongitude(addresses.get(0).getLongitude());
-            conductor.setLocationDestino(location);
+            conductor.locationDestino = location;
             try {
                 String uri = null;
                 SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
@@ -243,18 +246,18 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
     public void recargarPasajeros()
     {
         ArrayList<String> lista = new ArrayList();
-        String idServicio = conductor.getServicioActual();
+        String idServicio = conductor.servicioActual;
         try {
             ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
-            conductor.setServicio(obtenerServicioOperation.execute(conductor.getServicioActual()).get());
+            conductor.servicio = obtenerServicioOperation.execute(conductor.servicioActual).get();
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
-        if(conductor.getServicio() != null) {
+        if(conductor.servicio != null) {
             try {
-                JSONObject primero = conductor.getServicio().getJSONObject(0);
+                JSONObject primero = conductor.servicio.getJSONObject(0);
                 String ruta = primero.getString("servicio_truta").split("-")[0];
                 if (ruta.equals("ZP")) {
                     String cliente = primero.getString("servicio_cliente");
@@ -267,9 +270,9 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                 e.printStackTrace();
             }
         }
-        for(int i =  0; i < conductor.getServicio().length();i++ ) {
+        for(int i =  0; i < conductor.servicio.length();i++ ) {
             try {
-                JSONObject servicio = conductor.getServicio().getJSONObject(i);
+                JSONObject servicio = conductor.servicio.getJSONObject(i);
                 if (servicio.getString("servicio_id").equals(idServicio)) {
                     String id = servicio.getString("servicio_pasajero_id");
                         String nombre = servicio.getString("servicio_pasajero_nombre");
@@ -284,9 +287,9 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
             }
             catch(Exception e){e.printStackTrace();}
         }
-        if(conductor.getServicio() != null) {
+        if(conductor.servicio != null) {
             try {
-                JSONObject ultimo = conductor.getServicio().getJSONObject(conductor.getServicio().length() - 1);
+                JSONObject ultimo = conductor.servicio.getJSONObject(conductor.servicio.length() - 1);
                 String ruta = ultimo.getString("servicio_truta").split("-")[0];
                 if (ruta.equals("RG")) {
                     String cliente = ultimo.getString("servicio_cliente");
@@ -316,15 +319,15 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
     private void finalizar()
     {
         try {
-            JSONObject json = conductor.getServicio().getJSONObject(0);
-            Intent intent = new Intent(conductor.getContext(), FinServicioActivity.class);
+            JSONObject json = conductor.servicio.getJSONObject(0);
+            Intent intent = new Intent(conductor.context, FinServicioActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("cliente", json.getString("servicio_cliente"));
             bundle.putString("fecha", json.getString("servicio_fecha"));
             bundle.putString("tarifa", json.getString("servicio_tarifa"));
             intent.putExtras(bundle);
             CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-            cambiarEstadoServicioOperation.execute(conductor.getServicioActual(), "5");
+            cambiarEstadoServicioOperation.execute(conductor.servicioActual, "5");
             activity.finish();
             activity.startActivity(intent);
         }

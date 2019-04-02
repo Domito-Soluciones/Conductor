@@ -14,7 +14,7 @@ public class CambiarUbicacionOperation extends AsyncTask<Void, Void, Void> {
         Conductor conductor = Conductor.getInstance();
         String url = Utilidades.URL_BASE_MOVIL + "ModUbicacionMovil.php";
         try {
-            RequestConductor.actualizarUbicacion(url, conductor.getLocation());
+            RequestConductor.actualizarUbicacion(url, conductor.location);
         }
         catch (Exception e)
         {

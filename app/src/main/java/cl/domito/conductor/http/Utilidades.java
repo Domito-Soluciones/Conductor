@@ -52,7 +52,7 @@ public class Utilidades {
 
     public static JSONObject enviarPost(String urlDest, List<NameValuePair> params) throws IOException {
         JSONObject jsonObject = null;
-        Activity activity = (Activity) conductor.getContext();
+        Activity activity = (Activity) conductor.context;
         TextView textViewError = activity.findViewById(R.id.textViewError);
         if (!validarConexion()) {
             activity.runOnUiThread(new Runnable() {
@@ -112,7 +112,7 @@ public class Utilidades {
 
     public static JSONArray enviarPostArray(String urlDest, List<NameValuePair> params) {
         JSONArray jsonArray = null;
-        Activity activity = (Activity) conductor.getContext();
+        Activity activity = (Activity) conductor.context;
         TextView textViewError = activity.findViewById(R.id.textViewError);
         if (!validarConexion()) {
             activity.runOnUiThread(new Runnable() {
@@ -196,7 +196,7 @@ public class Utilidades {
 
     private static boolean isNetDisponible() {
         ConnectivityManager connectivityManager = (ConnectivityManager)
-                conductor.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+                conductor.context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo actNetInfo = connectivityManager.getActiveNetworkInfo();
         return (actNetInfo != null && actNetInfo.isConnected());
     }

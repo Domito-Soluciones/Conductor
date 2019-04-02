@@ -24,7 +24,7 @@ public class LogoutOperation extends AsyncTask<String, Void, Void> {
     @Override
     protected Void doInBackground(String... strings) {
         AsignacionServicioService.IS_INICIADO = false;
-        conductor.setActivo(false);
+        conductor.activo = false;
         Intent mainIntent = new Intent(context.get(), LoginActivity.class);
         context.get().startActivity(mainIntent);
         context.get().finish();

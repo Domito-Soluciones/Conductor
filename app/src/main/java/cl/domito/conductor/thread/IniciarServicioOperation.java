@@ -38,7 +38,7 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
     @Override
     protected String doInBackground(Void... voids) {
         Conductor conductor = Conductor.getInstance();
-        String idServicio = conductor.getServicioActual();
+        String idServicio = conductor.servicioActual;
         RecyclerView recyclerView = context.get().findViewById(R.id.recyclerViewPasajero);
         final RecyclerView.LayoutManager[] layoutManager = new RecyclerView.LayoutManager[1];
         context.get().runOnUiThread(new Runnable() {
@@ -51,9 +51,9 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
         });
         ArrayList<String> lista = new ArrayList();
         RequestConductor.obtenerServicioProgramados(idServicio);
-        if(conductor.getServicio() != null) {
+        if(conductor.servicio != null) {
             try {
-                JSONObject primero = conductor.getServicio().getJSONObject(0);
+                JSONObject primero = conductor.servicio.getJSONObject(0);
                 String ruta = primero.getString("servicio_truta").split("-")[0];
                 if (ruta.equals("ZP")) {
                     String cliente = primero.getString("servicio_cliente");
@@ -66,9 +66,9 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
                 e.printStackTrace();
             }
         }
-        for(int i =  0; i < conductor.getServicio().length();i++ ) {
+        for(int i =  0; i < conductor.servicio.length();i++ ) {
             try {
-                JSONObject servicio = conductor.getServicio().getJSONObject(i);
+                JSONObject servicio = conductor.servicio.getJSONObject(i);
                 if (servicio.getString("servicio_id").equals(idServicio)) {
                     String id = servicio.getString("servicio_pasajero_id");
                     String nombre = servicio.getString("servicio_pasajero_nombre");
@@ -83,9 +83,9 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
             }
             catch(Exception e){e.printStackTrace();}
         }
-        if(conductor.getServicio() != null) {
+        if(conductor.servicio != null) {
             try {
-                JSONObject ultimo = conductor.getServicio().getJSONObject(conductor.getServicio().length() - 1);
+                JSONObject ultimo = conductor.servicio.getJSONObject(conductor.servicio.length() - 1);
                 String ruta = ultimo.getString("servicio_truta").split("-")[0];
                 if (ruta.equals("RG")) {
                     String cliente = ultimo.getString("servicio_cliente");

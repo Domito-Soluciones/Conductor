@@ -13,7 +13,7 @@ public class CambiarMovilOperation extends AsyncTask<String, Void, Void> {
     protected Void doInBackground(String... strings) {
         Conductor conductor = Conductor.getInstance();
         JSONObject jsonObject = RequestConductor.cambiarServicioMovil(strings[0]);
-        conductor.setEstado(0);
+        conductor.estado = 0;
         return null;
     }
 

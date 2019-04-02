@@ -31,7 +31,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
         conductor = Conductor.getInstance();
 
-        conductor.setContext(ConfiguracionActivity.this);
+        conductor.context = ConfiguracionActivity.this;
 
         imageViewAtras.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,7 +58,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        conductor.setVolver(true);
+        conductor.volver = true;
         super.onBackPressed();
     }
 
@@ -78,7 +78,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
     private void volver()
     {
-        conductor.setVolver(true);
+        conductor.volver = true;
         this.finish();
     }
 

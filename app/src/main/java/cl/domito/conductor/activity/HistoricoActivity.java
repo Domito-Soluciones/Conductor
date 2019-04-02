@@ -31,7 +31,7 @@ public class HistoricoActivity extends AppCompatActivity {
 
         conductor = Conductor.getInstance();
 
-        conductor.setContext(HistoricoActivity.this);
+        conductor.context = HistoricoActivity.this;
 
         ObtenerHistorialOperation obtenerHistorialOperation = new ObtenerHistorialOperation(this);
         obtenerHistorialOperation.execute();
@@ -46,13 +46,13 @@ public class HistoricoActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        conductor.setVolver(true);
+        conductor.volver = true;
         super.onBackPressed();
     }
 
     private void volver()
     {
-        conductor.setVolver(true);
+        conductor.volver = true;
         this.finish();
     }
 

@@ -39,7 +39,7 @@ public class PasajeroActivity extends AppCompatActivity {
 
         conductor = Conductor.getInstance();
 
-        conductor.setContext(PasajeroActivity.this);
+        conductor.context = PasajeroActivity.this;
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -61,10 +61,10 @@ public class PasajeroActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        if(conductor.isNavegando())
+        if(conductor.navegando)
         {
             recargarPasajeros();
-            conductor.setNavegando(false);
+            conductor.navegando = false;
         }
         super.onResume();
     }
@@ -83,18 +83,18 @@ public class PasajeroActivity extends AppCompatActivity {
     {
         Conductor conductor = Conductor.getInstance();
         ArrayList<String> lista = new ArrayList();
-        String idServicio = conductor.getServicioActual();
+        String idServicio = conductor.servicioActual;
         try {
             ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
-            conductor.setServicio(obtenerServicioOperation.execute(conductor.getServicioActual()).get());
+            conductor.servicio = obtenerServicioOperation.execute(conductor.servicioActual).get();
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
-        if(conductor.getServicio() != null) {
+        if(conductor.servicio != null) {
             try {
-                JSONObject primero = conductor.getServicio().getJSONObject(0);
+                JSONObject primero = conductor.servicio.getJSONObject(0);
                 String ruta = primero.getString("servicio_truta").split("-")[0];
                 if (ruta.equals("ZP")) {
                     String cliente = primero.getString("servicio_cliente");
@@ -107,26 +107,28 @@ public class PasajeroActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        for(int i =  0; i < conductor.getServicio().length();i++ ) {
-            try {
-                JSONObject servicio = conductor.getServicio().getJSONObject(i);
-                if (servicio.getString("servicio_id").equals(idServicio)) {
-                    String id = servicio.getString("servicio_pasajero_id");
-                    String nombre = servicio.getString("servicio_pasajero_nombre");
-                    String celular = servicio.getString("servicio_pasajero_celular");
-                    String destino = servicio.getString("servicio_destino");
-                    String estado = servicio.getString("servicio_pasajero_estado");
-                    if (!estado.equals("3") && !estado.equals("2"))
-                    {
-                        lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+        if(conductor.servicio != null) {
+            for (int i = 0; i < conductor.servicio.length(); i++) {
+                try {
+                    JSONObject servicio = conductor.servicio.getJSONObject(i);
+                    if (servicio.getString("servicio_id").equals(idServicio)) {
+                        String id = servicio.getString("servicio_pasajero_id");
+                        String nombre = servicio.getString("servicio_pasajero_nombre");
+                        String celular = servicio.getString("servicio_pasajero_celular");
+                        String destino = servicio.getString("servicio_destino");
+                        String estado = servicio.getString("servicio_pasajero_estado");
+                        if (!estado.equals("3") && !estado.equals("2")) {
+                            lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                        }
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-            catch(Exception e){e.printStackTrace();}
         }
-        if(conductor.getServicio() != null) {
+        if(conductor.servicio != null) {
             try {
-                JSONObject ultimo = conductor.getServicio().getJSONObject(conductor.getServicio().length() - 1);
+                JSONObject ultimo = conductor.servicio.getJSONObject(conductor.servicio.length() - 1);
                 String ruta = ultimo.getString("servicio_truta").split("-")[0];
                 if (ruta.equals("RG")) {
                     String cliente = ultimo.getString("servicio_cliente");
@@ -149,13 +151,13 @@ public class PasajeroActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        conductor.setVolver(true);
+        conductor.volver = true;
         super.onBackPressed();
     }
 
     private void volver()
     {
-        conductor.setVolver(true);
+        conductor.volver = true;
         this.finish();
     }
 

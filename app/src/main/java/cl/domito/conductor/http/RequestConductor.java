@@ -37,7 +37,7 @@ public class RequestConductor {
             RESPUESTA = Utilidades.enviarPost(url,params);
             if(RESPUESTA != null) {
                 if (!RESPUESTA.getString("conductor_id").equals("0")) {
-                    conductor.setId(RESPUESTA.getString("conductor_id"));
+                    conductor.id = RESPUESTA.getString("conductor_id");
                     return true;
                 }
             }
@@ -77,7 +77,7 @@ public class RequestConductor {
         try {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("id", idServicio));
-            params.add(new BasicNameValuePair("conductor",conductor.getId()));
+            params.add(new BasicNameValuePair("conductor",conductor.id));
             Utilidades.enviarPost(reqUrl,params);
 
         }
@@ -110,7 +110,7 @@ public class RequestConductor {
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 params.add(new BasicNameValuePair("lat", lastLocation.getLatitude() + ""));
                 params.add(new BasicNameValuePair("lon", lastLocation.getLongitude() + ""));
-                params.add(new BasicNameValuePair("conductor", conductor.getId()));
+                params.add(new BasicNameValuePair("conductor", conductor.id));
                 Utilidades.enviarPost(reqUrl, params);
             }
         }
@@ -136,7 +136,7 @@ public class RequestConductor {
         JSONObject jsonObject = null;
         String url2 = Utilidades.URL_BASE_MOVIL + "ModEstadoMovil.php";
         List<NameValuePair> params2 = new ArrayList();
-        params2.add(new BasicNameValuePair("conductor",conductor.getId()));
+        params2.add(new BasicNameValuePair("conductor",conductor.id));
         params2.add(new BasicNameValuePair("estado",estado));
         try {
             jsonObject = Utilidades.enviarPost(url2,params2);
@@ -150,7 +150,7 @@ public class RequestConductor {
         JSONObject jsonObject = null;
         String url = Utilidades.URL_BASE_MOVIL + "ModServicioMovil.php";
         List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("conductor",conductor.getId()));
+        params.add(new BasicNameValuePair("conductor",conductor.id));
         params.add(new BasicNameValuePair("servicio",servicio));
         try {
             jsonObject = Utilidades.enviarPost(url,params);
@@ -178,8 +178,8 @@ public class RequestConductor {
     public static void cambiarEstadoPasajero(String estado) {
         String url = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicioPasajero.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("idServicio",conductor.getServicioActual()));
-        params.add(new BasicNameValuePair("idPasajero",conductor.getPasajeroActual()));
+        params.add(new BasicNameValuePair("idServicio",conductor.servicioActual));
+        params.add(new BasicNameValuePair("idPasajero",conductor.pasajeroActual));
         params.add(new BasicNameValuePair("estado",estado));
         try {
             Utilidades.enviarPost(url,params);
@@ -192,9 +192,9 @@ public class RequestConductor {
         String url = Utilidades.URL_BASE_SERVICIO + "GetServicioProgramado.php";
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("id",idServicio));
-        params.add(new BasicNameValuePair("conductor",conductor.getId()));
+        params.add(new BasicNameValuePair("conductor",conductor.id));
         try {
-            conductor.setServicio(Utilidades.enviarPostArray(url, params));
+            conductor.servicio = Utilidades.enviarPostArray(url, params);
         }
         catch (Exception e)
         {
@@ -206,7 +206,7 @@ public class RequestConductor {
         JSONArray jsonArray = null;
         String url = Utilidades.URL_BASE_NOTIFICACION + "GetNotificaciones.php";
         List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("llave", conductor.getId()));
+        params.add(new BasicNameValuePair("llave", conductor.id));
         try {
             jsonArray = Utilidades.enviarPostArray(url, params);
         }
@@ -218,7 +218,7 @@ public class RequestConductor {
     public static void logOut() {
         String url = Utilidades.URL_BASE_MOVIL + "ModEstadoMovil.php";
         List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("conductor",conductor.getId()));
+        params.add(new BasicNameValuePair("conductor",conductor.id));
         params.add(new BasicNameValuePair("estado","0"));
         try {
             Utilidades.enviarPost(url,params);
@@ -243,15 +243,15 @@ public class RequestConductor {
     public static void insertarNavegacion() {
         String url = Utilidades.URL_BASE_SERVICIO + "AddServicioDetalleReal.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("servicio",conductor.getServicioActual()));
-        params.add(new BasicNameValuePair("lat",conductor.getLocation().getLatitude()+""));
-        params.add(new BasicNameValuePair("lon",conductor.getLocation().getLongitude()+""));
+        params.add(new BasicNameValuePair("servicio",conductor.servicioActual));
+        params.add(new BasicNameValuePair("lat",conductor.location.getLatitude()+""));
+        params.add(new BasicNameValuePair("lon",conductor.location.getLongitude()+""));
         try {
-            if(conductor.getLocation().getLatitude() != latAnterior &&
-                conductor.getLocation().getLongitude() != lngAnterior) {
+            if(conductor.location.getLatitude() != latAnterior &&
+                conductor.location.getLongitude() != lngAnterior) {
                 Utilidades.enviarPost(url, params);
-                latAnterior = conductor.getLocation().getLatitude();
-                lngAnterior = conductor.getLocation().getLongitude();
+                latAnterior = conductor.location.getLatitude();
+                lngAnterior = conductor.location.getLongitude();
             }
         } catch (IOException e) {
             e.printStackTrace();

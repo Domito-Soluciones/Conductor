@@ -17,25 +17,26 @@ public class Conductor {
 
     private static Conductor instance;
 
-    private String id;
-    private String nombre;
-    private String nick;
-    private String servicioActual;
-    private String servicioActualRuta;
-    private String pasajeroActual;
-    private int estado;
-    private boolean activo;
-    private boolean recordarSession;
-    private JSONArray servicios;
-    private Location location;
-    private Location locationDestino;
-    private JSONArray servicio;
-    private boolean navegando;
-    private int cantidadPasajeros;
-    private GoogleApiClient googleApiClient;
-    private Context context;
-    private boolean volver;
-    private int indicePasajeroActual = 0;
+    public String id;
+    public String nombre;
+    public String nick;
+    public String servicioActual;
+    public String servicioActualRuta;
+    public String pasajeroActual;
+    public int estado;
+    public boolean activo;
+    public boolean recordarSession;
+    public JSONArray servicios;
+    public Location location;
+    public Location locationDestino;
+    public JSONArray servicio;
+    public boolean navegando;
+    public int cantidadPasajeros;
+    public GoogleApiClient googleApiClient;
+    public Context context;
+    public boolean volver;
+    public int indicePasajeroActual = 0;
+    public boolean recogidaFinalizada = false;
 
     public static synchronized Conductor getInstance(){
         if(instance == null){
@@ -44,153 +45,5 @@ public class Conductor {
         return instance;
     }
 
-    public String getPasajeroActual() {
-        return pasajeroActual;
-    }
-
-    public void setPasajeroActual(String pasajeroActual) {
-        this.pasajeroActual = pasajeroActual;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getNick() {
-        return nick;
-    }
-
-    public void setNick(String nick) {
-        this.nick = nick;
-    }
-
-
-    public int getEstado() {
-        return estado;
-    }
-
-    public void setEstado(int estado) {
-        this.estado = estado;
-    }
-
-    public boolean isActivo() {
-        return activo;
-    }
-
-    public void setActivo(boolean activo) {
-        this.activo = activo;
-    }
-
-    public boolean isRecordarSession() {
-        return recordarSession;
-    }
-
-    public void setRecordarSession(boolean recordarSession) {
-        this.recordarSession = recordarSession;
-    }
-
-    public JSONArray getServicios() {
-        return servicios;
-    }
-
-    public void setServicios(JSONArray servicios) {
-        this.servicios = servicios;
-    }
-
-    public Location getLocationDestino() {
-        return locationDestino;
-    }
-
-    public void setLocationDestino(Location locationDestino) {
-        this.locationDestino = locationDestino;
-    }
-
-    public Location getLocation() {
-        return location;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
-    }
-
-    public String getServicioActual() {
-        return servicioActual;
-    }
-
-    public void setServicioActual(String servicioActual) {
-        this.servicioActual = servicioActual;
-    }
-
-    public JSONArray getServicio() {
-        return servicio;
-    }
-
-    public void setServicio(JSONArray servicio) {
-        this.servicio = servicio;
-    }
-
-    public boolean isNavegando() {
-        return navegando;
-    }
-
-    public void setNavegando(boolean navegando) {
-        this.navegando = navegando;
-    }
-
-    public int getCantidadPasajeros() {
-        return cantidadPasajeros;
-    }
-
-    public void setCantidadPasajeros(int cantidadPasajeros) {
-        this.cantidadPasajeros = cantidadPasajeros;
-    }
-
-    public void setGoogleApiClient(GoogleApiClient googleApiClient) {
-        this.googleApiClient = googleApiClient;
-    }
-
-    public Context getContext() {
-        return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    public boolean isVolver() {
-        return volver;
-    }
-
-    public void setVolver(boolean volver) {
-        this.volver = volver;
-    }
-
-    public String getServicioActualRuta() {
-        return servicioActualRuta;
-    }
-
-    public void setServicioActualRuta(String servicioActualRuta) {
-        this.servicioActualRuta = servicioActualRuta;
-    }
-
-    public int getIndicePasajeroActual() {
-        return indicePasajeroActual;
-    }
-
-    public void setIndicePasajeroActual(int indicePasajeroActual) {
-        this.indicePasajeroActual = indicePasajeroActual;
-    }
 }
 

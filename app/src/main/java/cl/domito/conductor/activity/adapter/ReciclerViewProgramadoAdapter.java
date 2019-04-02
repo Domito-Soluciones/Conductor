@@ -63,11 +63,11 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
             public void onClick(View v) {
                 JSONArray servicio = new JSONArray();
                 Conductor conductor = Conductor.getInstance();
-                JSONArray servicios = conductor.getServicios();
+                JSONArray servicios = conductor.servicios;
                 if (servicios != null) {
                     for (int i = 0; i < servicios.length(); i++) {
                         try {
-                            JSONObject servicioAux = conductor.getServicios().getJSONObject(i);
+                            JSONObject servicioAux = conductor.servicios.getJSONObject(i);
                             String idServicio = vh.textView.getText().toString();
                             String idAux = servicioAux.getString("servicio_id");
                             if (idAux.equals(idServicio)) {
@@ -77,7 +77,7 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
                             e.printStackTrace();
                         }
                     }
-                    conductor.setServicio(servicio);
+                    conductor.servicio = servicio;
                     Intent intent = new Intent(activity, ServicioDetalleActivity.class);
                     intent.putExtra("fecha", vh.textViewFecha.getText().toString());
                     intent.putExtra("id", vh.textView.getText().toString());
