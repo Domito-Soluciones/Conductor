@@ -37,6 +37,7 @@ public class Conductor {
     public boolean volver;
     public int indicePasajeroActual = 0;
     public boolean recogidaFinalizada = false;
+    public boolean zarpeIniciado = false;
 
     public static synchronized Conductor getInstance(){
         if(instance == null){

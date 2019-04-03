@@ -101,27 +101,34 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         myViewHolder.textViewNombre.setText(nombrePasajero);
         myViewHolder.textViewDireccion.setText(direccionPasajero);
         Resources resources = myViewHolder.textViewNombre.getContext().getResources();
-        if(estadoPasajero.equals("1") || (conductor.servicioActualRuta.contains("RG") && idPasajero.equals("0")))
-        {
-            Drawable imagen = resources.getDrawable(R.drawable.navegar);
-            myViewHolder.buttonIniciar.setImageDrawable(imagen);
-            myViewHolder.buttonTerminar.setVisibility(View.VISIBLE);
-        }
-
         if(idPasajero.equals("0"))
         {
             myViewHolder.buttonCancelar.setVisibility(View.GONE);
             myViewHolder.imageViewLlamar.setVisibility(View.INVISIBLE);
         }
 
+        if(estadoPasajero.equals("1") || (conductor.servicioActualRuta.contains("RG") && idPasajero.equals("0")))
+        {
+            if(i == 0) {
+                Drawable imagen = resources.getDrawable(R.drawable.navegar);
+                myViewHolder.buttonIniciar.setImageDrawable(imagen);
+                myViewHolder.buttonTerminar.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                myViewHolder.buttonIniciar.setVisibility(View.INVISIBLE);
+            }
+        }
+
+        if(i > 0)
+        {
+            myViewHolder.buttonTerminar.setVisibility(View.INVISIBLE);
+            return;
+        }
+
         myViewHolder.buttonIniciar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(i > 0)
-                {
-                    Toast.makeText(activity,"aun no ",Toast.LENGTH_LONG).show();
-                    return;
-                }
                 if (estadoPasajero.equals("0")) {
                     if(idPasajero.equals("0"))
                     {
@@ -132,8 +139,10 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                         }
                         else if(ruta.contains("ZP-"))
                         {
+                            conductor.zarpeIniciado = true;
                             CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
                             cambiarEstadoServicioOperation.execute(conductor.servicioActual, "4");
+                            recargarPasajeros();
 
                         }
                     }
@@ -264,7 +273,11 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
             try {
                 JSONObject primero = conductor.servicio.getJSONObject(0);
                 String ruta = primero.getString("servicio_truta").split("-")[0];
-                if (ruta.equals("ZP")) {
+                if (primero.getString("servicio_estado").equals("4"))
+                {
+                    conductor.zarpeIniciado = true;
+                }
+                if ((ruta.equals("ZP") && !conductor.zarpeIniciado)){
                     String cliente = primero.getString("servicio_cliente");
                     String destino = primero.getString("servicio_cliente_direccion");
                     lista.add(cliente + "%%" + destino + "%0%0");

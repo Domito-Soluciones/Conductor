@@ -32,7 +32,7 @@ public class FinServicioActivity extends AppCompatActivity {
         buttonFinalizar = findViewById(R.id.buttonFinalizar);
 
         conductor = Conductor.getInstance();
-
+        conductor.zarpeIniciado = false;
         try {
             Bundle bundle = getIntent().getExtras();
             textView.setText(conductor.servicioActual);

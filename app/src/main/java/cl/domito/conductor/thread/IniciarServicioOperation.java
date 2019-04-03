@@ -55,7 +55,11 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
             try {
                 JSONObject primero = conductor.servicio.getJSONObject(0);
                 String ruta = primero.getString("servicio_truta").split("-")[0];
-                if (ruta.equals("ZP")) {
+                if (primero.getString("servicio_estado").equals("4"))
+                {
+                    conductor.zarpeIniciado = true;
+                }
+                if ((ruta.equals("ZP") && !conductor.zarpeIniciado) ) {
                     String cliente = primero.getString("servicio_cliente");
                     String destino = primero.getString("servicio_cliente_direccion");
                     lista.add(cliente + "%%" + destino + "%0%0");
