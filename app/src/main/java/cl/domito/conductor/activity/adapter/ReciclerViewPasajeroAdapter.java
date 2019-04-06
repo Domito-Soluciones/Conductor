@@ -123,7 +123,6 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         if(i > 0)
         {
             myViewHolder.buttonTerminar.setVisibility(View.INVISIBLE);
-            return;
         }
 
         myViewHolder.buttonIniciar.setOnClickListener(new View.OnClickListener() {
