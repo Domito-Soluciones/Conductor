@@ -1,6 +1,7 @@
 package cl.domito.conductor.activity.adapter;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -74,6 +75,12 @@ public class ReciclerViewDetalleAdapter extends RecyclerView.Adapter<ReciclerVie
         }
         myViewHolder.textViewNombre.setText(data[0]);
         myViewHolder.textViewDireccion.setText(data[2]);
+
+        String nombre = activity.getComponentName().getClassName();
+        if(nombre.equals("cl.domito.conductor.activity.HistoricoDetalleActivity"))
+        {
+            myViewHolder.imageViewLlamar.setVisibility(View.GONE);
+        }
     }
 
     @Override

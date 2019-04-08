@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             abrirMenuContextual();
             conductor.volver = false;
         }
+        refreshContent();
         super.onResume();
     }
 

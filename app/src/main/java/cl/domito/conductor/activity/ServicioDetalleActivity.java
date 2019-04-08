@@ -172,8 +172,16 @@ public class ServicioDetalleActivity extends AppCompatActivity {
 
     private void volver() {
         this.finish();
-        Intent intent = new Intent(this, ServicioActivity.class);
-        startActivity(intent);
+        String activity = getIntent().getExtras().getString("activity");
+        if(activity.equals("cl.domito.conductor.activity.MainActivity"))
+        {
+            this.finish();
+        }
+        else if (activity.equals("cl.domito.conductor.activity.ServicioActivity"))
+        {
+            Intent intent = new Intent(this, ServicioActivity.class);
+            startActivity(intent);
+        }
     }
 
     private void aceptarServicio() {

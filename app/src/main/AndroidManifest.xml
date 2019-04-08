@@ -14,9 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
         <activity
+            android:name=".activity.HistoricoDetalleActivity"
+            android:label="@string/title_activity_historico_detalleactivity"
+            android:theme="@style/NoActionBar"></activity>
+        <activity
             android:name=".activity.PasajeroActivity"
             android:label="@string/title_activity_pasajero"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/NoActionBar" />
         <activity
             android:name=".activity.FinServicioActivity"
             android:label="@string/title_activity_fin_servicio"

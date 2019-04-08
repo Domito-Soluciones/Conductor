@@ -23,6 +23,7 @@ import cl.domito.conductor.activity.ServicioDetalleActivity;
 public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<ReciclerViewProduccionAdapter.MyViewHolder> {
 
     Activity activity;
+    TextView textViewTotal;
     private String[] mDataset;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -59,12 +60,7 @@ public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<Recicler
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-        Spanned texto = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            texto = Html.fromHtml(mDataset[i],Html.FROM_HTML_MODE_LEGACY);
-        } else {
-            texto = Html.fromHtml(mDataset[i]);
-        }
+        Spanned texto = Html.fromHtml(mDataset[i]);
         String[] data = mDataset[i].split("%");
         String fecha = data[0] + " " + data[1];
         Resources resources = myViewHolder.textView.getContext().getResources();
@@ -76,6 +72,7 @@ public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<Recicler
             intentId = bundle.getString("idServicio");
             tipo = activity.getIntent().getExtras().getString("accion");
         }
+        myViewHolder.textView.setText(data[3]);
         myViewHolder.imageView.setImageDrawable(imagen);
         myViewHolder.textViewFecha.setText(fecha);
         myViewHolder.textViewCliente.setText(data[2]);

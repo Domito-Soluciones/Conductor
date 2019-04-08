@@ -159,6 +159,7 @@ public class Utilidades {
             StringBuilder result = new StringBuilder();
             while ((line = rd.readLine()) != null) {
                 result.append(line);
+                System.out.println(line);
             }
             jsonArray = new JSONArray(result.toString());
         }

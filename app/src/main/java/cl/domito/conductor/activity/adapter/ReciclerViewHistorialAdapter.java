@@ -1,6 +1,7 @@
 package cl.domito.conductor.activity.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -19,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import cl.domito.conductor.R;
+import cl.domito.conductor.activity.HistoricoActivity;
+import cl.domito.conductor.activity.HistoricoDetalleActivity;
 import cl.domito.conductor.dominio.Conductor;
 
 public class ReciclerViewHistorialAdapter extends RecyclerView.Adapter<ReciclerViewHistorialAdapter.MyViewHolder> {
@@ -91,7 +94,14 @@ public class ReciclerViewHistorialAdapter extends RecyclerView.Adapter<ReciclerV
         myViewHolder.textViewFecha.setText(data[1] + " " + data[2]);
         myViewHolder.textViewCliente.setText(data[3]);
 
-
+        myViewHolder.relativeLayout3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(activity,HistoricoDetalleActivity.class);
+                i.putExtra("idServicio",data[0]);
+                activity.startActivity(i);
+            }
+        });
 
     }
 

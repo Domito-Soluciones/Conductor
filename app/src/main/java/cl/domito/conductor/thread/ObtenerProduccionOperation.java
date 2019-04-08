@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
@@ -31,28 +32,30 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
     private WeakReference<ProduccionActivity> context;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
+    private TextView textViewTotal;
 
     public ObtenerProduccionOperation(ProduccionActivity activity) {
             context = new WeakReference<ProduccionActivity>(activity);
             recyclerView = this.context.get().findViewById(R.id.recyclerViewProduccion);
             progressBar = this.context.get().findViewById(R.id.progressBarProduccion);
+            textViewTotal = this.context.get().findViewById(R.id.textViewTotal);
         }
 
-        @Override
-        protected JSONArray doInBackground(Void... voids) {
+    @Override
+    protected JSONArray doInBackground(Void... voids) {
         Conductor conductor = Conductor.getInstance();
         Calendar c = Calendar.getInstance();
-        String fechaHasta = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
-        c.add(Calendar.MONTH,-2);
-        String fechaDesde = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
+        String fechaHasta = "01/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
+        c.add(Calendar.MONTH,-1);
+        String fechaDesde = "01/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
         String url = Utilidades.URL_BASE_SERVICIO + "GetServicios.php";
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("desde",fechaDesde));
         params.add(new BasicNameValuePair("hdesde","00:00:00"));
         params.add(new BasicNameValuePair("hasta",fechaHasta));
-        params.add(new BasicNameValuePair("hhasta","23:59:59"));
+        params.add(new BasicNameValuePair("hhasta","00:00:00"));
         params.add(new BasicNameValuePair("estado","5"));
-        params.add(new BasicNameValuePair("conductor",conductor.nick));
+        params.add(new BasicNameValuePair("conductor",conductor.id));
         JSONArray jsonObject = RequestConductor.getServicios(url,params);
         return jsonObject;
     }
@@ -64,6 +67,7 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
 
     @Override
     protected void onPostExecute(JSONArray jsonArray) {
+        int total = 0;
         SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy");
         ArrayList<String> lista = new ArrayList();
@@ -76,11 +80,13 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
         {
             try {
                 JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+                String servicioId = jsonObject.getString("servicio_id");
                 String servicioFecha = jsonObject.getString("servicio_fecha");
                 String servicioHora = jsonObject.getString("servicio_hora");
-                String servicioTarifa = jsonObject.getString("servicio_tarifa2");
+                String servicioTarifa = jsonObject.getString("servicio_tarifa1");
+                total += Integer.parseInt(servicioTarifa);
                 String fecha = format2.format(format1.parse(servicioFecha.replace("/","-")));
-                lista.add( fecha + "%"+ servicioHora + "%" + servicioTarifa);
+                lista.add( fecha + "%"+ servicioHora + "%" + servicioTarifa + "%" + servicioId);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -108,5 +114,9 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
                 }
             });
         }
+
+        textViewTotal.setText(total+"");
     }
+
+
 }
