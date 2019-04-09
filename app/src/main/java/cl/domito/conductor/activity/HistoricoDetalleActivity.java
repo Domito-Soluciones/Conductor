@@ -44,7 +44,7 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_servicio_detalle);
+        setContentView(R.layout.activity_historico_detalle);
 
         recyclerViewDetalle = (RecyclerView) findViewById(R.id.recyclerViewDetalle);
         recyclerViewDetalle.setHasFixedSize(true);

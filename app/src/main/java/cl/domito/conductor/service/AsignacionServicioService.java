@@ -92,7 +92,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                     }
                     finally {
                         try {
-                            Thread.sleep(2000);
+                            Thread.sleep(4000);
                         } catch (InterruptedException e) {
                         }
                     }

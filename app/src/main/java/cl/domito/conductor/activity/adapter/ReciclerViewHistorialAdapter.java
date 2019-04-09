@@ -56,7 +56,7 @@ public class ReciclerViewHistorialAdapter extends RecyclerView.Adapter<ReciclerV
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.recycler_view_programado, viewGroup, false);
+                .inflate(R.layout.recycler_view_historial, viewGroup, false);
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
     }
