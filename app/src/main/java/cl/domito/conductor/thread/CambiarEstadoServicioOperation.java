@@ -11,19 +11,11 @@ public class CambiarEstadoServicioOperation extends AsyncTask<String, Void, Void
     @Override
     protected Void doInBackground(String... strings) {
         Conductor conductor = Conductor.getInstance();
-        RequestConductor.cambiarEstadoServicio(strings[0],strings[1]);
+        String idServicio = strings[0];
+        String estado = strings[1];
+        RequestConductor.cambiarEstadoServicio(idServicio,estado);
         return null;
     }
 
-    @Override
-    protected void onPreExecute() {
-
-    }
-
-    @Override
-    protected void onPostExecute(Void aVoid) {
-        //if()
-
-    }
 
 }

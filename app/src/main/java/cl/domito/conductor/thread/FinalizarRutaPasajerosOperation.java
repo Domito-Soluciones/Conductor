@@ -1,34 +1,28 @@
 package cl.domito.conductor.thread;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-
-import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
-import java.util.List;
 
 import cl.domito.conductor.activity.PasajeroActivity;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
-import cl.domito.conductor.http.Utilidades;
 
-public class FinalizarRutaPasajeroOperation extends AsyncTask<String, Void, Void> {
+public class FinalizarRutaPasajerosOperation extends AsyncTask<String, Void, Void> {
 
-    private WeakReference<PasajeroActivity> context;
+    private WeakReference<Activity> context;
     private Conductor conductor;
 
-    public FinalizarRutaPasajeroOperation(PasajeroActivity activity)
+    public FinalizarRutaPasajerosOperation(Activity activity)
     {
-        context = new WeakReference<PasajeroActivity>(activity);
+        context = new WeakReference<Activity>(activity);
         conductor = Conductor.getInstance();
     }
     @Override
     protected Void doInBackground(String... strings) {
-        RequestConductor.cambiarEstadoPasajero("3");
+        RequestConductor.cambiarEstadoPasajeros(strings[0]);
         return null;
     }
 
@@ -44,10 +38,10 @@ public class FinalizarRutaPasajeroOperation extends AsyncTask<String, Void, Void
             public void run() {
                 if(conductor.servicioActualRuta.contains("RG"))
                 {
-                    Toast.makeText(context.get(), "Pasajero Recogido", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context.get(), "Servicio Terminado", Toast.LENGTH_SHORT).show();
                 }
                 else{
-                    Toast.makeText(context.get(), "Pasajero Entregado", Toast.LENGTH_SHORT).show();
+
                 }
             }
         });

@@ -22,6 +22,7 @@ import cl.domito.conductor.R;
 import cl.domito.conductor.activity.adapter.ReciclerViewDetalleAdapter;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
+import cl.domito.conductor.thread.CambiarEstadoServicioOperation;
 import cl.domito.conductor.thread.DesAsignarServicioOperation;
 import cl.domito.conductor.thread.RealizarServicioOperation;
 
@@ -190,6 +191,11 @@ public class ServicioDetalleActivity extends AppCompatActivity {
             realizarServicioOperation.execute();
         } else if (estado.equals("3")) {
             try {
+                if(conductor.servicioActualRuta.contains("RG"))
+                {
+                    CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
+                    cambiarEstadoServicioOperation.execute(conductor.servicioActual,"4");
+                }
                 TextView textView = findViewById(R.id.textViewFechaValor);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                 Date date = sdf.parse(textView.getText().toString());

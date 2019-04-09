@@ -79,10 +79,17 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
                     String celular = servicio.getString("servicio_pasajero_celular");
                     String destino = servicio.getString("servicio_destino");
                     String estado = servicio.getString("servicio_pasajero_estado");
-                    if(!estado.equals("3") && !estado.equals("2"))
-                    {
-                        lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                    if(servicio.getString("servicio_truta").contains("ZP")) {
+                        if (!estado.equals("3") && !estado.equals("2")) {
+                            lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                        }
                     }
+                    else if(servicio.getString("servicio_truta").contains("RG")) {
+                        if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
+                            lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                        }
+                    }
+
                 }
             }
             catch(Exception e){e.printStackTrace();}

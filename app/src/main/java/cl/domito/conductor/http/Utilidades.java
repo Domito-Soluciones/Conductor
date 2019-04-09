@@ -40,7 +40,7 @@ public class Utilidades {
 
     public static int reintentos = 0;
 
-    public static String URL_BASE = "https://www.domito.cl/Test5/source/httprequest/";
+    public static String URL_BASE = "https://www.domito.cl/Test/source/httprequest/";
     //public static String URL_BASE = "http://192.168.100.194/GpsVan/source/httprequest/";
     public static String URL_BASE_CONDUCTOR = URL_BASE + "conductor/";
     public static String URL_BASE_MOVIL = URL_BASE + "movil/";
@@ -99,6 +99,7 @@ public class Utilidades {
             StringBuilder result = new StringBuilder();
             while ((line = rd.readLine()) != null) {
                 result.append(line);
+                System.out.println(line);
             }
             jsonObject = new JSONObject(result.toString());
         } catch (UnknownHostException e) {

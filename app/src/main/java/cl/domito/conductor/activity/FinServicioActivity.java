@@ -39,7 +39,6 @@ public class FinServicioActivity extends AppCompatActivity {
             textViewCliente.setText(bundle.getString("cliente"));
             textViewFecha.setText(bundle.getString("fecha"));
             textViewTarifa.setText(bundle.getString("tarifa"));
-            conductor.servicioActual = null;
         }
         catch(Exception e)
         {
