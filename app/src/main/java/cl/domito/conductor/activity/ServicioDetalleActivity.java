@@ -161,49 +161,48 @@ public class ServicioDetalleActivity extends AppCompatActivity {
             //}
         } catch (Exception e) {
             e.printStackTrace();
-        }
-
-        imageViewAtrasInt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                volver();
             }
-        });
-    }
 
-    private void volver() {
-        this.finish();
-        String activity = getIntent().getExtras().getString("activity");
-        if(activity.equals("cl.domito.conductor.activity.MainActivity"))
-        {
-            this.finish();
-        }
-        else if (activity.equals("cl.domito.conductor.activity.ServicioActivity"))
-        {
-            Intent intent = new Intent(this, ServicioActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    private void aceptarServicio() {
-        if (estado.equals("1")) {
-            RealizarServicioOperation realizarServicioOperation = new RealizarServicioOperation(this);
-            realizarServicioOperation.execute();
-        } else if (estado.equals("3")) {
-            try {
-                if(conductor.servicioActualRuta.contains("RG"))
-                {
-                    CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-                    cambiarEstadoServicioOperation.execute(conductor.servicioActual,"4");
+            imageViewAtrasInt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    volver();
                 }
-                TextView textView = findViewById(R.id.textViewFechaValor);
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                Date date = sdf.parse(textView.getText().toString());
-                Long l = date.getTime();
-                Date dateNow = new Date();
-                Long lNow = dateNow.getTime();
-                Long data = Math.abs(lNow - l);
-                if (data <= 3.6e+6 || dateNow.after(date)) {
+            });
+        }
+
+        private void volver() {
+            String activity = getIntent().getExtras().getString("activity");
+            if(activity.equals("cl.domito.conductor.activity.MainActivity"))
+            {
+                this.finish();
+            }
+            else if (activity.equals("cl.domito.conductor.activity.ServicioActivity"))
+            {
+                Intent intent = new Intent(this, ServicioActivity.class);
+                startActivity(intent);
+            }
+        }
+
+        private void aceptarServicio() {
+            if (estado.equals("1")) {
+                RealizarServicioOperation realizarServicioOperation = new RealizarServicioOperation(this);
+                realizarServicioOperation.execute();
+            } else if (estado.equals("3")) {
+                try {
+                    if(conductor.servicioActualRuta.contains("RG"))
+                    {
+                        CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
+                        cambiarEstadoServicioOperation.execute(conductor.servicioActual,"4");
+                    }
+                    TextView textView = findViewById(R.id.textViewFechaValor);
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                    Date date = sdf.parse(textView.getText().toString());
+                    Long l = date.getTime();
+                    Date dateNow = new Date();
+                    Long lNow = dateNow.getTime();
+                    Long data = Math.abs(lNow - l);
+                    if (data <= 3.6e+6 || dateNow.after(date)) {
                     Intent mainIntent = new Intent(this, PasajeroActivity.class);
                     startActivity(mainIntent);
                     this.finish();

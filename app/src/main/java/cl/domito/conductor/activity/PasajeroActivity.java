@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import org.json.JSONObject;
 
@@ -25,6 +26,7 @@ public class PasajeroActivity extends AppCompatActivity {
     ImageView imageView;
     RecyclerView recyclerView;
     Conductor conductor;
+    ProgressBar progressBar;
 
 
     @Override
@@ -34,6 +36,7 @@ public class PasajeroActivity extends AppCompatActivity {
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         recyclerView = this.findViewById(R.id.recyclerViewPasajero);
         imageView = this.findViewById(R.id.imageView3);
+        progressBar = this.findViewById(R.id.progressBarGeneral);
         IniciarServicioOperation iniciarServicioOperation = new IniciarServicioOperation(this);
         iniciarServicioOperation.execute();
 
@@ -54,8 +57,6 @@ public class PasajeroActivity extends AppCompatActivity {
                 volver();
             }
         });
-
-
     }
 
 

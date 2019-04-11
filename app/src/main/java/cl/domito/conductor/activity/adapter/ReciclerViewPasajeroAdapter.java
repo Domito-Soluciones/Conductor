@@ -40,7 +40,9 @@ import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.CambiarEstadoServicioOperation;
 import cl.domito.conductor.thread.CancelarRutaPasajeroOperation;
+import cl.domito.conductor.thread.FinalizarRutaPasajeroOperation;
 import cl.domito.conductor.thread.FinalizarRutaPasajerosOperation;
+import cl.domito.conductor.thread.IniciarServicioOperation;
 import cl.domito.conductor.thread.ObtenerServicioOperation;
 import cl.domito.conductor.thread.TomarPasajeroOperation;
 
@@ -57,7 +59,6 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         public TextView textViewDireccion;
         public ImageView imageViewLlamar;
         public ImageButton buttonIniciar;
-        public ImageButton buttonTerminar;
         public ImageButton buttonCancelar;
         public ConstraintLayout constraintLayoutPasajero;
         public MyViewHolder(View v) {
@@ -66,7 +67,6 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
             textViewDireccion = v.findViewById(R.id.textviewDireccion);
             imageViewLlamar = v.findViewById(R.id.imageLlamar2);
             buttonIniciar = v.findViewById(R.id.imageButtonAceptar);
-            buttonTerminar = v.findViewById(R.id.imageButtonTerminar);
             buttonCancelar = v.findViewById(R.id.imageButtonCancelar);
             constraintLayoutPasajero = v.findViewById(R.id.constraintLayoutTVPasajero);
         }
@@ -115,12 +115,10 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                 if(conductor.pasajeroRecogido)
                 {
                     imagen = resources.getDrawable(R.drawable.confirmar);
-                    myViewHolder.buttonTerminar.setVisibility(View.GONE);
                 }
                 else
                 {
                     imagen = resources.getDrawable(R.drawable.navegar);
-                    myViewHolder.buttonTerminar.setVisibility(View.GONE);
                 }
                 myViewHolder.buttonIniciar.setImageDrawable(imagen);
 
@@ -129,20 +127,18 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                     @Override
                     public void onClick(View v) {
                         conductor.pasajeroActual = idPasajero;
-                        if(conductor.servicioActualRuta.contains("RG")) {
-                            if (conductor.pasajeroRecogido) {
-                                if (!idPasajero.equals("0")) {
-                                    TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
-                                    tomarPasajeroOperation.execute();
-                                    recargarPasajeros();
-                                } else {
-                                    finalizar();
-                                }
-                                conductor.pasajeroRecogido = false;
+                        if (conductor.pasajeroRecogido) {
+                            if (!idPasajero.equals("0")) {
+                                TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
+                                tomarPasajeroOperation.execute();
+                                recargarPasajeros();
                             } else {
-
-                                navegar(direccionPasajero);
+                                finalizar();
                             }
+                            conductor.pasajeroRecogido = false;
+                        } else {
+
+                            navegar(direccionPasajero);
                         }
                     }
 
@@ -152,7 +148,6 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
             else
             {
                 myViewHolder.buttonIniciar.setVisibility(View.GONE);
-                myViewHolder.buttonTerminar.setVisibility(View.GONE);
             }
 
             myViewHolder.buttonCancelar.setOnClickListener(new View.OnClickListener() {
@@ -164,7 +159,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                         dialogo1.setTitle("Cancelar Servicio");
                         dialogo1.setMessage("¿ Esta seguro que desea cancelar el servicio ?");
                         dialogo1.setCancelable(false);
-                        dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogo1, int id) {
                                 CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
                                 cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6");
@@ -174,7 +169,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                                 activity.finish();
                             }
                         });
-                        dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogo1, int id) {
                                 dialogo1.dismiss();
                             }
@@ -185,15 +180,28 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                         dialogo1.setTitle("Cancelar Usuario");
                         dialogo1.setMessage("¿ Esta seguro que este pasajero no abordara ?");
                         dialogo1.setCancelable(false);
-                        dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogo1, int id) {
-                                CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
-                                cancelarRutaPasajeroOperation.execute();
-                                Toast.makeText(activity, "Pasajero cancelado", Toast.LENGTH_SHORT).show();
-                                recargarPasajeros();
+                                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                                final String[] items = new String[3];
+                                items[0] = "No estaba en el punto de encuentro";
+                                items[1] = "Pasajero se encontraba enfermo";
+                                items[2] = "Otro";
+                                builder.setTitle("Opciones").setSingleChoiceItems(items, -1,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
+                                                cancelarRutaPasajeroOperation.execute(items[which].toString());
+                                                Toast.makeText(activity, "Pasajero cancelado", Toast.LENGTH_SHORT).show();
+                                                recargarPasajeros();
+                                            }
+                                        });
+                                builder.show();
                             }
                         });
-                        dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogo1, int id) {
                                 dialogo1.dismiss();
                             }
@@ -206,94 +214,119 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         }
         else if(conductor.servicioActualRuta.contains("ZP"))
         {
-            if(i == 0)
+            Drawable imagen = null;
+            if(estadoPasajero.equals("0"))
             {
-                Drawable imagen = null;
-                if(!conductor.pasajeroRecogido)
+                imagen = resources.getDrawable(R.drawable.confirmar);
+            }
+            else if(estadoPasajero.equals("1"))
+            {
+                if(i > 0)
                 {
-                    imagen = resources.getDrawable(R.drawable.confirmar);
-                    myViewHolder.buttonTerminar.setVisibility(View.GONE);
+                    myViewHolder.buttonIniciar.setVisibility(View.GONE);
                 }
-                else
-                {
-                    imagen = resources.getDrawable(R.drawable.navegar);
-                    myViewHolder.buttonTerminar.setVisibility(View.GONE);
+                else if(conductor.pasajeroRepartido) {
+                    imagen = resources.getDrawable(R.drawable.terminar);
                 }
-                myViewHolder.buttonIniciar.setImageDrawable(imagen);
-
-
-                myViewHolder.buttonIniciar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        conductor.pasajeroActual = idPasajero;
-                        if(conductor.servicioActualRuta.contains("ZP"))
+                else if(!conductor.pasajeroRepartido)
                         {
-                            if (!conductor.pasajeroRecogido) {
-                                if(!idPasajero.equals("0")) {
-                                    TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
-                                    tomarPasajeroOperation.execute();
-                                    recargarPasajeros();
-                                }
-                                else
-                                {
-                                    finalizar();
-                                }
-                                conductor.pasajeroRecogido = false;
-                            } else {
-
-                                navegar(direccionPasajero);
-                            }
+                            imagen = resources.getDrawable(R.drawable.navegar);
                         }
                     }
-
-                });
-
-            }
-            else
-            {
-                myViewHolder.buttonIniciar.setVisibility(View.GONE);
-                myViewHolder.buttonTerminar.setVisibility(View.GONE);
-            }
-
-            myViewHolder.buttonCancelar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    conductor.pasajeroActual = idPasajero;
-                    if (idPasajero.equals("0")) {
-                        AlertDialog.Builder dialogo1 = new AlertDialog.Builder(activity);
-                        dialogo1.setTitle("Cancelar Servicio");
-                        dialogo1.setMessage("¿ Esta seguro que desea cancelar el servicio ?");
-                        dialogo1.setCancelable(false);
-                        dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialogo1, int id) {
+                    myViewHolder.buttonIniciar.setImageDrawable(imagen);
+                    myViewHolder.buttonIniciar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            conductor.pasajeroActual = idPasajero;
+                            if(idPasajero.equals("0")) {
+                                conductor.zarpeIniciado = true;
+                                IniciarServicioOperation iniciarServicioOperation = new IniciarServicioOperation(activity);
+                                iniciarServicioOperation.execute();
                                 CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-                                cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6");
-                                FinalizarRutaPasajerosOperation finalizarRutaPasajerosOperation = new FinalizarRutaPasajerosOperation(activity);
-                                finalizarRutaPasajerosOperation.execute("2");
-                                Toast.makeText(activity, "Servicio cancelado", Toast.LENGTH_SHORT).show();
-                                activity.finish();
+                                cambiarEstadoServicioOperation.execute(conductor.servicioActual,"4");
+                                recargarPasajeros();
                             }
-                        });
-                        dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialogo1, int id) {
-                                dialogo1.dismiss();
+                            else
+                            {
+                                if(estadoPasajero.equals("0")) {
+                                    TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation(activity);
+                                    tomarPasajeroOperation.execute();
+                                    recargarPasajeros();
+                                    conductor.pasajeroRepartido = false;
+                                }
+                                else if(!estadoPasajero.equals("0") && i == 0 && !conductor.pasajeroRepartido)
+                                {
+                                    navegar(direccionPasajero);
+                                }
+                                else if(!estadoPasajero.equals("0") && i == 0 && conductor.pasajeroRepartido)
+                                {
+                                    FinalizarRutaPasajeroOperation finalizarRutaPasajeroOperation = new FinalizarRutaPasajeroOperation(activity);
+                                    finalizarRutaPasajeroOperation.execute();
+                                    conductor.pasajeroRepartido = false;
+                                    if(i == getItemCount()-1)
+                                    {
+                                        finalizar();
+                                    }
+                                    else {
+                                        recargarPasajeros();
+                                    }
+                                }
                             }
-                        });
-                        dialogo1.show();
-                    } else {
-                        AlertDialog.Builder dialogo1 = new AlertDialog.Builder(activity);
+                        }
+
+                    });
+
+                    myViewHolder.buttonCancelar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            conductor.pasajeroActual = idPasajero;
+                            if (idPasajero.equals("0")) {
+                                AlertDialog.Builder dialogo1 = new AlertDialog.Builder(activity);
+                                dialogo1.setTitle("Cancelar Servicio");
+                                dialogo1.setMessage("¿ Esta seguro que desea cancelar el servicio ?");
+                                dialogo1.setCancelable(false);
+                                dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialogo1, int id) {
+                                        CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
+                                        cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6");
+                                        FinalizarRutaPasajerosOperation finalizarRutaPasajerosOperation = new FinalizarRutaPasajerosOperation(activity);
+                                        finalizarRutaPasajerosOperation.execute("2");
+                                        Toast.makeText(activity, "Servicio cancelado", Toast.LENGTH_SHORT).show();
+                                        activity.finish();
+                                    }
+                                });
+                                dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialogo1, int id) {
+                                        dialogo1.dismiss();
+                                    }
+                                });
+                                dialogo1.show();
+                            } else {
+                                AlertDialog.Builder dialogo1 = new AlertDialog.Builder(activity);
                         dialogo1.setTitle("Cancelar Usuario");
                         dialogo1.setMessage("¿ Esta seguro que este pasajero no abordara ?");
                         dialogo1.setCancelable(false);
-                        dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                        dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogo1, int id) {
-                                CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
-                                cancelarRutaPasajeroOperation.execute();
-                                Toast.makeText(activity, "Pasajero cancelado", Toast.LENGTH_SHORT).show();
-                                recargarPasajeros();
+                                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                                final CharSequence[] items = new CharSequence[3];
+                                items[0] = "No estaba en el punto de encuentro";
+                                items[1] = "Pasajero se encontraba enfermo";
+                                items[2] = "Otro";
+                                builder.setTitle("Opciones").setSingleChoiceItems(items, -1,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
+                                                cancelarRutaPasajeroOperation.execute(items[which].toString());
+                                                Toast.makeText(activity, "Pasajero cancelado", Toast.LENGTH_SHORT).show();
+                                                recargarPasajeros();
+                                            }
+                                        });
+                                builder.show();
                             }
                         });
-                        dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                        dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialogo1, int id) {
                                 dialogo1.dismiss();
                             }
@@ -307,43 +340,6 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         {
 
         }
-
-/*        if(estadoPasajero.equals("1") || (conductor.servicioActualRuta.contains("RG") && idPasajero.equals("0")))
-        {
-
-            else
-            {
-                myViewHolder.buttonIniciar.setVisibility(View.INVISIBLE);
-            }
-        }
-
-        if(i > 0)
-        {
-            myViewHolder.buttonTerminar.setVisibility(View.INVISIBLE);
-        }*/
-
-
-        /*myViewHolder.buttonTerminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                conductor.pasajeroActual = idPasajero;
-                FinalizarRutaPasajeroOperation finalizarRutaPasajeroOperation = new FinalizarRutaPasajeroOperation((PasajeroActivity) activity);
-                finalizarRutaPasajeroOperation.execute();
-                String ruta = conductor.servicioActualRuta;
-                if(ruta.contains("ZP") && i == getItemCount()- 1)
-                {
-                    finalizar();
-                }
-                else if(ruta.contains("RG") && i == getItemCount()- 1)
-                {
-                    finalizar();
-                }
-                else
-                {
-                    recargarPasajeros();
-                }
-            }
-        });*/
 
         myViewHolder.imageViewLlamar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -422,28 +418,30 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                 e.printStackTrace();
             }
         }
-        for(int i =  0; i < conductor.servicio.length();i++ ) {
-            try {
-                JSONObject servicio = conductor.servicio.getJSONObject(i);
-                if (servicio.getString("servicio_id").equals(idServicio)) {
-                    String id = servicio.getString("servicio_pasajero_id");
-                    String nombre = servicio.getString("servicio_pasajero_nombre");
-                    String celular = servicio.getString("servicio_pasajero_celular");
-                    String destino = servicio.getString("servicio_destino");
-                    String estado = servicio.getString("servicio_pasajero_estado");
-                    if(servicio.getString("servicio_truta").contains("ZP")) {
-                        if (!estado.equals("3") && !estado.equals("2")) {
-                            lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+        if(conductor.servicio != null) {
+            for (int i = 0; i < conductor.servicio.length(); i++) {
+                try {
+                    JSONObject servicio = conductor.servicio.getJSONObject(i);
+                    if (servicio.getString("servicio_id").equals(idServicio)) {
+                        String id = servicio.getString("servicio_pasajero_id");
+                        String nombre = servicio.getString("servicio_pasajero_nombre");
+                        String celular = servicio.getString("servicio_pasajero_celular");
+                        String destino = servicio.getString("servicio_destino");
+                        String estado = servicio.getString("servicio_pasajero_estado");
+                        if (servicio.getString("servicio_truta").contains("ZP")) {
+                            if (!estado.equals("3") && !estado.equals("2")) {
+                                lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                            }
+                        } else if (servicio.getString("servicio_truta").contains("RG")) {
+                            if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
+                                lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                            }
                         }
                     }
-                    else if(servicio.getString("servicio_truta").contains("RG")) {
-                        if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
-                            lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
-                        }
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-            catch(Exception e){e.printStackTrace();}
         }
         if(conductor.servicio != null) {
             try {
@@ -472,6 +470,14 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                 }
             });
         }
+        else
+        {
+            activity.finish();
+            CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
+            cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6");
+            conductor.zarpeIniciado = false;
+            Toast.makeText(activity,"Servicio cancelado",Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void finalizar()
@@ -480,6 +486,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
             JSONObject json = conductor.servicio.getJSONObject(0);
             Intent intent = new Intent(conductor.context, FinServicioActivity.class);
             Bundle bundle = new Bundle();
+            bundle.putString("id", json.getString("servicio_id"));
             bundle.putString("cliente", json.getString("servicio_cliente"));
             bundle.putString("fecha", json.getString("servicio_fecha"));
             bundle.putString("tarifa", json.getString("servicio_tarifa"));
@@ -489,7 +496,8 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
             FinalizarRutaPasajerosOperation finalizarRutaPasajerosOperation = new FinalizarRutaPasajerosOperation(activity);
             finalizarRutaPasajerosOperation.execute("3");
             conductor.servicioActual = null;
-
+            conductor.zarpeIniciado = false;
+            conductor.locationDestino = null;
             activity.finish();
             activity.startActivity(intent);
         }

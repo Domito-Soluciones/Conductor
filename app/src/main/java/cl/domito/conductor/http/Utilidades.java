@@ -6,7 +6,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -38,7 +40,7 @@ import cl.domito.conductor.dominio.Conductor;
 
 public class Utilidades {
 
-    public static int reintentos = 0;
+    public static int tipoError = 0;
 
     public static String URL_BASE = "https://www.domito.cl/Test/source/httprequest/";
     //public static String URL_BASE = "http://192.168.100.194/GpsVan/source/httprequest/";
@@ -77,8 +79,8 @@ public class Utilidades {
             });
         }
         HttpParams httpParams = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
-        HttpConnectionParams.setSoTimeout(httpParams, 3000);
+        HttpConnectionParams.setConnectionTimeout(httpParams, 10000);
+        HttpConnectionParams.setSoTimeout(httpParams, 10000);
         HttpClient client = new DefaultHttpClient(httpParams);
         HttpPost post = new HttpPost(urlDest);
         post.setHeader("User-Agent", "");
@@ -103,9 +105,27 @@ public class Utilidades {
             }
             jsonObject = new JSONObject(result.toString());
         } catch (UnknownHostException e) {
+
         } catch (IOException ioe) {
-            reintentos++;
+            tipoError = 1;
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(ioe.toString().contains("timed out")) {
+                        Toast.makeText(activity, "Tiempo de espera agotado, favor reintentar", Toast.LENGTH_SHORT).show();;
+                    }
+                }
+            });
         } catch (Exception e) {
+            tipoError = 1;
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if(e.toString().contains("timed out")) {
+                        Toast.makeText(activity, "Tiempo de espera agotado, favor reintentar", Toast.LENGTH_SHORT).show();;
+                    }
+                }
+            });
             e.printStackTrace();
         }
         return jsonObject;
@@ -138,8 +158,8 @@ public class Utilidades {
             });
         }
         HttpParams httpParams = new BasicHttpParams();
-        HttpConnectionParams.setConnectionTimeout(httpParams, 3000);
-        HttpConnectionParams.setSoTimeout(httpParams, 3000);
+        HttpConnectionParams.setConnectionTimeout(httpParams, 10000);
+        HttpConnectionParams.setSoTimeout(httpParams, 10000);
         HttpClient client = new DefaultHttpClient(httpParams);
         HttpPost post = new HttpPost(urlDest);
         post.setHeader("User-Agent", "");

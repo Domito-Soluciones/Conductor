@@ -187,11 +187,12 @@ public class RequestConductor {
         }
     }
 
-    public static void cambiarEstadoPasajero(String estado) {
+    public static void cambiarEstadoPasajero(String estado,String observacion) {
         String url = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicioPasajero.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("idServicio",conductor.servicioActual));
         params.add(new BasicNameValuePair("idPasajero",conductor.pasajeroActual));
+        params.add(new BasicNameValuePair("observacion",observacion));
         params.add(new BasicNameValuePair("estado",estado));
         try {
             Utilidades.enviarPost(url,params);

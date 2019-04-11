@@ -17,18 +17,18 @@ import cl.domito.conductor.http.RequestConductor;
 
 public class TomarPasajeroOperation extends AsyncTask<Void, Void, Void> {
 
-    private WeakReference<PasajeroActivity> context;
+    private WeakReference<Activity> context;
     private Conductor conductor;
 
-    public TomarPasajeroOperation(PasajeroActivity activity)
+    public TomarPasajeroOperation(Activity activity)
     {
-        context = new WeakReference<PasajeroActivity>(activity);
+        context = new WeakReference<Activity>(activity);
         conductor = Conductor.getInstance();
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
-        RequestConductor.cambiarEstadoPasajero("1");
+        RequestConductor.cambiarEstadoPasajero("1","");
         return null;
     }
 
@@ -47,7 +47,7 @@ public class TomarPasajeroOperation extends AsyncTask<Void, Void, Void> {
                     Toast.makeText(context.get(),"Pasajero Recogido",Toast.LENGTH_SHORT).show();
                 }
                 else if(conductor.servicioActualRuta.contains("ZP")) {
-                    Toast.makeText(context.get(), "Pasajero Entregado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context.get(), "Pasajero Abordado", Toast.LENGTH_SHORT).show();
                 }
             }
         });

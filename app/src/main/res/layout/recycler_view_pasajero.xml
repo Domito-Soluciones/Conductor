@@ -85,21 +85,6 @@
         app:layout_constraintVertical_bias="0.72" />
 
     <ImageButton
-        android:id="@+id/imageButtonTerminar"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginStart="8dp"
-        android:background="@color/colorFondo"
-        android:src="@drawable/terminar"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.52"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textviewDireccion"
-        app:layout_constraintVertical_bias="0.307" />
-
-    <ImageButton
         android:id="@+id/imageButtonCancelar"
         android:layout_width="70dp"
         android:layout_height="70dp"

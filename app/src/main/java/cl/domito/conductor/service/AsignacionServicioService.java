@@ -87,6 +87,10 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                                 {
                                     conductor.pasajeroRecogido = true;
                                 }
+                                else if(conductor.servicioActualRuta.contains("ZP"))
+                                {
+                                    conductor.pasajeroRepartido = true;
+                                }
                                 if(conductor.servicioActual != null) {
                                     abrirActivity();
                                 }

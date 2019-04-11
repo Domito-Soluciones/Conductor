@@ -1,5 +1,6 @@
 package cl.domito.conductor.thread;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -16,19 +17,19 @@ import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.http.Utilidades;
 
-public class FinalizarRutaPasajeroOperation extends AsyncTask<String, Void, Void> {
+public class FinalizarRutaPasajeroOperation extends AsyncTask<Void, Void, Void> {
 
-    private WeakReference<PasajeroActivity> context;
+    private WeakReference<Activity> context;
     private Conductor conductor;
 
-    public FinalizarRutaPasajeroOperation(PasajeroActivity activity)
+    public FinalizarRutaPasajeroOperation(Activity activity)
     {
-        context = new WeakReference<PasajeroActivity>(activity);
+        context = new WeakReference<Activity>(activity);
         conductor = Conductor.getInstance();
     }
     @Override
-    protected Void doInBackground(String... strings) {
-        RequestConductor.cambiarEstadoPasajero("3");
+    protected Void doInBackground(Void... voids) {
+        RequestConductor.cambiarEstadoPasajero("3","");
         return null;
     }
 

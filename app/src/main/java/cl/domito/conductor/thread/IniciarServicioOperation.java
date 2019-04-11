@@ -1,5 +1,6 @@
 package cl.domito.conductor.thread;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,13 +25,13 @@ import cl.domito.conductor.http.RequestConductor;
 
 public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
 
-    private WeakReference<PasajeroActivity> context;
+    private WeakReference<Activity> context;
     ConstraintLayout constraintLayoutPasajero;
     ConstraintLayout constraintLayoutEstado;
 
 
-    public IniciarServicioOperation(PasajeroActivity activity) {
-        context = new WeakReference<PasajeroActivity>(activity);
+    public IniciarServicioOperation(Activity activity) {
+        context = new WeakReference<Activity>(activity);
         constraintLayoutPasajero = context.get().findViewById(R.id.constrainLayoutPasajero);
         constraintLayoutEstado = context.get().findViewById(R.id.constrainLayoutEstado);
     }
@@ -70,29 +71,31 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
                 e.printStackTrace();
             }
         }
-        for(int i =  0; i < conductor.servicio.length();i++ ) {
-            try {
-                JSONObject servicio = conductor.servicio.getJSONObject(i);
-                if (servicio.getString("servicio_id").equals(idServicio)) {
-                    String id = servicio.getString("servicio_pasajero_id");
-                    String nombre = servicio.getString("servicio_pasajero_nombre");
-                    String celular = servicio.getString("servicio_pasajero_celular");
-                    String destino = servicio.getString("servicio_destino");
-                    String estado = servicio.getString("servicio_pasajero_estado");
-                    if(servicio.getString("servicio_truta").contains("ZP")) {
-                        if (!estado.equals("3") && !estado.equals("2")) {
-                            lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+        if(conductor.servicio != null) {
+            for (int i = 0; i < conductor.servicio.length(); i++) {
+                try {
+                    JSONObject servicio = conductor.servicio.getJSONObject(i);
+                    if (servicio.getString("servicio_id").equals(idServicio)) {
+                        String id = servicio.getString("servicio_pasajero_id");
+                        String nombre = servicio.getString("servicio_pasajero_nombre");
+                        String celular = servicio.getString("servicio_pasajero_celular");
+                        String destino = servicio.getString("servicio_destino");
+                        String estado = servicio.getString("servicio_pasajero_estado");
+                        if (servicio.getString("servicio_truta").contains("ZP")) {
+                            if (!estado.equals("3") && !estado.equals("2")) {
+                                lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                            }
+                        } else if (servicio.getString("servicio_truta").contains("RG")) {
+                            if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
+                                lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                            }
                         }
-                    }
-                    else if(servicio.getString("servicio_truta").contains("RG")) {
-                        if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
-                            lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
-                        }
-                    }
 
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-            catch(Exception e){e.printStackTrace();}
         }
         if(conductor.servicio != null) {
             try {

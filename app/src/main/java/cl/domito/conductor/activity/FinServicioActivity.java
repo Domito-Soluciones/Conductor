@@ -35,7 +35,7 @@ public class FinServicioActivity extends AppCompatActivity {
         conductor.zarpeIniciado = false;
         try {
             Bundle bundle = getIntent().getExtras();
-            textView.setText(conductor.servicioActual);
+            textView.setText(bundle.getString("id"));
             textViewCliente.setText(bundle.getString("cliente"));
             textViewFecha.setText(bundle.getString("fecha"));
             textViewTarifa.setText(bundle.getString("tarifa"));
@@ -62,7 +62,16 @@ public class FinServicioActivity extends AppCompatActivity {
 
     private void volver()
     {
-        this.finish();
+        String activity = getIntent().getExtras().getString("activity");
+        if(activity.equals("cl.domito.conductor.activity.MainActivity"))
+        {
+            this.finish();
+        }
+        else if (activity.equals("cl.domito.conductor.activity.ServicioActivity"))
+        {
+            Intent intent = new Intent(this, ServicioActivity.class);
+            startActivity(intent);
+        }
     }
 
 }

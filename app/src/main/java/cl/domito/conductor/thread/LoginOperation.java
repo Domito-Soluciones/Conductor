@@ -16,6 +16,7 @@ import cl.domito.conductor.activity.MainActivity;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
+import cl.domito.conductor.http.Utilidades;
 import cl.domito.conductor.service.AsignacionServicioService;
 
 public class LoginOperation extends AsyncTask<String, Void, Void> {
@@ -60,7 +61,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             loginActivity.startActivity(mainIntent);
             loginActivity.finish();
             RequestConductor.cambiarEstadoMovil("1");
-        } else {
+        } else if(Utilidades.tipoError == 0) {
             loginActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
