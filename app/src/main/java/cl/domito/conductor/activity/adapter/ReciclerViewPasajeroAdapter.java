@@ -537,6 +537,11 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                             if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
                                 lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
                             }
+                        }else if(servicio.getString("servicio_truta").contains("XX"))
+                        {
+                            if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
+                                lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                            }
                         }
                     }
                 } catch (Exception e) {
