@@ -108,6 +108,12 @@ public class ServicioActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        obtenerServicos();
+        super.onResume();
+    }
+
+    @Override
     public void onBackPressed() {
         conductor.volver = true;
         super.onBackPressed();

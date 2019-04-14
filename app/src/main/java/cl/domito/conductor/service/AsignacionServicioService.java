@@ -79,20 +79,23 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
 
                         Location location = conductor.location;
                         Location locationDestino = conductor.locationDestino;
+                        System.out.println("este es el tema "+conductor.pasajeroRecogido);
                         if (location != null && locationDestino != null) {
                             float distancia = location.distanceTo(locationDestino);
                             //System.out.println("esta es distancia " + distancia + " -------------------------------------");
                             //if (distancia < 50f) {
-                                if(conductor.servicioActualRuta.contains("RG"))
-                                {
-                                    conductor.pasajeroRecogido = true;
-                                }
-                                else if(conductor.servicioActualRuta.contains("ZP"))
-                                {
-                                    conductor.pasajeroRepartido = true;
-                                }
+
                                 if(conductor.servicioActual != null) {
                                     abrirActivity();
+                                    conductor.locationDestino = null;
+                                    if(conductor.servicioActualRuta.contains("RG"))
+                                    {
+                                        conductor.pasajeroRecogido = true;
+                                    }
+                                    else if(conductor.servicioActualRuta.contains("ZP"))
+                                    {
+                                        conductor.pasajeroRepartido = true;
+                                    }
                                 }
 
                             //}
@@ -103,7 +106,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                     }
                     finally {
                         try {
-                            Thread.sleep(4000);
+                            Thread.sleep(1000);
                         } catch (InterruptedException e) {
                         }
                     }

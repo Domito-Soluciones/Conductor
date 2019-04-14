@@ -33,6 +33,7 @@ public class FinServicioActivity extends AppCompatActivity {
 
         conductor = Conductor.getInstance();
         conductor.zarpeIniciado = false;
+        conductor.pasajeroRecogido = false;
         try {
             Bundle bundle = getIntent().getExtras();
             textView.setText(bundle.getString("id"));

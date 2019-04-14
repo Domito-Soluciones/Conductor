@@ -43,6 +43,7 @@ public class FinalizarRutaPasajerosOperation extends AsyncTask<String, Void, Voi
                 else{
 
                 }
+                conductor.servicioActual = null;
             }
         });
 
