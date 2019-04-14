@@ -345,6 +345,107 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
         }
         else
         {
+            if(i == 0)
+            {
+                Drawable imagen = null;
+                if(conductor.pasajeroRecogido)
+                {
+                    imagen = resources.getDrawable(R.drawable.confirmar);
+                }
+                else
+                {
+                    imagen = resources.getDrawable(R.drawable.navegar);
+                }
+                myViewHolder.buttonIniciar.setImageDrawable(imagen);
+
+
+                myViewHolder.buttonIniciar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        conductor.pasajeroActual = idPasajero;
+                        if (conductor.pasajeroRecogido) {
+                            if (!idPasajero.equals("0")) {
+                                TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
+                                tomarPasajeroOperation.execute();
+                                recargarPasajeros();
+                            } else {
+                                finalizar();
+                            }
+                            conductor.pasajeroRecogido = false;
+                        } else {
+
+                            navegar(direccionPasajero);
+                        }
+                    }
+
+                });
+
+            }
+            else
+            {
+                myViewHolder.buttonIniciar.setVisibility(View.GONE);
+            }
+
+            myViewHolder.buttonCancelar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    conductor.pasajeroActual = idPasajero;
+                    if (idPasajero.equals("0")) {
+                        AlertDialog.Builder dialogo1 = new AlertDialog.Builder(activity);
+                        dialogo1.setTitle("Cancelar Servicio");
+                        dialogo1.setMessage("¿ Esta seguro que desea cancelar el servicio ?");
+                        dialogo1.setCancelable(false);
+                        dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogo1, int id) {
+                                CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
+                                cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6");
+                                FinalizarRutaPasajerosOperation finalizarRutaPasajerosOperation = new FinalizarRutaPasajerosOperation(activity);
+                                finalizarRutaPasajerosOperation.execute("2");
+                                Toast.makeText(activity, "Servicio cancelado", Toast.LENGTH_SHORT).show();
+                                activity.finish();
+                            }
+                        });
+                        dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogo1, int id) {
+                                dialogo1.dismiss();
+                            }
+                        });
+                        dialogo1.show();
+                    } else {
+                        AlertDialog.Builder dialogo1 = new AlertDialog.Builder(activity);
+                        dialogo1.setTitle("Cancelar Usuario");
+                        dialogo1.setMessage("¿ Esta seguro que este pasajero no abordara ?");
+                        dialogo1.setCancelable(false);
+                        dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogo1, int id) {
+                                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                                final String[] items = new String[3];
+                                items[0] = "No estaba en el punto de encuentro";
+                                items[1] = "Pasajero se encontraba enfermo";
+                                items[2] = "Otro";
+                                builder.setTitle("Opciones").setSingleChoiceItems(items, -1,
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                                CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
+                                                cancelarRutaPasajeroOperation.execute(items[which].toString());
+                                                Toast.makeText(activity, "Pasajero cancelado", Toast.LENGTH_SHORT).show();
+                                                recargarPasajeros();
+                                            }
+                                        });
+                                builder.show();
+                            }
+                        });
+                        dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogo1, int id) {
+                                dialogo1.dismiss();
+                            }
+                        });
+                        dialogo1.show();
+                    }
+                }
+            });
 
         }
 
@@ -440,6 +541,11 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                                 lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
                             }
                         } else if (servicio.getString("servicio_truta").contains("RG")) {
+                            if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
+                                lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                            }
+                        }else if(servicio.getString("servicio_truta").contains("XX"))
+                        {
                             if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
                                 lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
                             }
