@@ -187,9 +187,9 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                             public void onClick(DialogInterface dialogo1, int id) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                                 final String[] items = new String[3];
-                                items[0] = "No estaba en el punto de encuentro";
-                                items[1] = "Pasajero se encontraba enfermo";
-                                items[2] = "Otro";
+                                items[0] = "Pasajero no contactado";
+                                items[1] = "Pasajero enfermo";
+                                items[2] = "Otro motivo";
                                 builder.setTitle("Opciones").setSingleChoiceItems(items, -1,
                                         new DialogInterface.OnClickListener() {
                                             @Override
@@ -316,9 +316,9 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                             public void onClick(DialogInterface dialogo1, int id) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                                 final CharSequence[] items = new CharSequence[3];
-                                items[0] = "No estaba en el punto de encuentro";
-                                items[1] = "Pasajero se encontraba enfermo";
-                                items[2] = "Otro";
+                                items[0] = "Pasajero no contactado";
+                                items[1] = "Pasajero enfermo";
+                                items[2] = "Otro motivo";
                                 builder.setTitle("Opciones").setSingleChoiceItems(items, -1,
                                         new DialogInterface.OnClickListener() {
                                             @Override
@@ -420,9 +420,9 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                             public void onClick(DialogInterface dialogo1, int id) {
                                 AlertDialog.Builder builder = new AlertDialog.Builder(activity);
                                 final String[] items = new String[3];
-                                items[0] = "No estaba en el punto de encuentro";
-                                items[1] = "Pasajero se encontraba enfermo";
-                                items[2] = "Otro";
+                                items[0] = "Pasajero no contactado";
+                                items[1] = "Pasajero enfermo";
+                                items[2] = "Otro motivo";
                                 builder.setTitle("Opciones").setSingleChoiceItems(items, -1,
                                         new DialogInterface.OnClickListener() {
                                             @Override
