@@ -139,12 +139,12 @@ public class RequestConductor {
         params2.add(new BasicNameValuePair("conductor",conductor.id));
         params2.add(new BasicNameValuePair("estado",estado));
         try {
-            jsonObject = Utilidades.enviarPost(url2,params2);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return jsonObject;
+        jsonObject = Utilidades.enviarPost(url2,params2);
+    } catch (IOException e) {
+        e.printStackTrace();
     }
+        return jsonObject;
+}
 
     public static JSONObject cambiarServicioMovil(String servicio) {
         JSONObject jsonObject = null;

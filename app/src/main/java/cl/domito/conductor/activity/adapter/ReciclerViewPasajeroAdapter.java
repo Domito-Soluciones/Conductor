@@ -225,6 +225,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
             }
             else if(estadoPasajero.equals("1"))
             {
+                myViewHolder.buttonCancelar.setVisibility(View.GONE);
                 if(i > 0)
                 {
                     myViewHolder.buttonIniciar.setVisibility(View.GONE);
@@ -362,16 +363,17 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                 myViewHolder.buttonIniciar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        v.setVisibility(View.INVISIBLE);
                         conductor.pasajeroActual = idPasajero;
-                        if (conductor.pasajeroRecogido) {
+                        if (conductor.pasajeroRecogido){
                             if (!idPasajero.equals("0")) {
+                                conductor.pasajeroRecogido = false;
                                 TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
                                 tomarPasajeroOperation.execute();
                                 recargarPasajeros();
                             } else {
                                 finalizar();
                             }
-                            conductor.pasajeroRecogido = false;
                         } else {
 
                             navegar(direccionPasajero);
@@ -389,6 +391,8 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
             myViewHolder.buttonCancelar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    v.setVisibility(View.INVISIBLE);
+                    conductor.pasajeroRecogido = false;
                     conductor.pasajeroActual = idPasajero;
                     if (idPasajero.equals("0")) {
                         AlertDialog.Builder dialogo1 = new AlertDialog.Builder(activity);
@@ -432,6 +436,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                                                 cancelarRutaPasajeroOperation.execute(items[which].toString());
                                                 Toast.makeText(activity, "Pasajero cancelado", Toast.LENGTH_SHORT).show();
                                                 recargarPasajeros();
+                                                dialog.dismiss();
                                             }
                                         });
                                 builder.show();

@@ -53,7 +53,7 @@ public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<Recicler
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int position) {
         View v = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.recycler_view_programado, viewGroup, false);
+                .inflate(R.layout.recycler_view_produccion, viewGroup, false);
         MyViewHolder vh = new MyViewHolder(v);
         return vh;
     }
@@ -64,7 +64,7 @@ public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<Recicler
         String[] data = mDataset[i].split("%");
         String fecha = data[0] + " " + data[1];
         Resources resources = myViewHolder.textView.getContext().getResources();
-        Drawable imagen = resources.getDrawable(R.drawable.arriba);
+        //Drawable imagen = resources.getDrawable(R.drawable.arriba);
         Bundle bundle = activity.getIntent().getExtras();
         String intentId = null;
         String tipo = null;
@@ -73,7 +73,7 @@ public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<Recicler
             tipo = activity.getIntent().getExtras().getString("accion");
         }
         myViewHolder.textView.setText(data[3]);
-        myViewHolder.imageView.setImageDrawable(imagen);
+       // myViewHolder.imageView.setImageDrawable(imagen);
         myViewHolder.textViewFecha.setText(fecha);
         myViewHolder.textViewCliente.setText(data[2]);
     }
