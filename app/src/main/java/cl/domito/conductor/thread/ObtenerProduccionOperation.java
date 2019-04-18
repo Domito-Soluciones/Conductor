@@ -45,9 +45,9 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
         protected JSONArray doInBackground(Void... voids) {
             Conductor conductor = Conductor.getInstance();
             Calendar c = Calendar.getInstance();
-            String fechaHasta = "01/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
-            c.add(Calendar.MONTH,-1);
             String fechaDesde = "01/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
+            c.add(Calendar.MONTH,1);
+            String fechaHasta = "01/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
             String url = Utilidades.URL_BASE_LIQUIDACION + "GetProduccion.php";
             List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("desde",fechaDesde));
@@ -68,8 +68,6 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
     @Override
     protected void onPostExecute(JSONArray jsonArray) {
         int total = 0;
-        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy");
         ArrayList<String> lista = new ArrayList();
         String ant = "";
         if(jsonArray == null)
@@ -85,8 +83,7 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
                 String servicioHora = jsonObject.getString("servicio_hora");
                 String servicioTarifa = jsonObject.getString("servicio_tarifa1");
                 total += Integer.parseInt(servicioTarifa);
-                String fecha = format2.format(format1.parse(servicioFecha.replace("/","-")));
-                lista.add( fecha + "%"+ servicioHora + "%" + servicioTarifa + "%" + servicioId);
+                lista.add( servicioFecha + "%"+ servicioHora + "%" + servicioTarifa + "%" + servicioId);
             } catch (Exception e) {
                 e.printStackTrace();
             }

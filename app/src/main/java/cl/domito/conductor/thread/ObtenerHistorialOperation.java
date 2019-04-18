@@ -63,8 +63,6 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
 
     @Override
     protected void onPostExecute(JSONArray jsonArray) {
-        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy");
         ArrayList<String> lista = new ArrayList();
         String ant = "";
         if(jsonArray == null)
@@ -80,8 +78,7 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
                 String servicioHora = jsonObject.getString("servicio_hora");
                 String servicioCliente = jsonObject.getString("servicio_cliente");
                 String servicioEstado = jsonObject.getString("servicio_estado");
-                String fecha = format2.format(format1.parse(servicioFecha.replace("/","-")));
-                lista.add( servicioId + "%" + fecha + "%"+ servicioHora + "%" + servicioCliente + "%" + servicioEstado);
+                lista.add( servicioId + "%" + servicioFecha + "%"+ servicioHora + "%" + servicioCliente + "%" + servicioEstado);
             } catch (Exception e) {
                 e.printStackTrace();
             }
