@@ -79,23 +79,23 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
 
                         Location location = conductor.location;
                         Location locationDestino = conductor.locationDestino;
-                        if (location != null && locationDestino != null) {
-                            float distancia = location.distanceTo(locationDestino);
-                            //System.out.println("esta es distancia " + distancia + " -------------------------------------");
-                            //if (distancia < 50f) {
-                                if(conductor.servicioActualRuta.contains("RG"))
-                                {
-                                    conductor.pasajeroRecogido = true;
-                                }
-                                else if(conductor.servicioActualRuta.contains("ZP"))
-                                {
-                                    conductor.pasajeroRepartido = true;
-                                }
+                        if (location != null && locationDestino != null) {    conductor.pasajeroRepartido = true;
+
+                                    float distancia = location.distanceTo(locationDestino);
+                                    System.out.println("esta es distancia " + distancia + " -------------------------------------");
+                                    if (distancia < 50f) {
+                                        if(conductor.servicioActualRuta.contains("RG"))
+                                        {
+                                            conductor.pasajeroRecogido = true;
+                                        }
+                                        else if(conductor.servicioActualRuta.contains("ZP"))
+                                        {
+                                        }
                                 if(conductor.servicioActual != null) {
                                     abrirActivity();
                                 }
 
-                            //}
+                            }
                         }
                         //}
                     } catch (Exception e) {
