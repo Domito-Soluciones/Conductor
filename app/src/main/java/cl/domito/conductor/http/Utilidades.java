@@ -48,6 +48,7 @@ public class Utilidades {
     public static String URL_BASE_MOVIL = URL_BASE + "movil/";
     public static String URL_BASE_NOTIFICACION = URL_BASE + "notificacion/";
     public static String URL_BASE_SERVICIO = URL_BASE + "servicio/";
+    public static String URL_BASE_LIQUIDACION = URL_BASE + "liquidacion/";
     public static SimpleDateFormat FORMAT = new SimpleDateFormat("dd-MM-yyyy");
     private static Conductor conductor = Conductor.getInstance();
 
@@ -180,6 +181,7 @@ public class Utilidades {
             StringBuilder result = new StringBuilder();
             while ((line = rd.readLine()) != null) {
                 result.append(line);
+                System.out.println(line);
             }
             jsonArray = new JSONArray(result.toString());
         }

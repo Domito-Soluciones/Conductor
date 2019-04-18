@@ -32,7 +32,7 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
     private WeakReference<ProduccionActivity> context;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
-    private TextView textViewTotal;
+        private TextView textViewTotal;
 
     public ObtenerProduccionOperation(ProduccionActivity activity) {
             context = new WeakReference<ProduccionActivity>(activity);
@@ -41,20 +41,19 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
             textViewTotal = this.context.get().findViewById(R.id.textViewTotal);
         }
 
-    @Override
-    protected JSONArray doInBackground(Void... voids) {
-        Conductor conductor = Conductor.getInstance();
-        Calendar c = Calendar.getInstance();
-        String fechaHasta = "01/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
-                 ;
-        c.add(Calendar.MONTH,-1);
-        String fechaDesde = "01/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
-        String url = Utilidades.URL_BASE_SERVICIO + "GetServicios.php";
-        List<NameValuePair> params = new ArrayList();
+        @Override
+        protected JSONArray doInBackground(Void... voids) {
+            Conductor conductor = Conductor.getInstance();
+            Calendar c = Calendar.getInstance();
+            String fechaHasta = "01/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
+            c.add(Calendar.MONTH,-1);
+            String fechaDesde = "01/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
+            String url = Utilidades.URL_BASE_LIQUIDACION + "GetProduccion.php";
+            List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("desde",fechaDesde));
         params.add(new BasicNameValuePair("hdesde","00:00:00"));
         params.add(new BasicNameValuePair("hasta",fechaHasta));
-        params.add(new BasicNameValuePair("hhasta","23:59:59"));
+        params.add(new BasicNameValuePair("hhasta","00:00:00"));
         params.add(new BasicNameValuePair("estado","5"));
         params.add(new BasicNameValuePair("conductor",conductor.id));
         JSONArray jsonObject = RequestConductor.getServicios(url,params);
