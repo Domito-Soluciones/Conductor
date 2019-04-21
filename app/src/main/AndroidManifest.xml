@@ -62,10 +62,6 @@
             android:enabled="true" />
 
         <activity
-            android:name=".activity.ServicioActivity"
-            android:label="@string/title_activity_servicio"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
             android:name=".activity.ConfiguracionActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 

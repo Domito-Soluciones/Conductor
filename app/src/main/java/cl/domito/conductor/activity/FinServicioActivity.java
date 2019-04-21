@@ -63,16 +63,7 @@ public class FinServicioActivity extends AppCompatActivity {
 
     private void volver()
     {
-        String activity = getIntent().getExtras().getString("activity");
-        if(activity.equals("cl.domito.conductor.activity.MainActivity"))
-        {
-            this.finish();
-        }
-        else if (activity.equals("cl.domito.conductor.activity.ServicioActivity"))
-        {
-            Intent intent = new Intent(this, ServicioActivity.class);
-            startActivity(intent);
-        }
+        this.finish();
     }
 
 }

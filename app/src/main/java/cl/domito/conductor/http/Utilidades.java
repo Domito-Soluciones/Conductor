@@ -41,6 +41,7 @@ import cl.domito.conductor.dominio.Conductor;
 public class Utilidades {
 
     public static int tipoError = 0;
+    public static boolean DEBUG = true;
 
     public static String URL_BASE = "http://34.204.253.182/GpsVan/source/httprequest/";
     //public static String URL_BASE = "http://192.168.100.194/GpsVan/source/httprequest/";
@@ -102,7 +103,7 @@ public class Utilidades {
             StringBuilder result = new StringBuilder();
             while ((line = rd.readLine()) != null) {
                 result.append(line);
-                System.out.println(line);
+                log(urlDest,line);
             }
             jsonObject = new JSONObject(result.toString());
         } catch (UnknownHostException e) {
@@ -181,7 +182,7 @@ public class Utilidades {
             StringBuilder result = new StringBuilder();
             while ((line = rd.readLine()) != null) {
                 result.append(line);
-                System.out.println(line);
+                log(urlDest,line);
             }
             jsonArray = new JSONArray(result.toString());
         }
@@ -204,23 +205,19 @@ public class Utilidades {
         return false;
     }
 
-
-    private static boolean isOnlineNet() {
-        try {
-            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
-            int val = p.waitFor();
-            boolean reachable = (val == 0);
-            return reachable;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
     private static boolean isNetDisponible() {
         ConnectivityManager connectivityManager = (ConnectivityManager)
                 conductor.context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo actNetInfo = connectivityManager.getActiveNetworkInfo();
         return (actNetInfo != null && actNetInfo.isConnected());
     }
+
+    public static void log(String tag,String texto)
+    {
+        if(DEBUG)
+        {
+            Log.i(tag,texto);
+        }
+    }
+
 }

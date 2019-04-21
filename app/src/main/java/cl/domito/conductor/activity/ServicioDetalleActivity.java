@@ -83,27 +83,25 @@ public class ServicioDetalleActivity extends AppCompatActivity {
         });
 
         try {
-            //vh.textView.setTextColor(vh.textView.getContext().getResources().getColor(R.color.verde));
-            //vh.imageView.setImageDrawable(vh.textView.getContext().getResources().getDrawable(R.drawable.arriba));
             SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             Date date = sdf.parse(getIntent().getExtras().getString("fecha"));
             Long l = date.getTime();
             Date dateNow = new Date();
             Long lNow = dateNow.getTime();
             Long data = Math.abs(lNow - l);
-            try {
-                int cantidad = 0;
-                ArrayList<String> lista = new ArrayList();
-                if (conductor.servicio != null) {
-                    JSONObject primero = conductor.servicio.getJSONObject(0);
-                    String ruta = primero.getString("servicio_truta").split("-")[0];
-                    if (ruta.equals("ZP")) {
-                        String cliente = primero.getString("servicio_cliente");
-                        String destino = primero.getString("servicio_cliente_direccion");
-                        lista.add(cliente + "%%" + destino);
+                try {
+                    int cantidad = 0;
+                    ArrayList<String> lista = new ArrayList();
+                    if (conductor.servicio != null) {
+                        JSONObject primero = conductor.servicio.getJSONObject(0);
+                        String ruta = primero.getString("servicio_truta").split("-")[0];
+                        if (ruta.equals("ZP")) {
+                            String cliente = primero.getString("servicio_cliente");
+                            String destino = primero.getString("servicio_cliente_direccion");
+                            lista.add(cliente + "%%" + destino);
 
+                        }
                     }
-                }
                 for (int i = 0; i < conductor.servicio.length(); i++) {
                     JSONObject servicio = conductor.servicio.getJSONObject(i);
                     conductor.servicioActual = servicio.getString("servicio_id");
@@ -153,12 +151,6 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     buttonConfirmar.setText("Continuar");
             }
 
-            //conductor.setServicioActual(null);
-            //activity.finish();
-            //} else {
-            //    System.out.println("la diferencia es de mas de 10 minutos");
-            //}
-            //}
         } catch (Exception e) {
             e.printStackTrace();
             }
@@ -172,16 +164,8 @@ public class ServicioDetalleActivity extends AppCompatActivity {
         }
 
         private void volver() {
-            String activity = getIntent().getExtras().getString("activity");
-            if(activity.equals("cl.domito.conductor.activity.MainActivity"))
-            {
-                this.finish();
-            }
-            else if (activity.equals("cl.domito.conductor.activity.ServicioActivity"))
-            {
-                Intent intent = new Intent(this, ServicioActivity.class);
-                startActivity(intent);
-            }
+            conductor.volver = true;
+            this.finish();
         }
 
         private void aceptarServicio() {

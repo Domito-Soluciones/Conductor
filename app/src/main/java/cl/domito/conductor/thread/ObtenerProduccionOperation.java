@@ -41,15 +41,15 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
             textViewTotal = this.context.get().findViewById(R.id.textViewTotal);
         }
 
-        @Override
-        protected JSONArray doInBackground(Void... voids) {
-            Conductor conductor = Conductor.getInstance();
-            Calendar c = Calendar.getInstance();
-            String fechaHasta = "01/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
-            c.add(Calendar.MONTH,-1);
-            String fechaDesde = "01/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
-            String url = Utilidades.URL_BASE_LIQUIDACION + "GetProduccion.php";
-            List<NameValuePair> params = new ArrayList();
+    @Override
+    protected JSONArray doInBackground(Void... voids) {
+        Conductor conductor = Conductor.getInstance();
+        Calendar c = Calendar.getInstance();
+        String fechaHasta = "01/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
+        c.add(Calendar.MONTH,-1);
+        String fechaDesde = "01/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
+        String url = Utilidades.URL_BASE_LIQUIDACION + "GetProduccion.php";
+        List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("desde",fechaDesde));
         params.add(new BasicNameValuePair("hdesde","00:00:00"));
         params.add(new BasicNameValuePair("hasta",fechaHasta));
@@ -117,6 +117,5 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
 
         textViewTotal.setText(total+"");
     }
-
 
 }

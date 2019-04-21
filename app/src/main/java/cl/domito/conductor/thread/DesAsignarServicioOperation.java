@@ -9,7 +9,6 @@ import android.widget.Toast;
 import java.lang.ref.WeakReference;
 
 import cl.domito.conductor.R;
-import cl.domito.conductor.activity.ServicioActivity;
 import cl.domito.conductor.activity.ServicioDetalleActivity;
 import cl.domito.conductor.http.RequestConductor;
 
@@ -53,10 +52,6 @@ public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, Void> {
             context.get().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Intent intent = new Intent(context.get(), ServicioActivity.class);
-                    intent.putExtra("idServicio",textView.getText().toString());
-                    intent.putExtra("accion","1");
-                    context.get().startActivity(intent);
                     context.get().finish();
                     Toast.makeText(context.get(),"Servicio cancelado",Toast.LENGTH_LONG).show();
                 }

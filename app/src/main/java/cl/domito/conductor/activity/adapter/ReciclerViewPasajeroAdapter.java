@@ -366,12 +366,11 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                         v.setVisibility(View.INVISIBLE);
                         conductor.pasajeroActual = idPasajero;
                         if (conductor.pasajeroRecogido){
-                            if (!idPasajero.equals("0")) {
-                                conductor.pasajeroRecogido = false;
-                                TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
-                                tomarPasajeroOperation.execute();
-                                recargarPasajeros();
-                            } else {
+                            conductor.pasajeroRecogido = false;
+                            TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
+                            tomarPasajeroOperation.execute();
+                            recargarPasajeros();
+                            if (i == getItemCount() -1) {
                                 finalizar();
                             }
                         } else {
@@ -588,7 +587,7 @@ public class ReciclerViewPasajeroAdapter extends RecyclerView.Adapter<ReciclerVi
                 }
             });
         }
-        else
+        else if(!conductor.servicioActualRuta.contains("XX"))
         {
             activity.finish();
             CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();

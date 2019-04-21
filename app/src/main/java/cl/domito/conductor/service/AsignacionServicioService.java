@@ -24,6 +24,7 @@ import com.google.android.gms.location.LocationServices;
 import cl.domito.conductor.activity.MainActivity;
 import cl.domito.conductor.activity.PasajeroActivity;
 import cl.domito.conductor.dominio.Conductor;
+import cl.domito.conductor.http.Utilidades;
 import cl.domito.conductor.thread.CambiarUbicacionOperation;
 import cl.domito.conductor.thread.InsertarNavegacionOperation;
 import cl.domito.conductor.thread.NotificationOperation;
@@ -66,7 +67,6 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
             @Override
             public void run() {
                 while (true) {
-                    Log.i("I", "servicio corriendo correctmente");
                     try {
                         ObtenerServiciosOperation obtenerServiciosOperation = new ObtenerServiciosOperation();
                         conductor.servicios = obtenerServiciosOperation.execute().get();
@@ -79,10 +79,8 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
 
                         Location location = conductor.location;
                         Location locationDestino = conductor.locationDestino;
-                        System.out.println("este es el tema "+conductor.pasajeroRecogido);
                         if (location != null && locationDestino != null) {
                             float distancia = location.distanceTo(locationDestino);
-                            //System.out.println("esta es distancia " + distancia + " -------------------------------------");
                             //if (distancia < 50f) {
 
                                 if(conductor.servicioActual != null) {
@@ -131,7 +129,6 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
     @Override
     public void onDestroy() {
         super.onDestroy();
-        System.out.println("El servicio a Terminado");
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {

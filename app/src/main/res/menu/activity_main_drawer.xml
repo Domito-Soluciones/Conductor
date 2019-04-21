@@ -4,10 +4,10 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="none">
-        <item
+        <!--<item
             android:id="@+id/servicio"
             android:icon="@drawable/calendario"
-            android:title="Servicios" />
+            android:title="Servicios" />-->
         <item
             android:id="@+id/historico"
             android:icon="@drawable/historial"

@@ -256,10 +256,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     private boolean getMenuContextual(MenuItem menuItem) {
         int id = menuItem.getItemId();
-        if (id == R.id.servicio) {
-            Intent mainIntent = new Intent(this, ServicioActivity.class);
-            this.startActivity(mainIntent);
-        }
         if (id == R.id.historico) {
             Intent mainIntent = new Intent(this, HistoricoActivity.class);
             this.startActivity(mainIntent);
