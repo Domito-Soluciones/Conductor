@@ -3,6 +3,7 @@ package cl.domito.conductor.activity.adapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
@@ -87,6 +88,12 @@ public class ReciclerViewHistorialAdapter extends RecyclerView.Adapter<ReciclerV
         }
         else if(estado.equals("5"))
         {
+            color = resources.getColor(R.color.negro);
+        }
+        else if(estado.equals("6"))
+        {
+            Drawable imagen = resources.getDrawable(R.drawable.cerrar);
+            myViewHolder.imageView.setImageDrawable(imagen);
             color = resources.getColor(R.color.negro);
         }
         myViewHolder.textView.setText(data[0]);
