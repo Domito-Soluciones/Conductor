@@ -106,7 +106,13 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                     }
                     finally {
                         try {
-                            Thread.sleep(1000);
+                            if(conductor.servicioActual == null)
+                            {
+                                Thread.sleep(5000);
+                            }
+                            else {
+                                Thread.sleep(1000);
+                            }
                         } catch (InterruptedException e) {
                         }
                     }
