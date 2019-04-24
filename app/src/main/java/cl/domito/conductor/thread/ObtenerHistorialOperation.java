@@ -46,11 +46,10 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
         String fechaHasta = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
         c.add(Calendar.MONTH,-2);
         String fechaDesde = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
-        String url = Utilidades.URL_BASE_SERVICIO + "GetServicios.php";
+        String url = Utilidades.URL_BASE_SERVICIO + "GetServiciosHistoricos.php";
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("desde",fechaDesde));
         params.add(new BasicNameValuePair("hasta",fechaHasta));
-        params.add(new BasicNameValuePair("estado","5"));
         params.add(new BasicNameValuePair("conductor",conductor.id));
         JSONArray jsonObject = RequestConductor.getServicios(url,params);
         return jsonObject;
