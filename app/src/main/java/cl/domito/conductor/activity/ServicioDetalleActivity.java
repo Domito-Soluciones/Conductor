@@ -174,11 +174,6 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                 realizarServicioOperation.execute();
             } else if (estado.equals("3")) {
                 try {
-                    if(conductor.servicioActualRuta.contains("RG"))
-                    {
-                        CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-                        cambiarEstadoServicioOperation.execute(conductor.servicioActual,"4");
-                    }
                     TextView textView = findViewById(R.id.textViewFechaValor);
                     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                     Date date = sdf.parse(textView.getText().toString());
@@ -187,9 +182,14 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     Long lNow = dateNow.getTime();
                     Long data = Math.abs(lNow - l);
                     if (data <= 3.6e+6 || dateNow.after(date)) {
-                    Intent mainIntent = new Intent(this, PasajeroActivity.class);
-                    startActivity(mainIntent);
-                    this.finish();
+                        if(conductor.servicioActualRuta.contains("RG"))
+                        {
+                            CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
+                            cambiarEstadoServicioOperation.execute(conductor.servicioActual,"4");
+                        }
+                        Intent mainIntent = new Intent(this, PasajeroActivity.class);
+                        startActivity(mainIntent);
+                        this.finish();
                 } else {
                     Toast.makeText(getApplicationContext(),
                             "Falta mas de 1 hora para el inicio del servicio", Toast.LENGTH_LONG).show();

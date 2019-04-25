@@ -120,6 +120,20 @@ public class RequestConductor {
         }
     }
 
+    public static void actualizarComentarioAdicional(String idServicio,String comentario) {
+        try {
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            String url = Utilidades.URL_BASE_SERVICIO + "AddObservacionServicio.php";
+            params.add(new BasicNameValuePair("observacion", comentario));
+            params.add(new BasicNameValuePair("idServicio",idServicio ));
+            Utilidades.enviarPost(url, params);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public static JSONArray getServicios(String url, List<NameValuePair> params) {
         JSONArray object = null;
         try {
