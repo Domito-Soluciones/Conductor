@@ -27,7 +27,7 @@ public class RealizarServicioOperation extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        RequestConductor.cambiarEstadoServicio(textView.getText().toString(),"3");
+        RequestConductor.cambiarEstadoServicio(textView.getText().toString(),"3","");
         return null;
     }
     @Override

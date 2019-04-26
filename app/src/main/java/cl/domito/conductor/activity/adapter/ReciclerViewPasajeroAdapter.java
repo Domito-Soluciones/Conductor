@@ -23,8 +23,10 @@
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
+    import android.widget.EditText;
     import android.widget.ImageButton;
     import android.widget.ImageView;
+    import android.widget.LinearLayout;
     import android.widget.TextView;
     import android.widget.Toast;
 
@@ -200,12 +202,30 @@
                             dialogo1.setCancelable(false);
                             dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialogo1, int id) {
-                                    CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-                                    cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6");
-                                    FinalizarRutaPasajerosOperation finalizarRutaPasajerosOperation = new FinalizarRutaPasajerosOperation(activity);
-                                    finalizarRutaPasajerosOperation.execute("2");
-                                    Toast.makeText(activity, "Servicio cancelado", Toast.LENGTH_SHORT).show();
-                                    activity.finish();
+                                    AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
+                                    dialogo2.setTitle("Motivo Cancelación");
+                                    dialogo2.setMessage("Ingrese motivo de cancelación");
+                                    dialogo2.setCancelable(false);
+                                    final EditText input = new EditText(activity);
+                                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                            LinearLayout.LayoutParams.MATCH_PARENT,
+                                            LinearLayout.LayoutParams.MATCH_PARENT);
+                                    input.setLayoutParams(lp);
+                                    dialogo2.setView(input);
+                                    dialogo2.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(!input.getText().toString().equals("")) {
+                                                CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
+                                                cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6",input.getText().toString());
+                                                FinalizarRutaPasajerosOperation finalizarRutaPasajerosOperation = new FinalizarRutaPasajerosOperation(activity);
+                                                finalizarRutaPasajerosOperation.execute("2");
+                                                Toast.makeText(activity, "Servicio cancelado", Toast.LENGTH_SHORT).show();
+                                                activity.finish();
+                                            }
+                                        }
+                                    });
+                                    dialogo2.show();
                                 }
                             });
                             dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -230,12 +250,38 @@
                                             new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.dismiss();
                                                     CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
                                                     cancelarRutaPasajeroOperation.execute(items[which].toString());
                                                     Toast.makeText(activity, "Pasajero cancelado", Toast.LENGTH_SHORT).show();
-                                                    recargarPasajeros();
                                                     dialog.dismiss();
+                                                    if(which == 2) {
+                                                        AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
+                                                        dialogo2.setTitle("Motivo Cancelación");
+                                                        dialogo2.setMessage("Ingrese motivo de cancelación");
+                                                        dialogo2.setCancelable(false);
+                                                        final EditText input = new EditText(activity);
+                                                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                                                LinearLayout.LayoutParams.MATCH_PARENT);
+                                                        input.setLayoutParams(lp);
+                                                        dialogo2.setView(input);
+                                                        dialogo2.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                if(!input.getText().toString().equals("")) {
+                                                                    CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
+                                                                    cancelarRutaPasajeroOperation.execute(input.getText().toString());
+                                                                }
+                                                                recargarPasajeros();
+                                                            }
+                                                        });
+                                                        dialogo2.show();
+                                                        dialog.dismiss();
+                                                    }
+                                                    else
+                                                    {
+                                                        recargarPasajeros();
+                                                    }
                                                 }
                                             });
                                     builder.show();
@@ -289,7 +335,7 @@
                             IniciarServicioOperation iniciarServicioOperation = new IniciarServicioOperation(activity);
                             iniciarServicioOperation.execute();
                             CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-                            cambiarEstadoServicioOperation.execute(conductor.servicioActual,"4");
+                            cambiarEstadoServicioOperation.execute(conductor.servicioActual,"4","");
                             recargarPasajeros();
                         }
                         else
@@ -365,12 +411,30 @@
                             dialogo1.setCancelable(false);
                             dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialogo1, int id) {
-                                    CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-                                    cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6");
-                                    FinalizarRutaPasajerosOperation finalizarRutaPasajerosOperation = new FinalizarRutaPasajerosOperation(activity);
-                                    finalizarRutaPasajerosOperation.execute("2");
-                                    Toast.makeText(activity, "Servicio cancelado", Toast.LENGTH_SHORT).show();
-                                    activity.finish();
+                                    AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
+                                    dialogo2.setTitle("Motivo Cancelación");
+                                    dialogo2.setMessage("Ingrese motivo de cancelación");
+                                    dialogo2.setCancelable(false);
+                                    final EditText input = new EditText(activity);
+                                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                            LinearLayout.LayoutParams.MATCH_PARENT,
+                                            LinearLayout.LayoutParams.MATCH_PARENT);
+                                    input.setLayoutParams(lp);
+                                    dialogo2.setView(input);
+                                    dialogo2.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(!input.getText().toString().equals("")) {
+                                                CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
+                                                cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6",input.getText().toString());
+                                                FinalizarRutaPasajerosOperation finalizarRutaPasajerosOperation = new FinalizarRutaPasajerosOperation(activity);
+                                                finalizarRutaPasajerosOperation.execute("2");
+                                                Toast.makeText(activity, "Servicio cancelado", Toast.LENGTH_SHORT).show();
+                                                activity.finish();
+                                            }
+                                        }
+                                    });
+                                    dialogo2.show();
                                 }
                             });
                             dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -399,7 +463,34 @@
                                                     cancelarRutaPasajeroOperation.execute(items[which].toString());
                                                     Toast.makeText(activity, "Pasajero cancelado", Toast.LENGTH_SHORT).show();
                                                     dialog.dismiss();
-                                                    recargarPasajeros();
+                                                    if(which == 2) {
+                                                        AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
+                                                        dialogo2.setTitle("Motivo Cancelación");
+                                                        dialogo2.setMessage("Ingrese motivo de cancelación");
+                                                        dialogo2.setCancelable(false);
+                                                        final EditText input = new EditText(activity);
+                                                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                                                LinearLayout.LayoutParams.MATCH_PARENT);
+                                                        input.setLayoutParams(lp);
+                                                        dialogo2.setView(input);
+                                                        dialogo2.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                if(!input.getText().toString().equals("")) {
+                                                                    CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
+                                                                    cancelarRutaPasajeroOperation.execute(input.getText().toString());
+                                                                }
+                                                                recargarPasajeros();
+                                                            }
+                                                        });
+                                                        dialogo2.show();
+                                                        dialog.dismiss();
+                                                    }
+                                                    else
+                                                    {
+                                                        recargarPasajeros();
+                                                    }
                                                 }
                                             });
                                     builder.show();
@@ -500,12 +591,30 @@
                             dialogo1.setCancelable(false);
                             dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialogo1, int id) {
-                                    CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-                                    cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6");
-                                    FinalizarRutaPasajerosOperation finalizarRutaPasajerosOperation = new FinalizarRutaPasajerosOperation(activity);
-                                    finalizarRutaPasajerosOperation.execute("2");
-                                    Toast.makeText(activity, "Servicio cancelado", Toast.LENGTH_SHORT).show();
-                                    activity.finish();
+                                    AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
+                                    dialogo2.setTitle("Motivo Cancelación");
+                                    dialogo2.setMessage("Ingrese motivo de cancelación");
+                                    dialogo2.setCancelable(false);
+                                    final EditText input = new EditText(activity);
+                                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                            LinearLayout.LayoutParams.MATCH_PARENT,
+                                            LinearLayout.LayoutParams.MATCH_PARENT);
+                                    input.setLayoutParams(lp);
+                                    dialogo2.setView(input);
+                                    dialogo2.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if(!input.getText().toString().equals("")) {
+                                                CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
+                                                cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6",input.getText().toString());
+                                                FinalizarRutaPasajerosOperation finalizarRutaPasajerosOperation = new FinalizarRutaPasajerosOperation(activity);
+                                                finalizarRutaPasajerosOperation.execute("2");
+                                                Toast.makeText(activity, "Servicio cancelado", Toast.LENGTH_SHORT).show();
+                                                activity.finish();
+                                            }
+                                        }
+                                    });
+                                    dialogo2.show();
                                 }
                             });
                             dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -534,8 +643,35 @@
                                                     CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
                                                     cancelarRutaPasajeroOperation.execute(items[which].toString());
                                                     Toast.makeText(activity, "Pasajero cancelado", Toast.LENGTH_SHORT).show();
-                                                    recargarPasajeros();
                                                     dialog.dismiss();
+                                                    if(which == 2) {
+                                                        AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
+                                                        dialogo2.setTitle("Motivo Cancelación");
+                                                        dialogo2.setMessage("Ingrese motivo de cancelación");
+                                                        dialogo2.setCancelable(false);
+                                                        final EditText input = new EditText(activity);
+                                                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                                                LinearLayout.LayoutParams.MATCH_PARENT);
+                                                        input.setLayoutParams(lp);
+                                                        dialogo2.setView(input);
+                                                        dialogo2.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                if(!input.getText().toString().equals("")) {
+                                                                    CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
+                                                                    cancelarRutaPasajeroOperation.execute(input.getText().toString());
+                                                                }
+                                                                recargarPasajeros();
+                                                            }
+                                                        });
+                                                        dialogo2.show();
+                                                        dialog.dismiss();
+                                                    }
+                                                    else
+                                                    {
+                                                        recargarPasajeros();
+                                                    }
                                                 }
                                             });
                                     builder.show();
@@ -689,11 +825,30 @@
             }
             else if(!conductor.servicioActualRuta.contains("XX"))
             {
-                activity.finish();
-                CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-                cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6");
-                conductor.zarpeIniciado = false;
-                Toast.makeText(activity,"Servicio cancelado",Toast.LENGTH_SHORT).show();
+
+                AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
+                dialogo2.setTitle("Motivo Cancelación");
+                dialogo2.setMessage("Ingrese motivo de cancelación");
+                dialogo2.setCancelable(false);
+                final EditText input = new EditText(activity);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setLayoutParams(lp);
+                dialogo2.setView(input);
+                dialogo2.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if(!input.getText().toString().equals("")) {
+                            activity.finish();
+                            CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
+                            cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6",input.getText().toString());
+                            conductor.zarpeIniciado = false;
+                            Toast.makeText(activity,"Servicio cancelado",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                dialogo2.show();
             }
         }
 
@@ -709,7 +864,7 @@
                 bundle.putString("tarifa", json.getString("servicio_tarifa"));
                 intent.putExtras(bundle);
                 CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-                cambiarEstadoServicioOperation.execute(conductor.servicioActual, "5");
+                cambiarEstadoServicioOperation.execute(conductor.servicioActual, "5","");
                 FinalizarRutaPasajerosOperation finalizarRutaPasajerosOperation = new FinalizarRutaPasajerosOperation(activity);
                 finalizarRutaPasajerosOperation.execute("3");
                 conductor.zarpeIniciado = false;

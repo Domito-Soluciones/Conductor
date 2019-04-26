@@ -13,7 +13,8 @@ public class CambiarEstadoServicioOperation extends AsyncTask<String, Void, Void
         Conductor conductor = Conductor.getInstance();
         String idServicio = strings[0];
         String estado = strings[1];
-        RequestConductor.cambiarEstadoServicio(idServicio,estado);
+        String obs = strings[2];
+        RequestConductor.cambiarEstadoServicio(idServicio,estado,obs);
         return null;
     }
 

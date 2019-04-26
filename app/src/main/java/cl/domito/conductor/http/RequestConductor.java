@@ -176,12 +176,13 @@ public class RequestConductor {
         return jsonObject;
     }
 
-    public static JSONObject cambiarEstadoServicio(String idServicio,String estado) {
+    public static JSONObject cambiarEstadoServicio(String idServicio,String estado,String obs) {
         JSONObject jsonObject = null;
         String url2 = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicio.php";
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("id",idServicio));
         params.add(new BasicNameValuePair("estado",estado));
+        params.add(new BasicNameValuePair("observacion",obs));
         try {
             jsonObject = Utilidades.enviarPost(url2,params);
         } catch (IOException e) {

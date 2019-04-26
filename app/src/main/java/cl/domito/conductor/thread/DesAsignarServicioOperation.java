@@ -29,7 +29,7 @@ public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         textView = context.get().findViewById(R.id.textViewIdServicioValor);
-        RequestConductor.cambiarEstadoServicio(textView.getText().toString(),"1");
+        RequestConductor.cambiarEstadoServicio(textView.getText().toString(),"1","");
         return null;
     }
 

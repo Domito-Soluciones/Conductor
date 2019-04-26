@@ -198,7 +198,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                         if(conductor.servicioActualRuta.contains("RG"))
                         {
                             CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-                            cambiarEstadoServicioOperation.execute(conductor.servicioActual,"4");
+                            cambiarEstadoServicioOperation.execute(conductor.servicioActual,"4","");
                         }
                         Intent mainIntent = new Intent(this, PasajeroActivity.class);
                         startActivity(mainIntent);
