@@ -21,7 +21,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         this.getSupportActionBar().hide();
         View v = View.inflate(getApplicationContext(), R.layout.activity_splash, null);
         Conductor.getInstance().context = SplashScreenActivity.this;

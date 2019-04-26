@@ -248,6 +248,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:ems="10"
+            android:gravity="top"
             android:hint="Cometarios Adicionales"
             android:inputType="textMultiLine"
             app:layout_constraintBottom_toTopOf="@+id/buttonFinalizar"

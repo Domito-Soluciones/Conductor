@@ -40,7 +40,7 @@ public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, Void> {
                 @Override
                 public void run() {
                     Button buttonCancelar = context.get().findViewById(R.id.buttonCancelar);
-                    buttonCancelar.setText("Cancelando...");
+                    buttonCancelar.setText("En Progreso...");
                 }
             });
         }

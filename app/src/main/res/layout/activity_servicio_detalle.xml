@@ -80,7 +80,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="@drawable/estilo_boton"
-            android:text="Cancelar"
+            android:text="Rechazar"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/buttonFinalizar"
@@ -196,7 +196,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/estilo_textview"
             android:gravity="left"
@@ -207,14 +207,14 @@
             app:layout_constraintEnd_toStartOf="@+id/textViewTarifaValor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.25" />
+            app:layout_constraintVertical_bias="0.28" />
 
         <TextView
             android:id="@+id/textViewCantidad"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="70dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/estilo_textview"
             android:gravity="left"
@@ -225,7 +225,7 @@
             app:layout_constraintEnd_toStartOf="@+id/textViewCantidadValor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.28" />
+            app:layout_constraintVertical_bias="0.31" />
 
         <TextView
             android:id="@+id/textViewFechaValor"
@@ -280,7 +280,7 @@
             app:layout_constraintVertical_bias="0.22" />
 
         <TextView
-            android:id="@+id/textViewTarifaValor"
+            android:id="@+id/textViewTRutaValor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="115dp"
@@ -297,7 +297,7 @@
             app:layout_constraintVertical_bias="0.25" />
 
         <TextView
-            android:id="@+id/textViewCantidadValor"
+            android:id="@+id/textViewTarifaValor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="115dp"
@@ -312,6 +312,23 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.28" />
+
+        <TextView
+            android:id="@+id/textViewCantidadValor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="115dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/estilo_textview"
+            android:gravity="left"
+            android:paddingLeft="@dimen/height_icon"
+            android:textSize="@dimen/fab_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.31" />
 
         <View
             android:id="@+id/view"
@@ -344,7 +361,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="90dp"
             android:layout_marginEnd="8dp"
             android:paddingLeft="@dimen/ancho_menu"
             android:text="Observacion"
@@ -353,14 +370,14 @@
             app:layout_constraintEnd_toStartOf="@+id/textViewObservacionValor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.31" />
+            app:layout_constraintVertical_bias="0.34" />
 
         <TextView
             android:id="@+id/textViewObservacionValor"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="115dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="80dp"
             android:layout_marginEnd="8dp"
             android:paddingLeft="40dp"
             android:textSize="@dimen/fab_margin"
@@ -368,7 +385,22 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.32" />
+            app:layout_constraintVertical_bias="0.36" />
+
+        <TextView
+            android:id="@+id/textViewTipoRuta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="8dp"
+            android:paddingLeft="20dp"
+            android:text="Tipo ruta"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewTRutaValor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.25" />
 
     </android.support.constraint.ConstraintLayout>
 

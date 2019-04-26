@@ -1,5 +1,7 @@
 package cl.domito.conductor.http;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 
 import com.google.gson.JsonObject;
@@ -292,6 +294,20 @@ public class RequestConductor {
         try {
             Utilidades.enviarPost(url, params);
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void actualizarLugarDestinoPasajero(String destino)
+    {
+        String url = Utilidades.URL_BASE_SERVICIO + "ModDestinoPasajero.php";
+        try {
+            List<NameValuePair> params = new ArrayList();
+            params.add(new BasicNameValuePair("servicio",conductor.servicioActual));
+            params.add(new BasicNameValuePair("pasajero",conductor.pasajeroActual));
+            params.add(new BasicNameValuePair("destino",new String(destino.getBytes(), "ISO-8859-1")));
+            Utilidades.enviarPost(url, params);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

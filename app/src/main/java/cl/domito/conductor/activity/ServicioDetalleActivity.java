@@ -1,5 +1,8 @@
 package cl.domito.conductor.activity;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -24,6 +27,7 @@ import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.CambiarEstadoServicioOperation;
 import cl.domito.conductor.thread.DesAsignarServicioOperation;
+import cl.domito.conductor.thread.FinalizarRutaPasajeroOperation;
 import cl.domito.conductor.thread.RealizarServicioOperation;
 
 public class ServicioDetalleActivity extends AppCompatActivity {
@@ -38,6 +42,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
     private TextView textviewFechaValor;
     private TextView textviewClienteValor;
     private TextView textviewRutaValor;
+    private TextView textviewTRutaValor;
     private TextView textviewTarifaValor;
     private TextView textviewCantidadValor;
     private TextView textviewObservacionValor;
@@ -60,6 +65,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
         textviewFechaValor = findViewById(R.id.textViewFechaValor);
         textviewClienteValor = findViewById(R.id.textViewClienteValor);
         textviewRutaValor = findViewById(R.id.textViewRutaValor);
+        textviewTRutaValor = findViewById(R.id.textViewTRutaValor);
         textviewTarifaValor = findViewById(R.id.textViewTarifaValor);
         textviewCantidadValor = findViewById(R.id.textViewCantidadValor);
         textviewObservacionValor = findViewById(R.id.textViewObservacionValor);
@@ -109,6 +115,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     textviewFechaValor.setText(servicio.getString("servicio_fecha") + " " + servicio.getString("servicio_hora"));
                     textviewClienteValor.setText(servicio.getString("servicio_cliente"));
                     textviewRutaValor.setText(servicio.getString("servicio_ruta"));
+                    textviewTRutaValor.setText(servicio.getString("servicio_truta"));
                     textviewTarifaValor.setText(servicio.getString("servicio_tarifa"));
                     textviewObservacionValor.setText(servicio.getString("servicio_observacion").equals("") ? "Sin observaciones" : servicio.getString("servicio_observacion"));
                     cantidad++;
@@ -149,6 +156,8 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                 buttonConfirmar.setText("Iniciar");
             } else if (estado.equals("4")) {
                     buttonConfirmar.setText("Continuar");
+                    buttonConfirmar.setWidth(0);
+                    buttonCancelar.setVisibility(View.GONE);
             }
 
         } catch (Exception e) {
@@ -164,7 +173,11 @@ public class ServicioDetalleActivity extends AppCompatActivity {
         }
 
         private void volver() {
-            conductor.volver = true;
+            String activity = getIntent().getExtras().getString("activity");
+            if(!activity.equals("cl.domito.conductor.activity.MainActivity"))
+            {
+                conductor.volver = true;
+            }
             this.finish();
         }
 
@@ -205,9 +218,21 @@ public class ServicioDetalleActivity extends AppCompatActivity {
     }
 
     private void desasignarServicio() {
-        DesAsignarServicioOperation desAsignarServicioOperation = new DesAsignarServicioOperation(this);
-        desAsignarServicioOperation.execute();
-
+        AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+        dialogo1.setTitle("Dejar Pasajero");
+        dialogo1.setMessage("¿ Esta seguro que desea dejar al pasajero aquí ?");
+        dialogo1.setCancelable(false);
+        dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogo1, int id) {
+                desasignar();
+            }
+        });
+        dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogo1, int id) {
+                dialogo1.dismiss();
+            }
+        });
+        dialogo1.show();
     }
 
     @Override
@@ -234,6 +259,12 @@ public class ServicioDetalleActivity extends AppCompatActivity {
         } else {
             ActivityUtils.llamar(this, numero);
         }
+    }
+
+    private void desasignar()
+    {
+        DesAsignarServicioOperation desAsignarServicioOperation = new DesAsignarServicioOperation(this);
+        desAsignarServicioOperation.execute();
     }
 
 }
