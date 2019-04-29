@@ -1,6 +1,8 @@
 package cl.domito.conductor.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +11,7 @@ import android.widget.ImageView;
 
 import cl.domito.conductor.R;
 import cl.domito.conductor.dominio.Conductor;
+import cl.domito.conductor.thread.ObtenerHistorialOperation;
 import cl.domito.conductor.thread.ObtenerProduccionOperation;
 
 public class ProduccionActivity extends AppCompatActivity {
@@ -18,6 +21,7 @@ public class ProduccionActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private ImageView imageViewAtras;
     private Conductor conductor;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,7 @@ public class ProduccionActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        swipeRefreshLayout = findViewById(R.id.swiperefresh);
 
         conductor = Conductor.getInstance();
 
@@ -42,6 +47,12 @@ public class ProduccionActivity extends AppCompatActivity {
                 volver();
             }
         });
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
     }
 
     @Override
@@ -54,6 +65,16 @@ public class ProduccionActivity extends AppCompatActivity {
     {
         conductor.volver = true;
         this.finish();
+    }
+    private void refreshContent() {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                ObtenerProduccionOperation obtenerProduccionOperation = new ObtenerProduccionOperation(ProduccionActivity.this);
+                obtenerProduccionOperation.execute();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
 }

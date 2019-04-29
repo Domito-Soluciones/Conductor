@@ -195,7 +195,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     Long lNow = dateNow.getTime();
                     Long data = Math.abs(lNow - l);
                     if (data <= 3.6e+6 || dateNow.after(date)) {
-                        if(conductor.servicioActualRuta.contains("RG"))
+                        if(conductor.servicioActualRuta.contains("RG") || conductor.servicioActualRuta.contains("ESP"))
                         {
                             CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
                             cambiarEstadoServicioOperation.execute(conductor.servicioActual,"4","");
@@ -219,8 +219,8 @@ public class ServicioDetalleActivity extends AppCompatActivity {
 
     private void desasignarServicio() {
         AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
-        dialogo1.setTitle("Dejar Pasajero");
-        dialogo1.setMessage("¿ Esta seguro que desea dejar al pasajero aquí ?");
+        dialogo1.setTitle("Rechazar Servicio");
+        dialogo1.setMessage("¿ Esta seguro que desea rechazar este servicio?");
         dialogo1.setCancelable(false);
         dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogo1, int id) {

@@ -17,7 +17,7 @@ import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
 
-public class NotificationOperation extends AsyncTask<String, Void, String[]> {
+public class NotificationOperation extends AsyncTask<Void, Void, String[]> {
 
     private Context context;
 
@@ -26,7 +26,7 @@ public class NotificationOperation extends AsyncTask<String, Void, String[]> {
     }
 
     @Override
-    protected String[] doInBackground(String... strings) {
+    protected String[] doInBackground(Void... voids) {
         String[] respuesta = new String[2];
         Conductor conductor = Conductor.getInstance();
         JSONArray jsonArray = RequestConductor.obtenerNotificaciones();
@@ -42,7 +42,7 @@ public class NotificationOperation extends AsyncTask<String, Void, String[]> {
                 respuesta[0] = id;
                 respuesta[1] = tipo;
                 if(tipo.equals("0")) {
-                    ActivityUtils.enviarNotificacion(context, "", jsonObject.getString("notificacion_texto"), R.drawable.furgoneta, MainActivity.class);
+                    ActivityUtils.enviarNotificacion(Integer.parseInt(id),context, "", jsonObject.getString("notificacion_texto"), R.drawable.furgoneta, MainActivity.class);
                 }
                 else if(tipo.equals("1"))
                 {
@@ -51,7 +51,7 @@ public class NotificationOperation extends AsyncTask<String, Void, String[]> {
                     Date date = sdf.parse(fecha);
                     Date dateNow = new Date();
                     if(Math.abs(date.getTime() - dateNow.getTime()) < 1.8e+6) {
-                        ActivityUtils.enviarNotificacion(context, "", jsonObject.getString("notificacion_texto"), R.drawable.furgoneta,MainActivity.class);
+                        ActivityUtils.enviarNotificacion(Integer.parseInt(id),context, "", jsonObject.getString("notificacion_texto"), R.drawable.furgoneta,MainActivity.class);
                     }
                 }
             } catch (Exception e) {
@@ -63,9 +63,11 @@ public class NotificationOperation extends AsyncTask<String, Void, String[]> {
 
     @Override
     protected void onPostExecute(String[] aString) {
-        if(aString != null) {
-            CambiarEstadoNotificacionOperation cambiarEstadoNotificacionOperation = new CambiarEstadoNotificacionOperation();
-            cambiarEstadoNotificacionOperation.execute(aString[0]);
+        if(aString[0] != null && aString[1] != null) {
+            if(aString[1].equals("1")) {
+                CambiarEstadoNotificacionOperation cambiarEstadoNotificacionOperation = new CambiarEstadoNotificacionOperation();
+                cambiarEstadoNotificacionOperation.execute(aString[0]);
+            }
         }
     }
 

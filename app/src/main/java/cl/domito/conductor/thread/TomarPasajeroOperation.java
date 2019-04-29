@@ -33,7 +33,7 @@ public class TomarPasajeroOperation extends AsyncTask<String, Void, Void> {
     @Override
     protected Void doInBackground(String... strings) {
         RequestConductor.cambiarEstadoPasajero("1","");
-        if(strings != null)
+        if(strings.length > 0)
         {
             try {
                 Geocoder geocoder = new Geocoder(context.get());

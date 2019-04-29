@@ -75,7 +75,7 @@ public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<Recicler
         myViewHolder.textView.setText(data[3]);
        // myViewHolder.imageView.setImageDrawable(imagen);
         myViewHolder.textViewFecha.setText(fecha);
-        myViewHolder.textViewCliente.setText(data[2]);
+        myViewHolder.textViewCliente.setText("$"+data[2]);
     }
 
     @Override

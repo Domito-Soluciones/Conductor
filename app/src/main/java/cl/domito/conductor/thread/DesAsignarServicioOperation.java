@@ -12,7 +12,7 @@ import cl.domito.conductor.R;
 import cl.domito.conductor.activity.ServicioDetalleActivity;
 import cl.domito.conductor.http.RequestConductor;
 
-public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, Void> {
+public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, String> {
 
     private WeakReference<ServicioDetalleActivity> context;
     private TextView textView;
@@ -27,10 +27,10 @@ public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(Void... voids) {
+    protected String doInBackground(Void... voids) {
         textView = context.get().findViewById(R.id.textViewIdServicioValor);
         RequestConductor.cambiarEstadoServicio(textView.getText().toString(),"1","");
-        return null;
+        return textView.getText().toString();
     }
 
     @Override
@@ -47,12 +47,14 @@ public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected void onPostExecute(Void aVoid) {
+    protected void onPostExecute(String aString) {
         if(context != null) {
             context.get().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     context.get().finish();
+                    CambiarEstadoNotificacionOperation cambiarEstadoNotificacionOperation = new CambiarEstadoNotificacionOperation();
+                    cambiarEstadoNotificacionOperation.execute(aString);
                     Toast.makeText(context.get(),"Servicio cancelado",Toast.LENGTH_LONG).show();
                 }
             });

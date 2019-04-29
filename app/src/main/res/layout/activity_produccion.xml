@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:visibility="visible"
     tools:context=".activity.ProduccionActivity">
+
     <TextView
         android:id="@+id/textViewError"
         android:layout_width="match_parent"
@@ -26,6 +27,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constrainLayoutProgramado"
         android:layout_width="match_parent"
@@ -85,19 +87,30 @@
                 app:srcCompat="@drawable/atras" />
         </android.support.constraint.ConstraintLayout>
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerViewProduccion"
-            android:layout_width="414dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:visibility="visible"
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swiperefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="180dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView"
-            app:layout_constraintVertical_bias="0.100000024" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerViewProduccion"
+                android:layout_width="414dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
+                app:layout_constraintVertical_bias="0.100000024" />
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <ImageView
             android:id="@+id/imageView"
@@ -105,11 +118,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             app:layout_constraintBottom_toTopOf="@+id/recyclerView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.19"
+            app:layout_constraintHorizontal_bias="0.3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constrainLayoutTitulo"
             app:srcCompat="@drawable/produccion" />
@@ -118,19 +130,14 @@
             android:id="@+id/textViewTotal"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="16dp"
             android:text="0"
             android:textSize="30dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/recyclerViewProduccion"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.28"
-            app:layout_constraintStart_toEndOf="@+id/imageView"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.87" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/constrainLayoutTitulo" />
 
     </android.support.constraint.ConstraintLayout>
 

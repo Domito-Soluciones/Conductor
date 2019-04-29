@@ -71,11 +71,13 @@ public class ActivityUtils {
         sharedPreferences.edit().putString(key, "").commit();
     }
 
-    public static void enviarNotificacion(Context activity,String titulo,String contenido,int smallIcon,Class clase)
+    public static void enviarNotificacion(int id,Context activity,String titulo,String contenido,int smallIcon,Class clase)
     {
         NotificationCompat.Builder mBuilder;
         NotificationManager mNotifyMgr = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
         Intent intent = new Intent(activity, clase);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(activity, 0, intent, 0);
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         mBuilder = new NotificationCompat.Builder(activity)
@@ -86,7 +88,7 @@ public class ActivityUtils {
                 .setVibrate(new long[]{100, 250, 100, 500})
                 .setAutoCancel(true)
                 .setSound(soundUri);
-        mNotifyMgr.notify(1, mBuilder.build());
+        mNotifyMgr.notify(id, mBuilder.build());
     }
 
     public static BitmapDescriptor bitmapDescriptorFromVector(Context context, @DrawableRes int vectorDrawableResourceId) {

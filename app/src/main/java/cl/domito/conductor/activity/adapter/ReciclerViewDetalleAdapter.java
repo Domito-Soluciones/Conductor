@@ -68,12 +68,19 @@ public class ReciclerViewDetalleAdapter extends RecyclerView.Adapter<ReciclerVie
         String[] data = mDataset[i].split("%");
         if(data[1].equals(""))
         {
-            myViewHolder.imageViewLlamar.setVisibility(View.GONE);
+            String[] data2 = data[0].split("-");
+            if(data2.length == 1) {
+                myViewHolder.imageViewLlamar.setVisibility(View.GONE);
+            }
+            else
+            {
+                myViewHolder.imageViewLlamar.setTag(data2[1]);
+            }
         }
         else {
             myViewHolder.imageViewLlamar.setTag(data[1]);
         }
-        myViewHolder.textViewNombre.setText(data[0]);
+        myViewHolder.textViewNombre.setText(data[0].split("-")[0]);
         myViewHolder.textViewDireccion.setText(data[2]);
 
         String nombre = activity.getComponentName().getClassName();

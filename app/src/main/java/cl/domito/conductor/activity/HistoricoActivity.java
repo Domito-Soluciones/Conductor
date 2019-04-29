@@ -1,6 +1,8 @@
 package cl.domito.conductor.activity;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +20,7 @@ public class HistoricoActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private ImageView imageViewAtras;
     private Conductor conductor;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,7 @@ public class HistoricoActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
+        swipeRefreshLayout = findViewById(R.id.swiperefresh);
 
         conductor = Conductor.getInstance();
 
@@ -42,6 +46,13 @@ public class HistoricoActivity extends AppCompatActivity {
                 volver();
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshContent();
+            }
+        });
     }
 
     @Override
@@ -54,6 +65,17 @@ public class HistoricoActivity extends AppCompatActivity {
     {
         conductor.volver = true;
         this.finish();
+    }
+
+    private void refreshContent() {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                ObtenerHistorialOperation obtenerHistorialOperation = new ObtenerHistorialOperation(HistoricoActivity.this);
+                obtenerHistorialOperation.execute();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
 }

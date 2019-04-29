@@ -210,7 +210,10 @@ public class RequestConductor {
         params.add(new BasicNameValuePair("idServicio",conductor.servicioActual));
         params.add(new BasicNameValuePair("idPasajero",conductor.pasajeroActual));
         params.add(new BasicNameValuePair("observacion",observacion));
+        params.add(new BasicNameValuePair("tipo",conductor.servicioActualRuta));
         params.add(new BasicNameValuePair("estado",estado));
+        params.add(new BasicNameValuePair("lat",conductor.location.getLatitude()+""));
+        params.add(new BasicNameValuePair("lon",conductor.location.getLongitude()+""));
         try {
             Utilidades.enviarPost(url,params);
         } catch (IOException e) {
@@ -292,6 +295,7 @@ public class RequestConductor {
         String url = Utilidades.URL_BASE_NOTIFICACION + "ModEstadoNotificacion.php";
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("id", id));
+        params.add(new BasicNameValuePair("servicio", id));
         try {
             Utilidades.enviarPost(url, params);
         } catch (IOException e) {
@@ -306,7 +310,11 @@ public class RequestConductor {
             List<NameValuePair> params = new ArrayList();
             params.add(new BasicNameValuePair("servicio",conductor.servicioActual));
             params.add(new BasicNameValuePair("pasajero",conductor.pasajeroActual));
-            params.add(new BasicNameValuePair("destino",new String(destino.getBytes(), "ISO-8859-1")));
+            params.add(new BasicNameValuePair("destino", new String(destino.getBytes(), "ISO-8859-1")));
+            if(!destino.equals("")) {
+                params.add(new BasicNameValuePair("lat", conductor.location.getLatitude() + ""));
+                params.add(new BasicNameValuePair("lon", conductor.location.getLongitude() + ""));
+            }
             Utilidades.enviarPost(url, params);
         } catch (Exception e) {
             e.printStackTrace();
