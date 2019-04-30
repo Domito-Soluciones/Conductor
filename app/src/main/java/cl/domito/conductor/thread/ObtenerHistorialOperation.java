@@ -1,5 +1,6 @@
 package cl.domito.conductor.thread;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +24,7 @@ import java.util.List;
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.HistoricoActivity;
 import cl.domito.conductor.activity.adapter.ReciclerViewHistorialAdapter;
+import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.http.Utilidades;
@@ -31,21 +33,21 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
 
     private WeakReference<HistoricoActivity> context;
     private RecyclerView recyclerView;
-    private ProgressBar progressBar;
+    private AlertDialog dialog;
 
     public ObtenerHistorialOperation(HistoricoActivity activity) {
         context = new WeakReference<HistoricoActivity>(activity);
         recyclerView = this.context.get().findViewById(R.id.recyclerViewHistorial);
-        progressBar = this.context.get().findViewById(R.id.progressBarHistorial);
+        dialog = ActivityUtils.setProgressDialog(context.get());
     }
 
     @Override
     protected JSONArray doInBackground(Void... voids) {
         Conductor conductor = Conductor.getInstance();
         Calendar c = Calendar.getInstance();
-        String fechaHasta = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
+        String fechaHasta = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR) + "23:59:59";
         c.add(Calendar.MONTH,-2);
-        String fechaDesde = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
+        String fechaDesde = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR) + "00:00:00";
         String url = Utilidades.URL_BASE_SERVICIO + "GetServiciosHistoricos.php";
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("desde",fechaDesde));
@@ -57,6 +59,12 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
 
     @Override
     protected void onPreExecute() {
+        context.get().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        });
         super.onPreExecute();
     }
 
@@ -91,7 +99,6 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
                 @Override
                 public void run() {
                     recyclerView.setAdapter(mAdapter);
-                    progressBar.setVisibility(View.GONE);
                 }
             });
         }
@@ -100,10 +107,18 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
             context.get().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    progressBar.setVisibility(View.GONE);
                     Toast.makeText(context.get(), "No hay servicios historicos", Toast.LENGTH_LONG).show();
                 }
             });
+
         }
+
+
+        context.get().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+            }
+        });
     }
 }
