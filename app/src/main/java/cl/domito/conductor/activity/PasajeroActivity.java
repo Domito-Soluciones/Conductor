@@ -1,5 +1,6 @@
 package cl.domito.conductor.activity;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,10 +16,10 @@ import java.util.ArrayList;
 
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.adapter.ReciclerViewPasajeroAdapter;
+import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.IniciarServicioOperation;
 import cl.domito.conductor.thread.ObtenerServicioOperation;
-import cl.domito.conductor.thread.ObtenerServiciosOperation;
 
 public class PasajeroActivity extends AppCompatActivity {
 
@@ -26,7 +27,7 @@ public class PasajeroActivity extends AppCompatActivity {
     ImageView imageView;
     RecyclerView recyclerView;
     Conductor conductor;
-    ProgressBar progressBar;
+    AlertDialog dialog;
 
 
     @Override
@@ -36,7 +37,6 @@ public class PasajeroActivity extends AppCompatActivity {
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         recyclerView = this.findViewById(R.id.recyclerViewPasajero);
         imageView = this.findViewById(R.id.imageView3);
-        progressBar = this.findViewById(R.id.progressBarGeneral);
         IniciarServicioOperation iniciarServicioOperation = new IniciarServicioOperation(this);
         iniciarServicioOperation.execute();
 
@@ -44,6 +44,8 @@ public class PasajeroActivity extends AppCompatActivity {
 
         conductor.context = PasajeroActivity.this;
 
+        dialog = ActivityUtils.setProgressDialog(this);
+        dialog.show();
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -163,6 +165,7 @@ public class PasajeroActivity extends AppCompatActivity {
             array  = lista.toArray(array);
             ReciclerViewPasajeroAdapter mAdapter = new ReciclerViewPasajeroAdapter(this,array);
             recyclerView.setAdapter(mAdapter);
+            dialog.dismiss();
         }
     }
 

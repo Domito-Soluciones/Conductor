@@ -7,20 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".activity.PasajeroActivity">
 
-    <ProgressBar
-        android:id="@+id/progressBarGeneral"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="125dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginBottom="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/textViewError"
         android:layout_width="match_parent"

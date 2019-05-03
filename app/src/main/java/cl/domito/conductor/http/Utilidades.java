@@ -43,7 +43,7 @@ public class Utilidades {
     public static int tipoError = 0;
     public static boolean DEBUG = true;
 
-    public static String URL_BASE = "http://34.204.253.182/GpsVan/source/httprequest/";
+    public static String URL_BASE = "https://transfer.domitoapp.cl/source/httprequest/";
     //public static String URL_BASE = "http://192.168.100.194/GpsVan/source/httprequest/";
     public static String URL_BASE_CONDUCTOR = URL_BASE + "conductor/";
     public static String URL_BASE_MOVIL = URL_BASE + "movil/";

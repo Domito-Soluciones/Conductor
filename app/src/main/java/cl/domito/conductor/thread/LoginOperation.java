@@ -1,10 +1,13 @@
 package cl.domito.conductor.thread;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.widget.ProgressBar;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,20 +27,21 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
     WeakReference<LoginActivity> context;
     TextView textViewError;
     Conductor conductor;
+    AlertDialog dialog;
 
     public LoginOperation(LoginActivity activity) {
         context = new WeakReference<LoginActivity>(activity);
         conductor = Conductor.getInstance();
+        dialog = ActivityUtils.setProgressDialog(context.get());
     }
 
     @Override
     protected Void doInBackground(String... strings) {
         LoginActivity loginActivity = context.get();
-        ProgressBar progressBar = loginActivity.findViewById(R.id.login_progress);
         loginActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                progressBar.setVisibility(ProgressBar.VISIBLE);
+                dialog.show();
             }
         });
         boolean login = RequestConductor.loginConductor(strings[0],strings[1]);
@@ -65,9 +69,9 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             loginActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    dialog.dismiss();
                     Toast t = Toast.makeText(loginActivity, "Usuario y/o contraseña no coinciden", Toast.LENGTH_SHORT);
                     t.show();
-                    progressBar.setVisibility(ProgressBar.GONE);
                 }
             });
         }

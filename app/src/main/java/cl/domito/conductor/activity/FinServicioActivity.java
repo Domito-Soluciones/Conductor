@@ -11,6 +11,7 @@ import android.widget.TextView;
 import cl.domito.conductor.R;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.thread.AgregarObservacionOperation;
+import cl.domito.conductor.thread.CambiarMovilOperation;
 
 public class FinServicioActivity extends AppCompatActivity {
 
@@ -65,6 +66,9 @@ public class FinServicioActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        CambiarMovilOperation cambiarMovilOperation = new CambiarMovilOperation();
+        cambiarMovilOperation.execute("");
     }
 
     private void volver()
