@@ -41,7 +41,7 @@ import cl.domito.conductor.dominio.Conductor;
 public class Utilidades {
 
     public static int tipoError = 0;
-    public static boolean DEBUG = true;
+    public static boolean DEBUG = false;
 
     public static String URL_BASE = "https://transfer.domitoapp.cl/source/httprequest/";
     //public static String URL_BASE = "http://192.168.100.194/GpsVan/source/httprequest/";
