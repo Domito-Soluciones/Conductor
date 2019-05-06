@@ -1,6 +1,7 @@
 package cl.domito.conductor.thread;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cl.domito.conductor.activity.PasajeroActivity;
+import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
 import cl.domito.conductor.http.RequestConductor;
 import cl.domito.conductor.http.Utilidades;
@@ -23,11 +25,17 @@ public class FinalizarRutaPasajeroOperation extends AsyncTask<String, Void, Void
 
     private WeakReference<Activity> context;
     private Conductor conductor;
+    private AlertDialog dialog;
+    private int index;
+    private int total;
 
-    public FinalizarRutaPasajeroOperation(Activity activity)
+    public FinalizarRutaPasajeroOperation(Activity activity,int index,int total)
     {
         context = new WeakReference<Activity>(activity);
         conductor = Conductor.getInstance();
+        this.index = index;
+        this.total = total;
+        dialog = ActivityUtils.setProgressDialog(activity);
     }
     @Override
     protected Void doInBackground(String... strings) {
@@ -50,7 +58,12 @@ public class FinalizarRutaPasajeroOperation extends AsyncTask<String, Void, Void
 
     @Override
     protected void onPreExecute() {
-
+        context.get().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        });
     }
 
     @Override
@@ -58,6 +71,14 @@ public class FinalizarRutaPasajeroOperation extends AsyncTask<String, Void, Void
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                if(index == total)
+                {
+                    ActivityUtils.finalizar(context.get());
+                }
+                else {
+                    ActivityUtils.recargarPasajeros(context.get());
+                }
+                dialog.dismiss();
                 if(conductor.servicioActualRuta.contains("RG"))
                 {
                     Toast.makeText(context.get(), "Pasajero Recogido", Toast.LENGTH_SHORT).show();

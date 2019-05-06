@@ -94,11 +94,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         textViewError = findViewById(R.id.textViewError);
 
-        obtenerServicos();
-
-        DatosConductorOperation datosConductorOperation = new DatosConductorOperation(this);
-        datosConductorOperation.execute();
-
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,6 +118,14 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         navigationView.setItemIconTintList(null);
 
 
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        obtenerServicos();
+        DatosConductorOperation datosConductorOperation = new DatosConductorOperation(this);
+        datosConductorOperation.execute();
+        super.onPostCreate(savedInstanceState);
     }
 
     @Override

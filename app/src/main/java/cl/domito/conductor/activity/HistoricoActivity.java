@@ -2,6 +2,7 @@ package cl.domito.conductor.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,9 +38,6 @@ public class HistoricoActivity extends AppCompatActivity {
 
         conductor.context = HistoricoActivity.this;
 
-        ObtenerHistorialOperation obtenerHistorialOperation = new ObtenerHistorialOperation(this);
-        obtenerHistorialOperation.execute();
-
         imageViewAtras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,6 +51,13 @@ public class HistoricoActivity extends AppCompatActivity {
                 refreshContent();
             }
         });
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        ObtenerHistorialOperation obtenerHistorialOperation = new ObtenerHistorialOperation(this);
+        obtenerHistorialOperation.execute();
+        super.onPostCreate(savedInstanceState);
     }
 
     @Override

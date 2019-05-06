@@ -38,12 +38,6 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
     @Override
     protected Void doInBackground(String... strings) {
         LoginActivity loginActivity = context.get();
-        loginActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                dialog.show();
-            }
-        });
         boolean login = RequestConductor.loginConductor(strings[0],strings[1]);
         if (login) {
             conductor.activo = true;
@@ -69,14 +63,24 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             loginActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    dialog.dismiss();
                     Toast t = Toast.makeText(loginActivity, "Usuario y/o contraseña no coinciden", Toast.LENGTH_SHORT);
                     t.show();
                 }
             });
         }
         return null;
-}
+    }
+
+    @Override
+    protected void onPreExecute() {
+        context.get().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        });
+        super.onPreExecute();
+    }
 
     @Override
     protected void onPostExecute(Void aVoid) {
@@ -87,6 +91,12 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
                 context.get().startService(i);
             }
             AsignacionServicioService.IS_INICIADO = true;
+            context.get().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    dialog.dismiss();
+                }
+            });
         }
     }
 }

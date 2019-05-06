@@ -2,6 +2,7 @@ package cl.domito.conductor.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -67,8 +68,13 @@ public class FinServicioActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         CambiarMovilOperation cambiarMovilOperation = new CambiarMovilOperation();
         cambiarMovilOperation.execute("");
+        super.onPostCreate(savedInstanceState);
     }
 
     private void volver()

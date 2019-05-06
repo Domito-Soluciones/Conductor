@@ -1,23 +1,18 @@
 package cl.domito.conductor.thread;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 
-import com.google.android.gms.maps.GoogleMap;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 import cl.domito.conductor.R;
-import cl.domito.conductor.activity.MainActivity;
-import cl.domito.conductor.activity.PasajeroActivity;
 import cl.domito.conductor.activity.adapter.ReciclerViewPasajeroAdapter;
 import cl.domito.conductor.activity.utils.ActivityUtils;
 import cl.domito.conductor.dominio.Conductor;
@@ -28,12 +23,13 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
     private WeakReference<Activity> context;
     ConstraintLayout constraintLayoutPasajero;
     ConstraintLayout constraintLayoutEstado;
-
+    AlertDialog dialog;
 
     public IniciarServicioOperation(Activity activity) {
         context = new WeakReference<Activity>(activity);
         constraintLayoutPasajero = context.get().findViewById(R.id.constrainLayoutPasajero);
         constraintLayoutEstado = context.get().findViewById(R.id.constrainLayoutEstado);
+        dialog = ActivityUtils.setProgressDialog(context.get());
     }
 
     @Override
@@ -132,7 +128,12 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
     }
     @Override
     protected void onPreExecute() {
-
+        context.get().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.show();
+            }
+        });
     }
 
     @Override
@@ -141,5 +142,6 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
             CambiarMovilOperation cambiarMovilOperation = new CambiarMovilOperation();
             cambiarMovilOperation.execute(aString);
         }
+        dialog.dismiss();
     }
 }

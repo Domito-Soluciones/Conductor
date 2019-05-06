@@ -3,6 +3,7 @@ package cl.domito.conductor.activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -63,6 +64,25 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
 
         conductor.context = HistoricoDetalleActivity.this;
 
+        imageViewAtrasInt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                volver();
+            }
+        });
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        obtenerHistorico();
+        super.onPostCreate(savedInstanceState);
+    }
+
+    private void volver() {
+        this.finish();
+    }
+
+    private void obtenerHistorico() {
         ObtenerServicioHistoricoOperation obtenerServicioHistoricoOperation = new ObtenerServicioHistoricoOperation();
         try
         {
@@ -97,17 +117,6 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        imageViewAtrasInt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                volver();
-            }
-        });
-    }
-
-    private void volver() {
-        this.finish();
     }
 
 }

@@ -13,8 +13,6 @@
     import android.location.Geocoder;
     import android.location.Location;
     import android.net.Uri;
-    import android.os.Build;
-    import android.os.Bundle;
     import android.support.annotation.NonNull;
     import android.support.constraint.ConstraintLayout;
     import android.support.v7.widget.RecyclerView;
@@ -53,7 +51,6 @@
         Activity activity;
         private String[] mDataset;
         Conductor conductor;
-
 
         public static class MyViewHolder extends RecyclerView.ViewHolder {
             // each data item is just a string in this case
@@ -142,12 +139,10 @@
                                     conductor.pasajeroRecogido = false;
                                     TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
                                     tomarPasajeroOperation.execute();
-                                    recargarPasajeros();
                                 } else {
-                                    finalizar();
+                                    ActivityUtils.finalizar(activity);
                                 }
                             } else {
-
                                 navegar(direccionPasajero);
                             }
                         }
@@ -165,10 +160,10 @@
                                 dialogo1.setCancelable(false);
                                 dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialogo1, int id) {
+                                        dialogo1.dismiss();
                                         conductor.pasajeroRecogido = false;
                                         TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
                                         tomarPasajeroOperation.execute("");
-                                        recargarPasajeros();
                                     }
                                 });
                                 dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -178,7 +173,7 @@
                                 });
                                 dialogo1.show();
                             } else {
-                                finalizar();
+                                ActivityUtils.finalizar(activity);
                             }
                         }
 
@@ -223,6 +218,10 @@
                                                 Toast.makeText(activity, "Servicio cancelado", Toast.LENGTH_SHORT).show();
                                                 activity.finish();
                                             }
+                                            else
+                                            {
+                                                Toast.makeText(activity,"DEbe ingresar un motivo de cancelación",Toast.LENGTH_SHORT).show();
+                                            }
                                         }
                                     });
                                     dialogo2.show();
@@ -250,11 +249,12 @@
                                             new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
-                                                    cancelarRutaPasajeroOperation.execute(items[which].toString());
-                                                    Toast.makeText(activity, "Pasajero cancelado", Toast.LENGTH_SHORT).show();
                                                     dialog.dismiss();
-                                                    if(which == 2) {
+                                                    if(which != 2) {
+                                                        CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation(activity);
+                                                        cancelarRutaPasajeroOperation.execute(items[which].toString());
+                                                    }
+                                                    else if(which == 2) {
                                                         AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
                                                         dialogo2.setTitle("Motivo Cancelación");
                                                         dialogo2.setMessage("Ingrese motivo de cancelación");
@@ -269,18 +269,12 @@
                                                             @Override
                                                             public void onClick(DialogInterface dialog, int which) {
                                                                 if(!input.getText().toString().equals("")) {
-                                                                    CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
+                                                                    CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation(activity);
                                                                     cancelarRutaPasajeroOperation.execute(input.getText().toString());
                                                                 }
-                                                                recargarPasajeros();
                                                             }
                                                         });
                                                         dialogo2.show();
-                                                        dialog.dismiss();
-                                                    }
-                                                    else
-                                                    {
-                                                        recargarPasajeros();
                                                     }
                                                 }
                                             });
@@ -336,14 +330,12 @@
                             iniciarServicioOperation.execute();
                             CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
                             cambiarEstadoServicioOperation.execute(conductor.servicioActual,"4","");
-                            recargarPasajeros();
                         }
                         else
                         {
                             if(estadoPasajero.equals("0")) {
                                 TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation(activity);
                                 tomarPasajeroOperation.execute();
-                                recargarPasajeros();
                                 conductor.pasajeroRepartido = false;
                             }
                             else if(!estadoPasajero.equals("0") && i == 0 && !conductor.pasajeroRepartido)
@@ -352,16 +344,9 @@
                             }
                             else if(!estadoPasajero.equals("0") && i == 0 && conductor.pasajeroRepartido)
                             {
-                                FinalizarRutaPasajeroOperation finalizarRutaPasajeroOperation = new FinalizarRutaPasajeroOperation(activity);
-                                finalizarRutaPasajeroOperation.execute();
                                 conductor.pasajeroRepartido = false;
-                                if(i == getItemCount()-1)
-                                {
-                                    finalizar();
-                                }
-                                else {
-                                    recargarPasajeros();
-                                }
+                                FinalizarRutaPasajeroOperation finalizarRutaPasajeroOperation = new FinalizarRutaPasajeroOperation(activity,i,getItemCount()-1);
+                                finalizarRutaPasajeroOperation.execute();
                             }
                         }
                     }
@@ -378,16 +363,9 @@
                             dialogo1.setCancelable(false);
                             dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialogo1, int id) {
-                                    FinalizarRutaPasajeroOperation finalizarRutaPasajeroOperation = new FinalizarRutaPasajeroOperation(activity);
-                                    finalizarRutaPasajeroOperation.execute();
                                     conductor.pasajeroRepartido = false;
-                                    if(i == getItemCount()-1)
-                                    {
-                                        finalizar();
-                                    }
-                                    else {
-                                        recargarPasajeros();
-                                    }
+                                    FinalizarRutaPasajeroOperation finalizarRutaPasajeroOperation = new FinalizarRutaPasajeroOperation(activity,i,getItemCount()-1);
+                                    finalizarRutaPasajeroOperation.execute("");
                                 }
                             });
                             dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -429,8 +407,11 @@
                                                 cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6",input.getText().toString());
                                                 FinalizarRutaPasajerosOperation finalizarRutaPasajerosOperation = new FinalizarRutaPasajerosOperation(activity);
                                                 finalizarRutaPasajerosOperation.execute("2");
-                                                Toast.makeText(activity, "Servicio cancelado", Toast.LENGTH_SHORT).show();
                                                 activity.finish();
+                                            }
+                                            else
+                                            {
+                                                Toast.makeText(activity,"Debe ingresar un motivo de cancelación",Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
@@ -459,10 +440,12 @@
                                             new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
-                                                    cancelarRutaPasajeroOperation.execute(items[which].toString());
-                                                    Toast.makeText(activity, "Pasajero cancelado", Toast.LENGTH_SHORT).show();
                                                     dialog.dismiss();
+                                                    if(which != 2)
+                                                    {
+                                                        CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation(activity);
+                                                        cancelarRutaPasajeroOperation.execute(items[which].toString());
+                                                    }
                                                     if(which == 2) {
                                                         AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
                                                         dialogo2.setTitle("Motivo Cancelación");
@@ -478,18 +461,13 @@
                                                             @Override
                                                             public void onClick(DialogInterface dialog, int which) {
                                                                 if(!input.getText().toString().equals("")) {
-                                                                    CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
+                                                                    CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation(activity);
                                                                     cancelarRutaPasajeroOperation.execute(input.getText().toString());
                                                                 }
-                                                                recargarPasajeros();
                                                             }
                                                         });
                                                         dialogo2.show();
                                                         dialog.dismiss();
-                                                    }
-                                                    else
-                                                    {
-                                                        recargarPasajeros();
                                                     }
                                                 }
                                             });
@@ -506,7 +484,7 @@
                     }
                 });
             }
-            else
+            else if(conductor.servicioActualRuta.contains("ESP"))
             {
                 if(i == 0)
                 {
@@ -520,7 +498,7 @@
                         imagen = resources.getDrawable(R.drawable.navegar);
                     }
                     myViewHolder.buttonIniciar.setImageDrawable(imagen);
-
+                    myViewHolder.buttonManual.setVisibility(View.VISIBLE);
 
                     myViewHolder.buttonIniciar.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -531,12 +509,10 @@
                                 conductor.pasajeroRecogido = false;
                                 TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
                                 tomarPasajeroOperation.execute();
-                                recargarPasajeros();
                                 if (i == getItemCount() -1) {
-                                    finalizar();
+                                    ActivityUtils.finalizar(activity);
                                 }
                             } else {
-
                                 navegar(direccionPasajero);
                             }
                         }
@@ -562,8 +538,7 @@
                                 public void onClick(DialogInterface dialogo1, int id) {
                                     conductor.pasajeroRecogido = false;
                                     TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
-                                    tomarPasajeroOperation.execute("");
-                                    recargarPasajeros();
+                                    tomarPasajeroOperation.execute();
                                 }
                             });
                             dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -573,7 +548,7 @@
                             });
                             dialogo1.show();
                         } else {
-                            finalizar();
+                            ActivityUtils.finalizar(activity);
                         }
                     }
 
@@ -640,11 +615,11 @@
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
                                                     dialog.dismiss();
-                                                    CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
-                                                    cancelarRutaPasajeroOperation.execute(items[which].toString());
-                                                    Toast.makeText(activity, "Pasajero cancelado", Toast.LENGTH_SHORT).show();
-                                                    dialog.dismiss();
-                                                    if(which == 2) {
+                                                    if(which != 2) {
+                                                        CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation(activity);
+                                                        cancelarRutaPasajeroOperation.execute(items[which].toString());
+                                                    }
+                                                    else if(which == 2) {
                                                         AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
                                                         dialogo2.setTitle("Motivo Cancelación");
                                                         dialogo2.setMessage("Ingrese motivo de cancelación");
@@ -659,18 +634,13 @@
                                                             @Override
                                                             public void onClick(DialogInterface dialog, int which) {
                                                                 if(!input.getText().toString().equals("")) {
-                                                                    CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation();
+                                                                    CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation(activity);
                                                                     cancelarRutaPasajeroOperation.execute(input.getText().toString());
                                                                 }
-                                                                recargarPasajeros();
                                                             }
                                                         });
                                                         dialogo2.show();
                                                         dialog.dismiss();
-                                                    }
-                                                    else
-                                                    {
-                                                        recargarPasajeros();
                                                     }
                                                 }
                                             });
@@ -849,32 +819,6 @@
                     }
                 });
                 dialogo2.show();
-            }
-        }
-
-        private void finalizar()
-        {
-            try {
-                JSONObject json = conductor.servicio.getJSONObject(0);
-                Intent intent = new Intent(conductor.context, FinServicioActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("id", json.getString("servicio_id"));
-                bundle.putString("cliente", json.getString("servicio_cliente"));
-                bundle.putString("fecha", json.getString("servicio_fecha"));
-                bundle.putString("tarifa", json.getString("servicio_tarifa"));
-                intent.putExtras(bundle);
-                CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-                cambiarEstadoServicioOperation.execute(conductor.servicioActual, "5","");
-                FinalizarRutaPasajerosOperation finalizarRutaPasajerosOperation = new FinalizarRutaPasajerosOperation(activity);
-                finalizarRutaPasajerosOperation.execute("3");
-                conductor.zarpeIniciado = false;
-                conductor.locationDestino = null;
-                activity.finish();
-                activity.startActivity(intent);
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
             }
         }
 

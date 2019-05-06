@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -20,10 +21,12 @@ import android.media.RingtoneManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.DrawableRes;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -54,6 +57,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cl.domito.conductor.R;
+import cl.domito.conductor.activity.FinServicioActivity;
+import cl.domito.conductor.activity.adapter.ReciclerViewPasajeroAdapter;
+import cl.domito.conductor.dominio.Conductor;
+import cl.domito.conductor.thread.CambiarEstadoServicioOperation;
+import cl.domito.conductor.thread.FinalizarRutaPasajerosOperation;
+import cl.domito.conductor.thread.ObtenerServicioOperation;
 
 public class ActivityUtils {
 
@@ -269,11 +278,11 @@ public class ActivityUtils {
         ll.addView(tvText);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
-        builder.setCancelable(true);
+        builder.setCancelable(false);
         builder.setView(ll);
 
         AlertDialog dialog = builder.create();
-        dialog.show();
+        //dialog.show();
         Window window = dialog.getWindow();
         if (window != null) {
             WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
@@ -283,5 +292,150 @@ public class ActivityUtils {
             dialog.getWindow().setAttributes(layoutParams);
         }
         return dialog;
+    }
+
+    public static void recargarPasajeros(Activity activity)
+    {
+        ArrayList<String> lista = new ArrayList();
+        Conductor conductor = Conductor.getInstance();
+        String idServicio = conductor.servicioActual;
+        try {
+            ObtenerServicioOperation obtenerServicioOperation = new ObtenerServicioOperation();
+            conductor.servicio = obtenerServicioOperation.execute(conductor.servicioActual).get();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        if(conductor.servicio != null) {
+            try {
+                JSONObject primero = conductor.servicio.getJSONObject(0);
+                String ruta = primero.getString("servicio_truta").split("-")[0];
+                if (primero.getString("servicio_estado").equals("4"))
+                {
+                    conductor.zarpeIniciado = true;
+                }
+                if ((ruta.equals("ZP") && !conductor.zarpeIniciado)){
+                    String cliente = primero.getString("servicio_cliente");
+                    String destino = primero.getString("servicio_cliente_direccion");
+                    lista.add(cliente + "%%" + destino + "%0%0");
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        if(conductor.servicio != null) {
+            for (int i = 0; i < conductor.servicio.length(); i++) {
+                try {
+                    JSONObject servicio = conductor.servicio.getJSONObject(i);
+                    if (servicio.getString("servicio_id").equals(idServicio)) {
+                        String id = servicio.getString("servicio_pasajero_id");
+                        String nombre = servicio.getString("servicio_pasajero_nombre");
+                        String celular = servicio.getString("servicio_pasajero_celular");
+                        String destino = servicio.getString("servicio_destino");
+                        String estado = servicio.getString("servicio_pasajero_estado");
+                        if (servicio.getString("servicio_truta").contains("ZP")) {
+                            if (!estado.equals("3") && !estado.equals("2")) {
+                                lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                            }
+                        } else if (servicio.getString("servicio_truta").contains("RG")) {
+                            if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
+                                lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                            }
+                        }else if(servicio.getString("servicio_truta").contains("XX"))
+                        {
+                            if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
+                                lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                            }
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if(conductor.servicio != null) {
+            try {
+                JSONObject ultimo = conductor.servicio.getJSONObject(conductor.servicio.length() - 1);
+                String ruta = ultimo.getString("servicio_truta").split("-")[0];
+                if (ruta.equals("RG")) {
+                    String cliente = ultimo.getString("servicio_cliente");
+                    String destino = ultimo.getString("servicio_cliente_direccion");
+                    lista.add(cliente + "%%" + destino + "%0%0");
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        if(lista.size() > 0 ) {
+            String[] array = new String[lista.size()];
+            array  = lista.toArray(array);
+            ReciclerViewPasajeroAdapter mAdapter = new ReciclerViewPasajeroAdapter(activity,array);
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    RecyclerView recyclerView = activity.findViewById(R.id.recyclerViewPasajero);
+                    recyclerView.setAdapter(mAdapter);
+                }
+            });
+        }
+        else if(!conductor.servicioActualRuta.contains("XX"))
+        {
+
+            AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
+            dialogo2.setTitle("Motivo Cancelación");
+            dialogo2.setMessage("Ingrese motivo de cancelación");
+            dialogo2.setCancelable(false);
+            final EditText input = new EditText(activity);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.MATCH_PARENT);
+            input.setLayoutParams(lp);
+            dialogo2.setView(input);
+            dialogo2.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if(!input.getText().toString().equals("")) {
+                        activity.finish();
+                        CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
+                        cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6",input.getText().toString());
+                        conductor.zarpeIniciado = false;
+                        Toast.makeText(activity,"Servicio cancelado",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            dialogo2.show();
+        }
+    }
+
+    public static void finalizar(Activity activity)
+    {
+        Conductor conductor = Conductor.getInstance();
+        try {
+            JSONObject json = conductor.servicio.getJSONObject(0);
+            Intent intent = new Intent(conductor.context, FinServicioActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("id", json.getString("servicio_id"));
+            bundle.putString("cliente", json.getString("servicio_cliente"));
+            bundle.putString("fecha", json.getString("servicio_fecha"));
+            bundle.putString("tarifa", json.getString("servicio_tarifa"));
+            intent.putExtras(bundle);
+            CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
+            cambiarEstadoServicioOperation.execute(conductor.servicioActual, "5","");
+            FinalizarRutaPasajerosOperation finalizarRutaPasajerosOperation = new FinalizarRutaPasajerosOperation(activity);
+            finalizarRutaPasajerosOperation.execute("3");
+            conductor.zarpeIniciado = false;
+            conductor.locationDestino = null;
+            activity.finish();
+            activity.startActivity(intent);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 }

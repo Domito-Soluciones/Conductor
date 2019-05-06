@@ -3,6 +3,7 @@ package cl.domito.conductor.activity;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
@@ -27,8 +28,6 @@ public class PasajeroActivity extends AppCompatActivity {
     ImageView imageView;
     RecyclerView recyclerView;
     Conductor conductor;
-    AlertDialog dialog;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,15 +36,11 @@ public class PasajeroActivity extends AppCompatActivity {
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         recyclerView = this.findViewById(R.id.recyclerViewPasajero);
         imageView = this.findViewById(R.id.imageView3);
-        IniciarServicioOperation iniciarServicioOperation = new IniciarServicioOperation(this);
-        iniciarServicioOperation.execute();
 
         conductor = Conductor.getInstance();
 
         conductor.context = PasajeroActivity.this;
 
-        dialog = ActivityUtils.setProgressDialog(this);
-        dialog.show();
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -61,6 +56,12 @@ public class PasajeroActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        IniciarServicioOperation iniciarServicioOperation = new IniciarServicioOperation(this);
+        iniciarServicioOperation.execute();
+        super.onPostCreate(savedInstanceState);
+    }
 
     @Override
     protected void onResume() {
@@ -165,7 +166,6 @@ public class PasajeroActivity extends AppCompatActivity {
             array  = lista.toArray(array);
             ReciclerViewPasajeroAdapter mAdapter = new ReciclerViewPasajeroAdapter(this,array);
             recyclerView.setAdapter(mAdapter);
-            dialog.dismiss();
         }
     }
 
