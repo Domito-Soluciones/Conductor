@@ -62,34 +62,37 @@ public class TomarPasajeroOperation extends AsyncTask<String, Void, Void> {
 
     @Override
     protected void onPreExecute() {
-        context.get().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                dialog.show();
-            }
-        });
+        Activity activity = context.get();
+        if(!activity.isDestroyed()) {
+            context.get().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    dialog.show();
+                }
+            });
+        }
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         ActivityUtils.recargarPasajeros(context.get());
-        context.get().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(conductor.servicioActualRuta.contains("RG"))
-                {
-                    Toast.makeText(context.get(),"Pasajero Recogido",Toast.LENGTH_SHORT).show();
-                }
-                else if(conductor.servicioActualRuta.contains("ZP")) {
-                    Toast.makeText(context.get(), "Pasajero Abordado", Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(context.get(), "Pasajero Recogido", Toast.LENGTH_SHORT).show();
-                }
+        Activity activity = context.get();
+        if(!activity.isDestroyed()) {
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    if (conductor.servicioActualRuta.contains("RG")) {
+                        Toast.makeText(context.get(), "Pasajero Recogido", Toast.LENGTH_SHORT).show();
+                    } else if (conductor.servicioActualRuta.contains("ZP")) {
+                        Toast.makeText(context.get(), "Pasajero Abordado", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context.get(), "Pasajero Recogido", Toast.LENGTH_SHORT).show();
+                    }
 
-                dialog.dismiss();
-            }
-        });
+                    dialog.dismiss();
+                }
+            });
+        }
     }
 
 }

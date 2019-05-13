@@ -307,7 +307,7 @@ public class ActivityUtils {
         {
             e.printStackTrace();
         }
-        if(conductor.servicio != null) {
+        if(conductor.servicio != null && conductor.servicio.length() > 0) {
             try {
                 JSONObject primero = conductor.servicio.getJSONObject(0);
                 String ruta = primero.getString("servicio_truta").split("-")[0];
@@ -326,7 +326,7 @@ public class ActivityUtils {
                 e.printStackTrace();
             }
         }
-        if(conductor.servicio != null) {
+        if(conductor.servicio != null && conductor.servicio.length() > 0) {
             for (int i = 0; i < conductor.servicio.length(); i++) {
                 try {
                     JSONObject servicio = conductor.servicio.getJSONObject(i);
@@ -356,7 +356,7 @@ public class ActivityUtils {
                 }
             }
         }
-        if(conductor.servicio != null) {
+        if(conductor.servicio != null && conductor.servicio.length() > 0) {
             try {
                 JSONObject ultimo = conductor.servicio.getJSONObject(conductor.servicio.length() - 1);
                 String ruta = ultimo.getString("servicio_truta").split("-")[0];
@@ -383,7 +383,7 @@ public class ActivityUtils {
                 }
             });
         }
-        else if(!conductor.servicioActualRuta.contains("XX"))
+        /*else
         {
 
             AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
@@ -409,7 +409,7 @@ public class ActivityUtils {
                 }
             });
             dialogo2.show();
-        }
+        }*/
     }
 
     public static void finalizar(Activity activity)

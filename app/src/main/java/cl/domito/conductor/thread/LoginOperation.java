@@ -90,13 +90,13 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             if (!ActivityUtils.isRunning(asignacionServicioService.getClass(), context.get())) {
                 context.get().startService(i);
             }
-            AsignacionServicioService.IS_INICIADO = true;
-            context.get().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    dialog.dismiss();
-                }
-            });
+        AsignacionServicioService.IS_INICIADO = true;
         }
+        context.get().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+            }
+        });
     }
 }

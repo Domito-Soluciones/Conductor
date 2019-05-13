@@ -60,11 +60,7 @@ public class FinServicioActivity extends AppCompatActivity {
         buttonGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = getIntent().getExtras();
-                EditText editText = findViewById(R.id.editText);
-                AgregarObservacionOperation agregarObservacionOperation = new AgregarObservacionOperation();
-                agregarObservacionOperation.execute(bundle.getString("id"),editText.getText().toString());
-                finish();
+               guardarComentario();
             }
         });
 
@@ -82,4 +78,12 @@ public class FinServicioActivity extends AppCompatActivity {
         this.finish();
     }
 
+
+    private void guardarComentario() {
+        Bundle bundle = getIntent().getExtras();
+        EditText editText = findViewById(R.id.editText);
+        AgregarObservacionOperation agregarObservacionOperation = new AgregarObservacionOperation(this);
+        agregarObservacionOperation.execute(bundle.getString("id"),editText.getText().toString());
+        finish();
+    }
 }

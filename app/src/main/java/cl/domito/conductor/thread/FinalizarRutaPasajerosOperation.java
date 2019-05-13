@@ -53,8 +53,7 @@ public class FinalizarRutaPasajerosOperation extends AsyncTask<String, Void, Voi
             }
         });
         dialog.dismiss();
-        Toast.makeText(context.get(), "Servicio cancelado", Toast.LENGTH_SHORT).show();
-
+        //Toast.makeText(context.get(), "Servicio cancelado", Toast.LENGTH_SHORT).show();
 
     }
 
