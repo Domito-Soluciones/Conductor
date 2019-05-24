@@ -56,6 +56,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
                         ("preferencias", Context.MODE_PRIVATE),"claveUsuario");
             }
             Intent mainIntent = new Intent(loginActivity, MainActivity.class);
+            mainIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NEW_TASK);
             loginActivity.startActivity(mainIntent);
             loginActivity.finish();
             RequestConductor.cambiarEstadoMovil("1");

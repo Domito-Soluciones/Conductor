@@ -81,7 +81,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                         Location locationDestino = conductor.locationDestino;
                         if (location != null && locationDestino != null) {
                             float distancia = location.distanceTo(locationDestino);
-                            //if (distancia < 50f) {
+                            if (distancia < 50f) {
                                 if(conductor.servicioActual != null) {
                                     abrirActivity();
                                     conductor.locationDestino = null;
@@ -98,7 +98,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                                         conductor.pasajeroRecogido = true;
                                     }
                                 }
-                            //}
+                            }
                         }
 
                     } catch (Exception e) {

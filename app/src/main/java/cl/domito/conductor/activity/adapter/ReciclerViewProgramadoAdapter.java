@@ -79,6 +79,7 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
                     }
                     conductor.servicio = servicio;
                     Intent intent = new Intent(activity, ServicioDetalleActivity.class);
+
                     intent.putExtra("fecha", vh.textViewFecha.getText().toString());
                     intent.putExtra("id", vh.textView.getText().toString());
                     intent.putExtra("activity",activity.getComponentName().getClassName());

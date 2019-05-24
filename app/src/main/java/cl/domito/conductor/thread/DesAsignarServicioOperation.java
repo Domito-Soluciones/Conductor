@@ -45,10 +45,10 @@ public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, String> 
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                //dialog.dismiss();
                 context.get().finish();
                 CambiarEstadoNotificacionOperation cambiarEstadoNotificacionOperation = new CambiarEstadoNotificacionOperation();
                 cambiarEstadoNotificacionOperation.execute(aString);
-                dialog.dismiss();
                 Toast.makeText(context.get(),"Servicio cancelado",Toast.LENGTH_LONG).show();
             }
         });

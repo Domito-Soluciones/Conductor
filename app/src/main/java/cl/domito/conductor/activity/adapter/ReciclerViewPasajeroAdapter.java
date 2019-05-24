@@ -220,7 +220,7 @@
                                             }
                                             else
                                             {
-                                                Toast.makeText(activity,"DEbe ingresar un motivo de cancelación",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(activity,"Debe ingresar un motivo de cancelación",Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
@@ -757,7 +757,8 @@
                                 if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
                                     lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
                                 }
-                            }else if(servicio.getString("servicio_truta").contains("XX"))
+                            }
+                            else if(servicio.getString("servicio_truta").contains("XX"))
                             {
                                 if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
                                     lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);

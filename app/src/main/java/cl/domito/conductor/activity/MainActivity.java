@@ -141,23 +141,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onResume();
     }
 
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        /*int clEstado = constraintLayoutEstado.getVisibility();
-        int clPasajero = constraintLayoutPasajero.getVisibility();
-        outState.putString("clEstadoVisible", clEstado+"");
-        outState.putString("clPasajeroVisible", clPasajero+"");*/
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-    }
-
-
-
     @Override
     protected void onPause() {
         LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(this);
