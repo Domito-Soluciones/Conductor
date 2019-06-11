@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="cl.domito.conductor">
+    package="cl.domito.dmttransfer">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
@@ -16,27 +16,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
         <activity
-            android:name=".activity.HistoricoDetalleActivity"
+            android:name="cl.domito.dmttransfer.activity.HistoricoDetalleActivity"
             android:label="@string/title_activity_historico_detalleactivity"
             android:theme="@style/NoActionBar"></activity>
         <activity
-            android:name=".activity.PasajeroActivity"
+            android:name="cl.domito.dmttransfer.activity.PasajeroActivity"
             android:label="@string/title_activity_pasajero"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".activity.FinServicioActivity"
+            android:name="cl.domito.dmttransfer.activity.FinServicioActivity"
             android:label="@string/title_activity_fin_servicio"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".activity.ProduccionActivity"
+            android:name="cl.domito.dmttransfer.activity.ProduccionActivity"
             android:label="@string/title_activity_produccion"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".activity.ServicioDetalleActivity"
+            android:name="cl.domito.dmttransfer.activity.ServicioDetalleActivity"
             android:label="@string/title_activity_servicio_detalle"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".activity.HistoricoActivity"
+            android:name="cl.domito.dmttransfer.activity.HistoricoActivity"
             android:label="@string/title_activity_historico"
             android:theme="@style/NoActionBar" />
 
@@ -44,7 +44,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDzk5KMW7MRXU2HUqXUSyCgGlCwib1nTu8" />
 
-        <activity android:name=".activity.SplashScreenActivity">
+        <activity android:name="cl.domito.dmttransfer.activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,23 +52,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MainActivity"
+            android:name="cl.domito.dmttransfer.activity.MainActivity"
             android:label=""
             android:theme="@style/NoActionBar" />
         <activity
-            android:name=".activity.LoginActivity"
+            android:name="cl.domito.dmttransfer.activity.LoginActivity"
             android:label="" />
 
         <service
-            android:name=".service.AsignacionServicioService"
+            android:name="cl.domito.dmttransfer.service.AsignacionServicioService"
             android:enabled="true" />
 
         <activity
-            android:name=".activity.ConfiguracionActivity"
+            android:name="cl.domito.dmttransfer.activity.ConfiguracionActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <receiver
-            android:name=".service.RestartBroadcastReceived"
+            android:name="cl.domito.dmttransfer.service.RestartBroadcastReceived"
             android:enabled="true"
             android:exported="true"
             android:label="RestartBroadcastReceived" />

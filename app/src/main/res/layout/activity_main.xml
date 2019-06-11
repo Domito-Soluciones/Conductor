@@ -4,7 +4,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cl.domito.conductor.activity.MainActivity"
+    tools:context="cl.domito.dmttransfer.activity.MainActivity"
     tools:openDrawer="start">
 
     <android.support.design.widget.NavigationView

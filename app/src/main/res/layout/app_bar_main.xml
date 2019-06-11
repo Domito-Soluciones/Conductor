@@ -4,7 +4,7 @@
     android:id="@+id/constraintLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cl.domito.conductor.activity.MainActivity">
+    tools:context="cl.domito.dmttransfer.activity.MainActivity">
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/constrainLayoutTitulo"
