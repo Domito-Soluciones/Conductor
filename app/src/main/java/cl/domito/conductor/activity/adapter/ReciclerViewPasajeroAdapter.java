@@ -220,7 +220,7 @@
                                             }
                                             else
                                             {
-                                                Toast.makeText(activity,"DEbe ingresar un motivo de cancelación",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(activity,"Debe ingresar un motivo de cancelación",Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     });
@@ -357,23 +357,23 @@
                     @Override
                     public void onClick(View v) {
                         conductor.pasajeroActual = idPasajero;
-                            AlertDialog.Builder dialogo1 = new AlertDialog.Builder(activity);
-                            dialogo1.setTitle("Dejar Pasajero");
-                            dialogo1.setMessage("¿ Esta seguro que desea dejar al pasajero aquí ?");
-                            dialogo1.setCancelable(false);
-                            dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialogo1, int id) {
-                                    conductor.pasajeroRepartido = false;
-                                    FinalizarRutaPasajeroOperation finalizarRutaPasajeroOperation = new FinalizarRutaPasajeroOperation(activity,i,getItemCount()-1);
-                                    finalizarRutaPasajeroOperation.execute("");
-                                }
-                            });
-                            dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialogo1, int id) {
-                                    dialogo1.dismiss();
-                                }
-                            });
-                            dialogo1.show();
+                        AlertDialog.Builder dialogo1 = new AlertDialog.Builder(activity);
+                        dialogo1.setTitle("Dejar Pasajero");
+                        dialogo1.setMessage("¿ Esta seguro que desea dejar al pasajero aquí ?");
+                        dialogo1.setCancelable(false);
+                        dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogo1, int id) {
+                                conductor.pasajeroRepartido = false;
+                                FinalizarRutaPasajeroOperation finalizarRutaPasajeroOperation = new FinalizarRutaPasajeroOperation(activity,i,getItemCount()-1);
+                                finalizarRutaPasajeroOperation.execute("");
+                            }
+                        });
+                        dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialogo1, int id) {
+                                dialogo1.dismiss();
+                            }
+                        });
+                        dialogo1.show();
                     }
 
                 });
@@ -539,6 +539,9 @@
                                     conductor.pasajeroRecogido = false;
                                     TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
                                     tomarPasajeroOperation.execute();
+                                    if (i == getItemCount() -1) {
+                                        ActivityUtils.finalizar(activity);
+                                    }
                                 }
                             });
                             dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -754,7 +757,8 @@
                                 if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
                                     lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
                                 }
-                            }else if(servicio.getString("servicio_truta").contains("XX"))
+                            }
+                            else if(servicio.getString("servicio_truta").contains("XX"))
                             {
                                 if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
                                     lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);

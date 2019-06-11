@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -40,21 +41,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
-
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import cl.domito.conductor.R;
 import cl.domito.conductor.activity.FinServicioActivity;
@@ -94,12 +83,23 @@ public class ActivityUtils {
     {
         NotificationCompat.Builder mBuilder;
         NotificationManager mNotifyMgr = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            CharSequence channelName = "canal"+id;
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel notificationChannel = null;
+            notificationChannel = new NotificationChannel(id+"", channelName, importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            mNotifyMgr.createNotificationChannel(notificationChannel);
+        }
         Intent intent = new Intent(activity, clase);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(activity, 0, intent, 0);
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        mBuilder = new NotificationCompat.Builder(activity)
+        mBuilder = new NotificationCompat.Builder(activity,id+"")
                 .setContentIntent(pendingIntent)
                 .setContentTitle(titulo)
                 .setSmallIcon(smallIcon)
@@ -110,52 +110,6 @@ public class ActivityUtils {
         mNotifyMgr.notify(id, mBuilder.build());
     }
 
-    public static BitmapDescriptor bitmapDescriptorFromVector(Context context, @DrawableRes int vectorDrawableResourceId) {
-        Drawable background = ContextCompat.getDrawable(context,vectorDrawableResourceId);
-        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
-        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorDrawableResourceId);
-        vectorDrawable.setBounds(40, 20, vectorDrawable.getIntrinsicWidth() + 40, vectorDrawable.getIntrinsicHeight() + 20);
-        Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        background.draw(canvas);
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
-    }
-
-    public static List<LatLng> decodePolyline(final String encodedPath) {
-
-        int len = encodedPath.length();
-
-        final List<LatLng> path = new ArrayList<>(len / 2);
-        int index = 0;
-        int lat = 0;
-        int lng = 0;
-
-        while (index < len) {
-            int result = 1;
-            int shift = 0;
-            int b;
-            do {
-                b = encodedPath.charAt(index++) - 63 - 1;
-                result += b << shift;
-                shift += 5;
-            } while (b >= 0x1f);
-            lat += (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
-
-            result = 1;
-            shift = 0;
-            do {
-                b = encodedPath.charAt(index++) - 63 - 1;
-                result += b << shift;
-                shift += 5;
-            } while (b >= 0x1f);
-            lng += (result & 1) != 0 ? ~(result >> 1) : (result >> 1);
-
-            path.add(new LatLng(lat * 1e-5, lng * 1e-5));
-        }
-
-        return path;
-    }
 
     public static void llamar(Activity activity,String numero)
     {
@@ -170,45 +124,6 @@ public class ActivityUtils {
 
     }
 
-    public static void dibujarRuta(Activity activity,GoogleMap mMap,JSONArray route) {
-        PolylineOptions polylineOptions = new PolylineOptions().width(10).color(Color.BLACK);
-        LatLng latLngInicio = null;
-        LatLng latLngFin = null;
-        for(int i = 0 ; i < route.length(); i++)
-        {
-            try {
-                JSONObject jsonObject = (JSONObject) route.get(i);
-                LatLng latLng = new LatLng(jsonObject.getDouble("lat"),jsonObject.getDouble("lng"));
-                polylineOptions.add(latLng);
-                if(i == 0)
-                {
-                    latLngInicio = latLng;
-                }
-                if(i == route.length() - 1)
-                {
-                    latLngFin = latLng;
-                }
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(latLngInicio).include(latLngFin);
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(mMap != null) {
-                    Polyline line = mMap.addPolyline(polylineOptions);
-                    line.setColor(activity.getResources().getColor(R.color.colorLinea));
-                    line.setWidth(15f);
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 150), 1000, null);
-                }
-            }
-        });
-
-    }
 
     public static boolean isRunning(Class<?> serviceClass, Activity activity) {
         ActivityManager manager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
@@ -220,25 +135,6 @@ public class ActivityUtils {
         }
         Log.i ("isMyServiceRunning?", false+"");
         return false;
-    }
-
-    public static boolean checkNetworkAvailable(Context context) {
-        boolean networkStatus = false;
-        try{
-            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo netInfo = cm.getNetworkInfo(0);
-            if (netInfo != null && netInfo.getState()==NetworkInfo.State.CONNECTED) {
-                networkStatus = true;
-            }else {
-                netInfo = cm.getNetworkInfo(1);
-                if(netInfo!=null && netInfo.getState()==NetworkInfo.State.CONNECTED)
-                    networkStatus = true;
-            }
-        }catch(Exception e){
-            e.printStackTrace();
-            networkStatus = false;
-        }
-        return networkStatus;
     }
 
     public static void volver(Activity activity)
@@ -307,7 +203,7 @@ public class ActivityUtils {
         {
             e.printStackTrace();
         }
-        if(conductor.servicio != null) {
+        if(conductor.servicio != null && conductor.servicio.length() > 0) {
             try {
                 JSONObject primero = conductor.servicio.getJSONObject(0);
                 String ruta = primero.getString("servicio_truta").split("-")[0];
@@ -326,7 +222,7 @@ public class ActivityUtils {
                 e.printStackTrace();
             }
         }
-        if(conductor.servicio != null) {
+        if(conductor.servicio != null && conductor.servicio.length() > 0) {
             for (int i = 0; i < conductor.servicio.length(); i++) {
                 try {
                     JSONObject servicio = conductor.servicio.getJSONObject(i);
@@ -356,7 +252,7 @@ public class ActivityUtils {
                 }
             }
         }
-        if(conductor.servicio != null) {
+        if(conductor.servicio != null && conductor.servicio.length() > 0) {
             try {
                 JSONObject ultimo = conductor.servicio.getJSONObject(conductor.servicio.length() - 1);
                 String ruta = ultimo.getString("servicio_truta").split("-")[0];
@@ -383,7 +279,7 @@ public class ActivityUtils {
                 }
             });
         }
-        else if(!conductor.servicioActualRuta.contains("XX"))
+        else if(conductor.servicioActualRuta.contains("XX"))
         {
 
             AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
