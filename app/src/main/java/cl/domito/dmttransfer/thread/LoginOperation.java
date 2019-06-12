@@ -12,6 +12,7 @@ import java.lang.ref.WeakReference;
 
 import cl.domito.dmttransfer.activity.LoginActivity;
 import cl.domito.dmttransfer.activity.MainActivity;
+import cl.domito.dmttransfer.activity.SplashScreenActivity;
 import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.http.RequestConductor;
@@ -36,6 +37,16 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
         LoginActivity loginActivity = context.get();
         boolean login = RequestConductor.loginConductor(strings[0],strings[1]);
         if (login) {
+            if("".equals(SplashScreenActivity.ANDROID_ID)) {
+                loginActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast t = Toast.makeText(loginActivity, "Usuario activo en otro dispositivo", Toast.LENGTH_SHORT);
+                        t.show();
+                    }
+                });
+                return null;
+            }
             conductor.activo = true;
             conductor.nick = strings[0];
             if(conductor.recordarSession) {

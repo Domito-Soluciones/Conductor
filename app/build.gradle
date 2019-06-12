@@ -4,11 +4,11 @@ android {
     compileSdkVersion 28
     compileOptions.encoding "ISO-8859-1"
     defaultConfig {
-        applicationId "cl.domito.conductor"
+        applicationId "cl.domito.dmttransfer"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 4
-        versionName "1.4"
+        versionCode 1
+        versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }

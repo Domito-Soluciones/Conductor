@@ -82,7 +82,7 @@ public class ReciclerViewDetalleAdapter extends RecyclerView.Adapter<ReciclerVie
         myViewHolder.textViewDireccion.setText(data[2]);
 
         String nombre = activity.getComponentName().getClassName();
-        if(nombre.equals("cl.domito.conductor.activity.HistoricoDetalleActivity"))
+        if(nombre.equals("cl.domito.dmttransfer.activity.HistoricoDetalleActivity"))
         {
             myViewHolder.imageViewLlamar.setVisibility(View.GONE);
         }
