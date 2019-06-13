@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONObject;
+
 import java.lang.ref.WeakReference;
 
 import cl.domito.dmttransfer.activity.LoginActivity;
@@ -35,9 +37,16 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
     @Override
     protected Void doInBackground(String... strings) {
         LoginActivity loginActivity = context.get();
-        boolean login = RequestConductor.loginConductor(strings[0],strings[1]);
-        if (login) {
-            if("".equals(SplashScreenActivity.ANDROID_ID)) {
+        JSONObject login = RequestConductor.loginConductor(strings[0], strings[1]);
+        try{
+            String id = login.getString("conductor_id");
+            String dispositivo = login.getString("conductor_equipo");
+        if (!id.equals("0")) {
+            conductor.id = id;
+            conductor.activo = true;
+            conductor.nick = strings[0];
+            RequestConductor.cambiarEstadoMovil("1");
+            if (!dispositivo.equals(SplashScreenActivity.ANDROID_ID)) {
                 loginActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -47,27 +56,22 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
                 });
                 return null;
             }
-            conductor.activo = true;
-            conductor.nick = strings[0];
-            if(conductor.recordarSession) {
+            if (conductor.recordarSession) {
                 SharedPreferences pref = loginActivity.getApplicationContext().getSharedPreferences
-                        ("preferencias",Context.MODE_PRIVATE);
-                ActivityUtils.guardarSharedPreferences(pref,"idUsuario",strings[0]);
-                ActivityUtils.guardarSharedPreferences(pref,"claveUsuario",strings[1]);
-            }
-            else
-            {
+                        ("preferencias", Context.MODE_PRIVATE);
+                ActivityUtils.guardarSharedPreferences(pref, "idUsuario", strings[0]);
+                ActivityUtils.guardarSharedPreferences(pref, "claveUsuario", strings[1]);
+            } else {
                 ActivityUtils.eliminarSharedPreferences(context.get().getSharedPreferences
-                        ("preferencias", Context.MODE_PRIVATE),"idUsuario");
+                        ("preferencias", Context.MODE_PRIVATE), "idUsuario");
                 ActivityUtils.eliminarSharedPreferences(context.get().getSharedPreferences
-                        ("preferencias", Context.MODE_PRIVATE),"claveUsuario");
+                        ("preferencias", Context.MODE_PRIVATE), "claveUsuario");
             }
             Intent mainIntent = new Intent(loginActivity, MainActivity.class);
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NEW_TASK);
             loginActivity.startActivity(mainIntent);
             loginActivity.finish();
-            RequestConductor.cambiarEstadoMovil("1");
-        } else if(Utilidades.tipoError == 0) {
+        } else if (Utilidades.tipoError == 0) {
             loginActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -76,6 +80,10 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
                 }
             });
         }
+    }
+    catch(Exception e){
+        e.printStackTrace();
+    }
         return null;
     }
 

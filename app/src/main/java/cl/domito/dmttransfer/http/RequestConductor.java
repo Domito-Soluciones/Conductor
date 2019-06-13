@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.domito.dmttransfer.activity.SplashScreenActivity;
 import cl.domito.dmttransfer.dominio.Conductor;
 
 public class RequestConductor {
@@ -21,7 +22,7 @@ public class RequestConductor {
     private static double lngAnterior;
     private static Conductor conductor = Conductor.getInstance();
 
-    public static boolean loginConductor(String usuario, String password)
+    public static JSONObject loginConductor(String usuario, String password)
     {
         String url = Utilidades.URL_BASE_CONDUCTOR + "Login.php";
         List<NameValuePair> params = new ArrayList();
@@ -32,10 +33,7 @@ public class RequestConductor {
             params.add(new BasicNameValuePair("password",base64));
             RESPUESTA = Utilidades.enviarPost(url,params);
             if(RESPUESTA != null) {
-                if (!RESPUESTA.getString("conductor_id").equals("0")) {
-                    conductor.id = RESPUESTA.getString("conductor_id");
-                    return true;
-                }
+                return RESPUESTA;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -46,7 +44,7 @@ public class RequestConductor {
         {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     public static JSONObject datosConductor(String reqUrl, List<NameValuePair> params) throws JSONException {
@@ -148,6 +146,7 @@ public class RequestConductor {
         List<NameValuePair> params2 = new ArrayList();
         params2.add(new BasicNameValuePair("conductor",conductor.id));
         params2.add(new BasicNameValuePair("estado",estado));
+        params2.add(new BasicNameValuePair("equipo", SplashScreenActivity.ANDROID_ID));
         try {
             jsonObject = Utilidades.enviarPost(url2,params2);
         } catch (IOException e) {
