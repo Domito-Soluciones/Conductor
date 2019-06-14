@@ -29,6 +29,7 @@ public class LogoutOperation extends AsyncTask<String, Void, Void> {
         context.get().startActivity(mainIntent);
         context.get().finish();
         RequestConductor.logOut();
+        conductor.estado = 0;
         return null;
     }
 

@@ -65,7 +65,9 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                         ObtenerServiciosOperation obtenerServiciosOperation = new ObtenerServiciosOperation();
                         conductor.servicios = obtenerServiciosOperation.execute().get();
                         obtenerNotificacion();
-                        getUbicacion();
+                        if(conductor.estado == 1) {
+                            getUbicacion();
+                        }
                         //if (conductor.getLocation() != null) {
                         if (conductor.navegando && conductor.location != null) {
                             insertarNavegacion();
