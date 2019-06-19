@@ -56,6 +56,10 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
                 });
                 return null;
             }
+            else
+            {
+                RequestConductor.cambiarEstadoMovil("1");
+            }
             if (conductor.recordarSession) {
                 SharedPreferences pref = loginActivity.getApplicationContext().getSharedPreferences
                         ("preferencias", Context.MODE_PRIVATE);

@@ -41,7 +41,7 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
             JSONObject jsonObject = RequestConductor.datosConductor(url,params);
             if(jsonObject != null) {
                 conductor.nombre = jsonObject.getString("conductor_nombre");
-                conductor.estado = jsonObject.getInt("conductor_estado");
+                conductor.estado = 1;
             }
         } catch (JSONException e) {
             e.printStackTrace();
