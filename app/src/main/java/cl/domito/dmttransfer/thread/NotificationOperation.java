@@ -1,7 +1,11 @@
 package cl.domito.dmttransfer.thread;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.content.LocalBroadcastManager;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,6 +32,7 @@ public class NotificationOperation extends AsyncTask<Void, Void, String[]> {
         String[] respuesta = new String[2];
         Conductor conductor = Conductor.getInstance();
         JSONArray jsonArray = RequestConductor.obtenerNotificaciones();
+        sendMessage("cantidad notificaciones: "+jsonArray.length(),"cantidad notificaciones: "+jsonArray.length());
         if(jsonArray == null)
         {
             return null;
@@ -41,6 +46,7 @@ public class NotificationOperation extends AsyncTask<Void, Void, String[]> {
                 respuesta[1] = tipo;
                 if(tipo.equals("0")) {
                     ActivityUtils.enviarNotificacion(Integer.parseInt(id),context, "", jsonObject.getString("notificacion_texto"), R.drawable.furgoneta, MainActivity.class);
+                    sendMessage("enviando notificacion: "+id,"enviando notificacion: "+id);
                 }
                 else if(tipo.equals("1"))
                 {
@@ -61,7 +67,7 @@ public class NotificationOperation extends AsyncTask<Void, Void, String[]> {
 
     @Override
     protected void onPostExecute(String[] aString) {
-        if(aString != null) {
+        if (aString != null) {
             if (aString[0] != null && aString[1] != null) {
                 if (aString[1].equals("1")) {
                     CambiarEstadoNotificacionOperation cambiarEstadoNotificacionOperation = new CambiarEstadoNotificacionOperation();
@@ -70,5 +76,14 @@ public class NotificationOperation extends AsyncTask<Void, Void, String[]> {
             }
         }
     }
+
+    private void sendMessage(String message, String value) {
+        Intent intent = new Intent("custom-event-name");
+        // You can also include some extra data.
+        intent.putExtra("message", message);
+        intent.putExtra("value", value);
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
+    }
+
 
 }

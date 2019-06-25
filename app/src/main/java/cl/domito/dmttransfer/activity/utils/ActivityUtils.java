@@ -74,32 +74,38 @@ public class ActivityUtils {
     public static void enviarNotificacion(int id,Context activity,String titulo,String contenido,int smallIcon,Class clase)
     {
         NotificationCompat.Builder mBuilder;
-        NotificationManager mNotifyMgr = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            CharSequence channelName = "canal"+id;
-            int importance = NotificationManager.IMPORTANCE_LOW;
-            NotificationChannel notificationChannel = null;
-            notificationChannel = new NotificationChannel(id+"", channelName, importance);
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.enableVibration(true);
-            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-            mNotifyMgr.createNotificationChannel(notificationChannel);
+        try {
+            NotificationManager mNotifyMgr = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                CharSequence channelName = "canal" + id;
+                int importance = NotificationManager.IMPORTANCE_LOW;
+                NotificationChannel notificationChannel = null;
+                notificationChannel = new NotificationChannel(id + "", channelName, importance);
+                notificationChannel.enableLights(true);
+                notificationChannel.setLightColor(Color.RED);
+                notificationChannel.enableVibration(true);
+                notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+                mNotifyMgr.createNotificationChannel(notificationChannel);
+            }
+            Intent intent = new Intent(activity, clase);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            PendingIntent pendingIntent = PendingIntent.getActivity(activity, 0, intent, 0);
+            Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            mBuilder = new NotificationCompat.Builder(activity, id + "")
+                    .setContentIntent(pendingIntent)
+                    .setContentTitle(titulo)
+                    .setSmallIcon(smallIcon)
+                    .setContentText(contenido)
+                    .setVibrate(new long[]{100, 250, 100, 500})
+                    .setAutoCancel(true)
+                    .setSound(soundUri);
+            mNotifyMgr.notify(id, mBuilder.build());
         }
-        Intent intent = new Intent(activity, clase);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
-        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(activity, 0, intent, 0);
-        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        mBuilder = new NotificationCompat.Builder(activity,id+"")
-                .setContentIntent(pendingIntent)
-                .setContentTitle(titulo)
-                .setSmallIcon(smallIcon)
-                .setContentText(contenido)
-                .setVibrate(new long[]{100, 250, 100, 500})
-                .setAutoCancel(true)
-                .setSound(soundUri);
-        mNotifyMgr.notify(id, mBuilder.build());
+        catch(Exception e)
+        {
+
+        }
     }
 
 

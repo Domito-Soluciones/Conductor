@@ -138,13 +138,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
         sendBroadcast(broadcastIntent);
     }
 
-private void sendMessage(String message, String value) {
-        Intent intent = new Intent("custom-event-name");
-        // You can also include some extra data.
-        intent.putExtra("message", message);
-        intent.putExtra("value", value);
-        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
-        }
+
 
 private void obtenerNotificacion() {
         NotificationOperation notificationOperation = new NotificationOperation(this);
