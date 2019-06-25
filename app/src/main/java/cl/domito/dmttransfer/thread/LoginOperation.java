@@ -45,6 +45,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             conductor.id = id;
             conductor.activo = true;
             conductor.nick = strings[0];
+            RequestConductor.cambiarEstadoMovil("1");
             if (!dispositivo.equals("") && !dispositivo.equals(SplashScreenActivity.ANDROID_ID)) {
                 loginActivity.runOnUiThread(new Runnable() {
                     @Override
