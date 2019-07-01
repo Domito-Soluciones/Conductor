@@ -1,6 +1,8 @@
 package cl.domito.dmttransfer.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,12 +27,22 @@ public class SplashScreenActivity extends AppCompatActivity {
         View v = View.inflate(getApplicationContext(), R.layout.activity_splash, null);
         Conductor.getInstance().context = SplashScreenActivity.this;
         ANDROID_ID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+        SharedPreferences pref = getApplicationContext().getSharedPreferences
+                ("preferencias", Context.MODE_PRIVATE);
+        String idConductor = pref.getString("idUsuario", "");
+        String clave = pref.getString("claveUsuario","");
         setContentView(R.layout.activity_splash);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent mainIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                Intent mainIntent = null;
+                if(!idConductor.equals("") && !clave.equals("")){
+                    mainIntent = new Intent(SplashScreenActivity.this, MainActivity.class);
+                }
+                else{
+                    mainIntent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                }
                 SplashScreenActivity.this.startActivity(mainIntent);
                 SplashScreenActivity.this.finish();
                 handler.removeCallbacksAndMessages(null);

@@ -32,7 +32,6 @@ public class NotificationOperation extends AsyncTask<Void, Void, String[]> {
         String[] respuesta = new String[2];
         Conductor conductor = Conductor.getInstance();
         JSONArray jsonArray = RequestConductor.obtenerNotificaciones();
-        sendMessage("cantidad notificaciones: "+jsonArray.length(),"cantidad notificaciones: "+jsonArray.length());
         if(jsonArray == null)
         {
             return null;
@@ -46,7 +45,6 @@ public class NotificationOperation extends AsyncTask<Void, Void, String[]> {
                 respuesta[1] = tipo;
                 if(tipo.equals("0")) {
                     ActivityUtils.enviarNotificacion(Integer.parseInt(id),context, "", jsonObject.getString("notificacion_texto"), R.drawable.furgoneta, MainActivity.class);
-                    sendMessage("enviando notificacion: "+id,"enviando notificacion: "+id);
                 }
                 else if(tipo.equals("1"))
                 {
