@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +46,6 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             conductor.id = id;
             conductor.activo = true;
             conductor.nick = strings[0];
-            RequestConductor.cambiarEstadoMovil("1");
             if (!dispositivo.equals("") && !dispositivo.equals(SplashScreenActivity.ANDROID_ID)) {
                 loginActivity.runOnUiThread(new Runnable() {
                     @Override
@@ -79,7 +79,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             loginActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    Toast t = Toast.makeText(loginActivity, "Usuario y/o contraseña no coinciden", Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(loginActivity.getBaseContext(), "Usuario y/o contraseña no coinciden", Toast.LENGTH_SHORT);
                     t.show();
                 }
             });
@@ -108,7 +108,10 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             AsignacionServicioService asignacionServicioService = new AsignacionServicioService(context.get());
             Intent i = new Intent(context.get(), AsignacionServicioService.class);
             if (!ActivityUtils.isRunning(asignacionServicioService.getClass(), context.get())) {
-                context.get().startService(i);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.get().startForegroundService(i);
+                }
+                else{context.get().startService(i);}
             }
         AsignacionServicioService.IS_INICIADO = true;
         }

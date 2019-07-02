@@ -2,6 +2,7 @@ package cl.domito.dmttransfer.thread;
 
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
@@ -63,7 +64,13 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
                     AsignacionServicioService asignacionServicioService = new AsignacionServicioService(context.get());
                     Intent i = new Intent(context.get(), AsignacionServicioService.class);
                     if(!ActivityUtils.isRunning(asignacionServicioService.getClass(),context.get())) {
-                        context.get().startService(i);
+
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            context.get().startForegroundService(i);
+                        }
+                        else{
+                            context.get().startService(i);
+                        }
                     }
                     AsignacionServicioService.IS_INICIADO = true;
                     conductor.activo = true;

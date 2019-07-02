@@ -1,22 +1,31 @@
 package cl.domito.dmttransfer.service;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
+import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.PasajeroActivity;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.thread.CambiarUbicacionOperation;
@@ -36,6 +45,8 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
     public static boolean IS_INICIADO = false;
     Conductor conductor = Conductor.getInstance();
 
+    private NotificationManager mNM;
+
 
     public AsignacionServicioService(Context applicationContext) {
         super();
@@ -53,6 +64,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
     @Override
     public void onCreate() {
         super.onCreate();
+        startForegroundService();
     }
 
     @Override
@@ -61,6 +73,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
             @Override
             public void run() {
                 while (true) {
+                    Log.i("servicio","SERVICIO CORRIENDO");
                     try {
                         ObtenerServiciosOperation obtenerServiciosOperation = new ObtenerServiciosOperation();
                         conductor.servicios = obtenerServiciosOperation.execute().get();
@@ -134,8 +147,10 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Intent broadcastIntent = new Intent(this, RestartBroadcastReceived.class);
-        sendBroadcast(broadcastIntent);
+        if(conductor.estado != 0) {
+            Intent broadcastIntent = new Intent(this, RestartBroadcastReceived.class);
+            sendBroadcast(broadcastIntent);
+        }
     }
 
 
@@ -201,6 +216,32 @@ public void onConnected(@Nullable Bundle bundle) {
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    private void startForegroundService()
+    {
+        String NOTIFICATION_CHANNEL_ID = "cl.domito.transfer";
+        String channelName = "AsignacionServicioService";
+        NotificationChannel chan = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            chan = new NotificationChannel(NOTIFICATION_CHANNEL_ID, channelName, NotificationManager.IMPORTANCE_NONE);
+            chan.setLightColor(Color.BLUE);
+            chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        }
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        assert manager != null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            manager.createNotificationChannel(chan);
+        }
+
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        Notification notification = notificationBuilder.setOngoing(true)
+                .setSmallIcon(0)
+                .setContentTitle("App is running in background")
+                .setPriority(NotificationManager.IMPORTANCE_MIN)
+                .setCategory(Notification.CATEGORY_SERVICE)
+                .build();
+        startForeground(2, notification);
     }
 }
 

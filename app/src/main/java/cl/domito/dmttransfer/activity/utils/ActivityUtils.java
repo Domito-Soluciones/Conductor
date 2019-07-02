@@ -78,16 +78,14 @@ public class ActivityUtils {
         try {
             NotificationManager mNotifyMgr = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                CharSequence channelName = "canal" + id;
-                int importance = NotificationManager.IMPORTANCE_LOW;
+                CharSequence channelName = "canal-" + id;
                 NotificationChannel notificationChannel = null;
-                notificationChannel = new NotificationChannel(id + "", channelName, importance);
+                notificationChannel = new NotificationChannel(id + "", channelName, NotificationManager.IMPORTANCE_HIGH);
                 notificationChannel.enableLights(true);
                 notificationChannel.setLightColor(Color.RED);
                 notificationChannel.enableVibration(true);
                 notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
                 notificationChannel.setSound(soundUri,null);
-                notificationChannel.setImportance(NotificationManager.IMPORTANCE_HIGH);
                 mNotifyMgr.createNotificationChannel(notificationChannel);
             }
             Intent intent = new Intent(activity, clase);
