@@ -271,35 +271,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         public void onReceive(Context context, Intent intent) {
             String message = intent.getStringExtra("message");
             String value = intent.getStringExtra("value");
-            switch (message)
-            {
-                case AsignacionServicioService.OCULTAR_LAYOUT_SERVICIO:
-                    MainActivity.this.runOnUiThread(new Runnable() {
-                        public void run() {
-                            //servicioLayout.setVisibility(View.GONE);
-                        }
-                    });
-                break;
-                case AsignacionServicioService.MOSTRAR_LAYOUT_SERVICIO:
-                    MainActivity.this.runOnUiThread(new Runnable() {
-                        public void run() {
-                           // servicioLayout.setVisibility(View.VISIBLE);
-                        }
-                    });
-                break;
-                case AsignacionServicioService.MOSTRAR_NOTIFICACION_SERVICIO:
-                    notificar("Nuevo Servicio",null);
-                break;
-                case AsignacionServicioService.LLENAR_LAYOUT_SERVICIO:
-                break;
-                case AsignacionServicioService.CAMBIAR_UBICACION:
-                    iniciarUbicacion();
-                break;
-                case AsignacionServicioService.CALCULAR_DISTACIA:
-
-                    break;
+            MainActivity.this.runOnUiThread(new Runnable() {
+                public void run() {
+                    Toast.makeText(MainActivity.this,value,Toast.LENGTH_SHORT).show();
+                }
+            });
             }
-        }
     };
 
     private void abrirVentanaUbicacion() {
