@@ -43,9 +43,6 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             String id = login.getString("conductor_id");
             String dispositivo = login.getString("conductor_equipo");
         if (!id.equals("0")) {
-            conductor.id = id;
-            conductor.activo = true;
-            conductor.nick = strings[0];
             if (!dispositivo.equals("") && !dispositivo.equals(SplashScreenActivity.ANDROID_ID)) {
                 loginActivity.runOnUiThread(new Runnable() {
                     @Override
@@ -58,6 +55,9 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             }
             else
             {
+                conductor.id = id;
+                conductor.activo = true;
+                conductor.nick = strings[0];
                 RequestConductor.cambiarEstadoMovil("1");
             }
             if (conductor.recordarSession) {

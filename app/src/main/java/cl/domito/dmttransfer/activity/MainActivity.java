@@ -71,19 +71,19 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private TextView textViewError;
     private Conductor conductor;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        apiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage((FragmentActivity) this, this)
-                .addConnectionCallbacks(this)
-                .addApi(LocationServices.API)
-                .build();
-
         conductor = Conductor.getInstance();
-
-        conductor.googleApiClient = apiClient;
+        if(!conductor.activo){
+            Intent i = new Intent(this,LoginActivity.class);
+            startActivity(i);
+            finish();
+            return;
+        }
         imageButton = findViewById(R.id.imageViewMenu);
         navigationView = findViewById(R.id.nav_view);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -124,6 +124,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         obtenerServicos();
         DatosConductorOperation datosConductorOperation = new DatosConductorOperation(this);
         datosConductorOperation.execute();
+        apiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage((FragmentActivity) this, this)
+                .addConnectionCallbacks(this)
+                .addApi(LocationServices.API)
+                .build();
+        conductor.googleApiClient = apiClient;
         super.onPostCreate(savedInstanceState);
     }
 

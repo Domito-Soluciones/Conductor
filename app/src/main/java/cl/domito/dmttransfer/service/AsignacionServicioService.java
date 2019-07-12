@@ -72,8 +72,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                while (true) {
-                    Log.i("servicio","SERVICIO CORRIENDO");
+                while (conductor.activo) {
                     try {
                         ObtenerServiciosOperation obtenerServiciosOperation = new ObtenerServiciosOperation();
                         conductor.servicios = obtenerServiciosOperation.execute().get();
