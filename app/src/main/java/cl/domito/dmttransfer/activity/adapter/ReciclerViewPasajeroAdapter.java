@@ -687,16 +687,20 @@
                     String uri = null;
                     SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
                     String tipoNav = pref.getString("nav", "");
+                    String paquete = "";
                     if(tipoNav.equals("google"))
                     {
                         uri = "google.navigation:q="+addresses.get(0).getLatitude() + "," + addresses.get(0).getLongitude();
+                        paquete = "com.google.android.apps.maps";
                     }
                     else if(tipoNav.equals("") || tipoNav.equals("waze"))
                     {
                         uri = "geo: " + addresses.get(0).getLatitude() + "," + addresses.get(0).getLongitude();
-                    }
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                    activity.startActivity(intent);
+                        paquete = "com.waze";
+                }
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                intent.setPackage(paquete);
+                activity.startActivity(intent);
                 } catch (ActivityNotFoundException ex) {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.waze"));
                     activity.startActivity(intent);
