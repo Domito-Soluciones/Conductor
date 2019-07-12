@@ -19,6 +19,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
     private RadioButton radioButtonGMaps;
     private RadioButton radioButtonWaze;
     private Conductor conductor;
+    SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,16 @@ public class ConfiguracionActivity extends AppCompatActivity {
         imageViewAtras = findViewById(R.id.imageViewAtras);
         radioButtonGMaps = findViewById(R.id.radioButton2);
         radioButtonWaze = findViewById(R.id.radioButton);
+
+        pref = getApplicationContext().getSharedPreferences
+                ("preferencias", Context.MODE_PRIVATE);
+        String tipoNav = pref.getString("nav", "");
+        if(tipoNav.equals("google")){
+            radioButtonGMaps.setChecked(true);
+        }
+        else if(tipoNav.equals("") || tipoNav.equals("waze")){
+            radioButtonWaze.setChecked(true);
+        }
 
         conductor = Conductor.getInstance();
 
@@ -46,6 +57,9 @@ public class ConfiguracionActivity extends AppCompatActivity {
             }
         });
 
+
+
+
         radioButtonWaze.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,15 +76,11 @@ public class ConfiguracionActivity extends AppCompatActivity {
     }
 
     private void seleccionarGMaps() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences
-                ("preferencias", Context.MODE_PRIVATE);
         ActivityUtils.guardarSharedPreferences(pref,"nav","google");
         Toast.makeText(this,"Navegación Google Maps seleccionada",Toast.LENGTH_LONG).show();
     }
 
     private void seleccionarWaze() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences
-            ("preferencias", Context.MODE_PRIVATE);
         ActivityUtils.guardarSharedPreferences(pref,"nav","waze");
         Toast.makeText(this,"Navegación Waze seleccionada",Toast.LENGTH_LONG).show();
 }

@@ -68,10 +68,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private TextView textViewError;
     private Conductor conductor;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +88,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
-        textViewError = findViewById(R.id.textViewError);
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
-        obtenerServicos();
+        //obtenerServicos();  no s donde se llan pero esta wea dejaba la caga
         DatosConductorOperation datosConductorOperation = new DatosConductorOperation(this);
         datosConductorOperation.execute();
         apiClient = new GoogleApiClient.Builder(this)
