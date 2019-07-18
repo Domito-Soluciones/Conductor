@@ -104,24 +104,132 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/estilo_textview"
             android:gravity="left"
             android:paddingLeft="@dimen/ancho_menu"
             android:text="ID"
-            android:textSize="@dimen/padding_Y_label_partida"
+            android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textViewIdServicioValor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.13" />
+            app:layout_constraintVertical_bias="0.120000005" />
 
         <TextView
             android:id="@+id/textViewIdServicioValor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="115dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/estilo_textview"
+            android:gravity="left"
+            android:paddingLeft="@dimen/height_icon"
+            android:textSize="@dimen/fab_margin"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.120000005" />
+
+        <TextView
+            android:id="@+id/textViewFecha"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/estilo_textview"
+            android:gravity="left"
+            android:paddingLeft="@dimen/ancho_menu"
+            android:text="Fecha"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewFechaValor"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.18" />
+
+        <TextView
+            android:id="@+id/textViewCliente"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/estilo_textview"
+            android:gravity="left"
+            android:paddingLeft="@dimen/ancho_menu"
+            android:text="Cliente"
+            android:textSize="12dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewClienteValor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/constrainLayoutTituloInt"
+            app:layout_constraintVertical_bias="0.15" />
+
+        <TextView
+            android:id="@+id/textViewRuta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/estilo_textview"
+            android:gravity="left"
+            android:paddingLeft="@dimen/ancho_menu"
+            android:text="Ruta"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewRutaValor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.24000001" />
+
+        <TextView
+            android:id="@+id/textViewTarifa"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/estilo_textview"
+            android:gravity="left"
+            android:paddingLeft="@dimen/ancho_menu"
+            android:text="Tarifa"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewTarifaValor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.3" />
+
+        <TextView
+            android:id="@+id/textViewCantidad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/estilo_textview"
+            android:gravity="left"
+            android:paddingLeft="@dimen/ancho_menu"
+            android:text="Pasajeros"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewCantidadValor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.32999998" />
+
+        <TextView
+            android:id="@+id/textViewFechaValor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="115dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/estilo_textview"
@@ -130,126 +238,16 @@
             android:textSize="@dimen/fab_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.13" />
-
-        <TextView
-            android:id="@+id/textViewFecha"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/estilo_textview"
-            android:gravity="left"
-            android:paddingLeft="@dimen/ancho_menu"
-            android:text="Fecha"
-            android:textSize="@dimen/padding_Y_label_partida"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textViewFechaValor"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.19" />
-
-        <TextView
-            android:id="@+id/textViewCliente"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/estilo_textview"
-            android:gravity="left"
-            android:paddingLeft="@dimen/ancho_menu"
-            android:text="Cliente"
-            android:textSize="@dimen/padding_Y_label_partida"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textViewClienteValor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/constrainLayoutTituloInt"
-            app:layout_constraintVertical_bias="0.16000003" />
-
-        <TextView
-            android:id="@+id/textViewRuta"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/estilo_textview"
-            android:gravity="left"
-            android:paddingLeft="@dimen/ancho_menu"
-            android:text="Ruta"
-            android:textSize="@dimen/padding_Y_label_partida"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textViewRutaValor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.22" />
-
-        <TextView
-            android:id="@+id/textViewTarifa"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="60dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/estilo_textview"
-            android:gravity="left"
-            android:paddingLeft="@dimen/ancho_menu"
-            android:text="Tarifa"
-            android:textSize="@dimen/padding_Y_label_partida"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textViewTarifaValor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.28" />
-
-        <TextView
-            android:id="@+id/textViewCantidad"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="70dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/estilo_textview"
-            android:gravity="left"
-            android:paddingLeft="@dimen/ancho_menu"
-            android:text="Pasajeros"
-            android:textSize="@dimen/padding_Y_label_partida"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/textViewCantidadValor"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.31" />
-
-        <TextView
-            android:id="@+id/textViewFechaValor"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="115dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/estilo_textview"
-            android:gravity="left"
-            android:paddingLeft="@dimen/height_icon"
-            android:textSize="@dimen/fab_margin"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.19" />
+            app:layout_constraintVertical_bias="0.18" />
 
         <TextView
             android:id="@+id/textViewClienteValor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="115dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/estilo_textview"
             android:gravity="left"
@@ -260,14 +258,14 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.16" />
+            app:layout_constraintVertical_bias="0.15" />
 
         <TextView
             android:id="@+id/textViewRutaValor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="115dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/estilo_textview"
             android:gravity="left"
@@ -277,14 +275,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.22" />
+            app:layout_constraintVertical_bias="0.24000001" />
 
         <TextView
             android:id="@+id/textViewTRutaValor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="115dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/estilo_textview"
             android:gravity="left"
@@ -294,14 +292,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.25" />
+            app:layout_constraintVertical_bias="0.27" />
 
         <TextView
             android:id="@+id/textViewTarifaValor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="115dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/estilo_textview"
             android:gravity="left"
@@ -311,14 +309,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.28" />
+            app:layout_constraintVertical_bias="0.3" />
 
         <TextView
             android:id="@+id/textViewCantidadValor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="115dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="35dp"
             android:layout_marginEnd="8dp"
             android:background="@drawable/estilo_textview"
             android:gravity="left"
@@ -328,7 +326,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.31" />
+            app:layout_constraintVertical_bias="0.32999998" />
 
         <View
             android:id="@+id/view"
@@ -361,23 +359,23 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="90dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="8dp"
             android:paddingLeft="@dimen/ancho_menu"
             android:text="Observacion"
-            android:textSize="@dimen/padding_Y_label_partida"
+            android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textViewObservacionValor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.34" />
+            app:layout_constraintVertical_bias="0.37" />
 
         <TextView
             android:id="@+id/textViewObservacionValor"
             android:layout_width="0dp"
             android:layout_height="40dp"
             android:layout_marginStart="115dp"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="40dp"
             android:layout_marginEnd="8dp"
             android:paddingLeft="40dp"
             android:textSize="@dimen/fab_margin"
@@ -385,22 +383,55 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.36" />
+            app:layout_constraintVertical_bias="0.38" />
 
         <TextView
             android:id="@+id/textViewTipoRuta"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="8dp"
             android:paddingLeft="20dp"
             android:text="Tipo ruta"
+            android:textSize="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textViewTRutaValor"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.25" />
+            app:layout_constraintVertical_bias="0.27" />
+
+        <TextView
+            android:id="@+id/textViewHora"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingLeft="20dp"
+            android:text="Hora"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/textViewHoraValor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.21" />
+
+        <TextView
+            android:id="@+id/textViewHoraValor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="115dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:paddingLeft="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.21" />
 
     </android.support.constraint.ConstraintLayout>
 

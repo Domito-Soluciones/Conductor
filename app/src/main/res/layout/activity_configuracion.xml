@@ -93,7 +93,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginBottom="8dp"
             android:gravity="center"
-            android:text="Abrir Navegacon Con"
+            android:text="Motor Navegación"
             android:textSize="@dimen/ancho_menu"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

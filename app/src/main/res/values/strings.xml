@@ -1,5 +1,5 @@
 <resources>
-    <string name="input_usuario">Rut o usuario</string>
+    <string name="input_usuario">Usuario</string>
     <string name="input_password">Password</string>
     <string name="input_button">Entrar</string>
     <string name="title_activity_login_new">LoginActivityNew</string>

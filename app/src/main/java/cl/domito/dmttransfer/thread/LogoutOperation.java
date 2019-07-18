@@ -1,5 +1,6 @@
 package cl.domito.dmttransfer.thread;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,10 +19,12 @@ public class LogoutOperation extends AsyncTask<String, Void, Void> {
 
     WeakReference<MainActivity> context;
     Conductor conductor;
+    AlertDialog dialog;
 
     public LogoutOperation(MainActivity activity) {
         context = new WeakReference<MainActivity>(activity);
         conductor = Conductor.getInstance();
+        dialog = ActivityUtils.setProgressDialog(context.get());
     }
 
     @Override
@@ -41,6 +44,12 @@ public class LogoutOperation extends AsyncTask<String, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
+        context.get().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+            }
+        });
         Intent i = new Intent(context.get(), AsignacionServicioService.class);
         context.get().stopService(i);
     }
