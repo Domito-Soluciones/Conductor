@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -201,7 +202,11 @@ public class RequestConductor {
         String url = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicioPasajero.php";
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("idServicio",conductor.servicioActual));
-        params.add(new BasicNameValuePair("idPasajero",conductor.pasajeroActual));
+        try {
+            params.add(new BasicNameValuePair("idPasajero",new String(conductor.pasajeroActual.getBytes(), "ISO-8859-1")) );
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         params.add(new BasicNameValuePair("observacion",observacion));
         params.add(new BasicNameValuePair("tipo",conductor.servicioActualRuta));
         params.add(new BasicNameValuePair("estado",estado));

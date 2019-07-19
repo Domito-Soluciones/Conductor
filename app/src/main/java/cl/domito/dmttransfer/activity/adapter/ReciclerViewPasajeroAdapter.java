@@ -802,7 +802,6 @@
             }
             else if(!conductor.servicioActualRuta.contains("XX"))
             {
-
                 AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
                 dialogo2.setTitle("Motivo Cancelación");
                 dialogo2.setMessage("Ingrese motivo de cancelación");

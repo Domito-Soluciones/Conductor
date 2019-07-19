@@ -39,6 +39,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
     private Button buttonCancelar;
     private TextView textviewServicioValor;
     private TextView textviewFechaValor;
+    private TextView textViewHoraValor;
     private TextView textviewClienteValor;
     private TextView textviewRutaValor;
     private TextView textviewTRutaValor;
@@ -62,6 +63,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
         buttonCancelar = findViewById(R.id.buttonCancelar);
         textviewServicioValor = findViewById(R.id.textViewIdServicioValor);
         textviewFechaValor = findViewById(R.id.textViewFechaValor);
+        textViewHoraValor = findViewById(R.id.textViewHoraValor);
         textviewClienteValor = findViewById(R.id.textViewClienteValor);
         textviewRutaValor = findViewById(R.id.textViewRutaValor);
         textviewTRutaValor = findViewById(R.id.textViewTRutaValor);
@@ -116,9 +118,8 @@ public class ServicioDetalleActivity extends AppCompatActivity {
             realizarServicioOperation.execute();
         } else if (estado.equals("3")) {
             try {
-                TextView textView = findViewById(R.id.textViewFechaValor);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                Date date = sdf.parse(textView.getText().toString());
+                Date date = sdf.parse(textviewFechaValor.getText().toString()+" "+textViewHoraValor.getText());
                 Long l = date.getTime();
                 Date dateNow = new Date();
                 Long lNow = dateNow.getTime();
@@ -219,11 +220,12 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     JSONObject servicio = conductor.servicio.getJSONObject(i);
                     conductor.servicioActual = servicio.getString("servicio_id");
                     textviewServicioValor.setText(servicio.getString("servicio_id"));
-                    textviewFechaValor.setText(servicio.getString("servicio_fecha") + " " + servicio.getString("servicio_hora"));
+                    textviewFechaValor.setText(servicio.getString("servicio_fecha"));
+                    textViewHoraValor.setText(servicio.getString("servicio_hora"));
                     textviewClienteValor.setText(servicio.getString("servicio_cliente"));
                     textviewRutaValor.setText(servicio.getString("servicio_ruta"));
                     textviewTRutaValor.setText(servicio.getString("servicio_truta"));
-                    textviewTarifaValor.setText(servicio.getString("servicio_tarifa"));
+                    textviewTarifaValor.setText("$ "+servicio.getString("servicio_tarifa"));
                     textviewObservacionValor.setText(servicio.getString("servicio_observacion").equals("") ? "Sin observaciones" : servicio.getString("servicio_observacion"));
                     cantidad++;
                     estado = servicio.getString("servicio_estado");
