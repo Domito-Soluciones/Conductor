@@ -118,9 +118,8 @@ public class ServicioDetalleActivity extends AppCompatActivity {
             realizarServicioOperation.execute();
         } else if (estado.equals("3")) {
             try {
-                TextView textView = findViewById(R.id.textViewFechaValor);
                 SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                Date date = sdf.parse(textView.getText().toString());
+                Date date = sdf.parse(textviewFechaValor.getText().toString()+" "+textViewHoraValor.getText());
                 Long l = date.getTime();
                 Date dateNow = new Date();
                 Long lNow = dateNow.getTime();

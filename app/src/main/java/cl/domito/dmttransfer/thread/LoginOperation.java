@@ -60,16 +60,15 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
                 conductor.nick = strings[0];
                 RequestConductor.cambiarEstadoMovil("1");
             }
-            if (conductor.recordarSession) {
-                SharedPreferences pref = loginActivity.getApplicationContext().getSharedPreferences
+            SharedPreferences pref = loginActivity.getApplicationContext().getSharedPreferences
                         ("preferencias", Context.MODE_PRIVATE);
                 ActivityUtils.guardarSharedPreferences(pref, "idUsuario", strings[0]);
                 ActivityUtils.guardarSharedPreferences(pref, "claveUsuario", strings[1]);
-            } else {
-                ActivityUtils.eliminarSharedPreferences(context.get().getSharedPreferences
-                        ("preferencias", Context.MODE_PRIVATE), "idUsuario");
-                ActivityUtils.eliminarSharedPreferences(context.get().getSharedPreferences
-                        ("preferencias", Context.MODE_PRIVATE), "claveUsuario");
+            if (conductor.recordarSession) {
+                ActivityUtils.guardarSharedPreferences(pref, "recordar", "1");
+            }
+            else{
+                ActivityUtils.guardarSharedPreferences(pref, "recordar", "0");
             }
             Intent mainIntent = new Intent(loginActivity, MainActivity.class);
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NEW_TASK);

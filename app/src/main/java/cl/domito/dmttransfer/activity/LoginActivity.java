@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
                 ("preferencias", Context.MODE_PRIVATE);
         String idConductor = pref.getString("idUsuario", "");
         String clave = pref.getString("claveUsuario","");
+        String recordar = pref.getString("recordar","");
         mUserView = findViewById(R.id.usuario);
         mPasswordView = findViewById(R.id.password);
         mEmailSignInButton = findViewById(R.id.login_button);
@@ -54,14 +55,12 @@ public class LoginActivity extends AppCompatActivity {
             textViewError.setVisibility(View.VISIBLE);
         }
 
-        mUserView.setText(idConductor);
-        mPasswordView.setText(clave);
-        if(!idConductor.equals("") && !clave.equals(""))
-        {
+        if(recordar.equals("1")) {
+            mUserView.setText(idConductor);
+            mPasswordView.setText(clave);
             conductor.recordarSession = true;
             checkBoxRec.setChecked(true);
         }
-
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

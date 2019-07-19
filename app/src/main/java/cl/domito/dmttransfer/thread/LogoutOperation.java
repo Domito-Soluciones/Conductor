@@ -31,9 +31,6 @@ public class LogoutOperation extends AsyncTask<String, Void, Void> {
     protected Void doInBackground(String... strings) {
         AsignacionServicioService.IS_INICIADO = false;
         conductor.activo = false;
-        SharedPreferences sP = context.get().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
-        ActivityUtils.eliminarSharedPreferences(sP,"idUsuario");
-        ActivityUtils.eliminarSharedPreferences(sP,"claveUsuario");
         Intent mainIntent = new Intent(context.get(), LoginActivity.class);
         context.get().startActivity(mainIntent);
         context.get().finish();
