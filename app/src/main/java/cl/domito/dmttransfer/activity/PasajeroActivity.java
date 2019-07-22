@@ -164,6 +164,10 @@ public class PasajeroActivity extends AppCompatActivity {
             ReciclerViewPasajeroAdapter mAdapter = new ReciclerViewPasajeroAdapter(this,array);
             recyclerView.setAdapter(mAdapter);
         }
+        else{
+            ReciclerViewPasajeroAdapter mAdapter = new ReciclerViewPasajeroAdapter(this,null);
+            recyclerView.setAdapter(mAdapter);
+        }
     }
 
     @Override

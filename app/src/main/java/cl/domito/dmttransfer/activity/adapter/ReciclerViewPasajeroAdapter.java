@@ -802,7 +802,7 @@
             }
             else if(!conductor.servicioActualRuta.contains("XX"))
             {
-                AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
+                /*AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
                 dialogo2.setTitle("Motivo Cancelación");
                 dialogo2.setMessage("Ingrese motivo de cancelación");
                 dialogo2.setCancelable(false);
@@ -824,7 +824,7 @@
                         }
                     }
                 });
-                dialogo2.show();
+                dialogo2.show();*/
             }
         }
 
