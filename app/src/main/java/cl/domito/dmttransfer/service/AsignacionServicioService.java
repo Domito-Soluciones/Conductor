@@ -27,6 +27,7 @@ import com.google.android.gms.location.LocationServices;
 
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.PasajeroActivity;
+import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.thread.CambiarUbicacionOperation;
 import cl.domito.dmttransfer.thread.InsertarNavegacionOperation;
@@ -132,10 +133,17 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
     }
 
     private void abrirActivity() {
-        Intent dialogIntent = new Intent(this, PasajeroActivity.class);
-        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
-        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        startActivity(dialogIntent);
+        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.P) {
+            String titulo  = "Llegaste a tu destino";
+            String contenido = "Pincha esta notificación para volver";
+            ActivityUtils.enviarNotificacionPermanente(1,this,titulo,contenido,R.drawable.furgoneta,PasajeroActivity.class);
+        }
+        else{
+            Intent dialogIntent = new Intent(this, PasajeroActivity.class);
+            dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
+            dialogIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(dialogIntent);
+        }
     }
 
     @Override
