@@ -1,31 +1,44 @@
 package cl.domito.dmttransfer.service;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+import android.os.Message;
+import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 
 import cl.domito.dmttransfer.R;
+import cl.domito.dmttransfer.activity.FinServicioActivity;
 import cl.domito.dmttransfer.activity.PasajeroActivity;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.thread.CambiarUbicacionOperation;
@@ -73,7 +86,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
             @Override
             public void run() {
                 while (conductor.activo) {
-                    try {
+                   try {
                         ObtenerServiciosOperation obtenerServiciosOperation = new ObtenerServiciosOperation();
                         conductor.servicios = obtenerServiciosOperation.execute().get();
                         obtenerNotificacion();
@@ -123,7 +136,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                             }
                         } catch (InterruptedException e) {
                         }
-                    }
+                   }
                 }
             }
         });
@@ -133,9 +146,10 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
 
     private void abrirActivity() {
         Intent dialogIntent = new Intent(this, PasajeroActivity.class);
-        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
         dialogIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(dialogIntent);
+        //sendMessage("alert","1");
     }
 
     @Override
@@ -241,6 +255,14 @@ public void onConnected(@Nullable Bundle bundle) {
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
         startForeground(2, notification);
+    }
+
+    private void sendMessage(String message, String value) {
+        Intent intent = new Intent("custom-event-name");
+        // You can also include some extra data.
+        intent.putExtra("message", message);
+        intent.putExtra("value", value);
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
     }
 }
 

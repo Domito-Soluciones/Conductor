@@ -2,6 +2,7 @@ package cl.domito.dmttransfer.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,6 +31,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +49,7 @@ import java.util.concurrent.ExecutionException;
 
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewProgramadoAdapter;
+import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.http.Utilidades;
 import cl.domito.dmttransfer.service.AsignacionServicioService;
@@ -81,6 +84,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             finish();
             return;
         }
+
         imageButton = findViewById(R.id.imageViewMenu);
         navigationView = findViewById(R.id.nav_view);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -147,8 +151,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     @Override
     protected void onPause() {
-        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(this);
-        bManager.unregisterReceiver(broadcastReceiver);
+        //LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(this);
+        //bManager.unregisterReceiver(broadcastReceiver);
         super.onPause();
     }
 
@@ -278,12 +282,32 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             String value = intent.getStringExtra("value");
             MainActivity.this.runOnUiThread(new Runnable() {
                 public void run() {
-                    Toast.makeText(MainActivity.this,value,Toast.LENGTH_SHORT).show();
+                   //showAlertDialog("test","test");
                 }
             });
             }
     };
 
+
+  /* private void showAlertDialog(String message, String title) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.Widget_AppCompat_ActionBar_Solid);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+
+                });
+        AlertDialog alert = builder.create();
+        alert.getWindow().setType(WindowManager.LayoutParams.TYPE_APPLICATION_PANEL);
+        if (!alert.isShowing()) {
+            alert.show();
+        }
+    }*/
     private void abrirVentanaUbicacion() {
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         this.startActivity(intent);
