@@ -2,7 +2,6 @@ package cl.domito.dmttransfer.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,6 +11,8 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -31,9 +32,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -49,10 +48,9 @@ import java.util.concurrent.ExecutionException;
 
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewProgramadoAdapter;
-import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.http.Utilidades;
-import cl.domito.dmttransfer.service.AsignacionServicioService;
+import cl.domito.dmttransfer.service.BurbujaService;
 import cl.domito.dmttransfer.thread.CambiarEstadoOperation;
 import cl.domito.dmttransfer.thread.DatosConductorOperation;
 import cl.domito.dmttransfer.thread.LogoutOperation;
@@ -72,6 +70,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private RecyclerView.LayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Conductor conductor;
+
+    private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +116,34 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         navigationView.setItemIconTintList(null);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
 
+            //If the draw over permission is not available open the settings screen
+            //to grant the permission.
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
+        }
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CODE_DRAW_OVER_OTHER_APP_PERMISSION) {
+
+            //Check if the permission is granted or not.
+            if (resultCode == RESULT_OK) {
+
+            } else { //Permission is not available
+                Toast.makeText(this,
+                        "Draw over other app permission not available. Closing the application",
+                        Toast.LENGTH_SHORT).show();
+
+                finish();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override

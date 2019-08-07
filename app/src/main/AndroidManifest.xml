@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT"  ></uses-permission>
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
 
     <application
         android:allowBackup="true"
@@ -18,27 +18,27 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light">
         <activity
-            android:name="cl.domito.dmttransfer.activity.HistoricoDetalleActivity"
+            android:name=".activity.HistoricoDetalleActivity"
             android:label="@string/title_activity_historico_detalleactivity"
-            android:theme="@style/NoActionBar"></activity>
+            android:theme="@style/NoActionBar" />
         <activity
-            android:name="cl.domito.dmttransfer.activity.PasajeroActivity"
+            android:name=".activity.PasajeroActivity"
             android:label="@string/title_activity_pasajero"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name="cl.domito.dmttransfer.activity.FinServicioActivity"
+            android:name=".activity.FinServicioActivity"
             android:label="@string/title_activity_fin_servicio"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name="cl.domito.dmttransfer.activity.ProduccionActivity"
+            android:name=".activity.ProduccionActivity"
             android:label="@string/title_activity_produccion"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name="cl.domito.dmttransfer.activity.ServicioDetalleActivity"
+            android:name=".activity.ServicioDetalleActivity"
             android:label="@string/title_activity_servicio_detalle"
             android:theme="@style/NoActionBar" />
         <activity
-            android:name="cl.domito.dmttransfer.activity.HistoricoActivity"
+            android:name=".activity.HistoricoActivity"
             android:label="@string/title_activity_historico"
             android:theme="@style/NoActionBar" />
 
@@ -46,7 +46,7 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDzk5KMW7MRXU2HUqXUSyCgGlCwib1nTu8" />
 
-        <activity android:name="cl.domito.dmttransfer.activity.SplashScreenActivity">
+        <activity android:name=".activity.SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -54,23 +54,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="cl.domito.dmttransfer.activity.MainActivity"
+            android:name=".activity.MainActivity"
             android:label=""
             android:theme="@style/NoActionBar" />
         <activity
-            android:name="cl.domito.dmttransfer.activity.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:label="" />
 
         <service
-            android:name="cl.domito.dmttransfer.service.AsignacionServicioService"
+            android:name=".service.AsignacionServicioService"
             android:enabled="true" />
 
         <activity
-            android:name="cl.domito.dmttransfer.activity.ConfiguracionActivity"
+            android:name=".activity.ConfiguracionActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <receiver
-            android:name="cl.domito.dmttransfer.service.RestartBroadcastReceived"
+            android:name=".service.RestartBroadcastReceived"
             android:enabled="true"
             android:exported="true"
             android:label="RestartBroadcastReceived" />
@@ -78,7 +78,13 @@
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
+        <service
+            android:name="cl.domito.dmttransfer.service.BurbujaService"
+            android:enabled="true"
+            android:exported="false"/>
 
     </application>
+
+
 
 </manifest>

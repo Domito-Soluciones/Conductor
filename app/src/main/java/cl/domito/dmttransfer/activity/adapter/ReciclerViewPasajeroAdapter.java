@@ -34,9 +34,11 @@
     import java.util.List;
 
     import cl.domito.dmttransfer.R;
+    import cl.domito.dmttransfer.activity.MainActivity;
     import cl.domito.dmttransfer.activity.PasajeroActivity;
     import cl.domito.dmttransfer.activity.utils.ActivityUtils;
     import cl.domito.dmttransfer.dominio.Conductor;
+    import cl.domito.dmttransfer.service.BurbujaService;
     import cl.domito.dmttransfer.thread.CambiarEstadoServicioOperation;
     import cl.domito.dmttransfer.thread.CancelarRutaPasajeroOperation;
     import cl.domito.dmttransfer.thread.FinalizarRutaPasajeroOperation;
@@ -675,6 +677,7 @@
         }
 
         private void navegar(String destino) {
+            activity.startService(new Intent(activity, BurbujaService.class));
             conductor.navegando = true;
             try {
                 Geocoder geocoder = new Geocoder(activity);

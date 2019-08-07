@@ -108,7 +108,7 @@ public class Utilidades {
                 @Override
                 public void run() {
                     if(ioe.toString().contains("timed out")) {
-                        Toast.makeText(activity, "Tiempo de espera agotado, favor reintentar", Toast.LENGTH_SHORT).show();;
+                        Toast.makeText(activity, "Ocurrio un problema, favor reintentar", Toast.LENGTH_SHORT).show();;
                     }
                 }
             });
@@ -118,7 +118,7 @@ public class Utilidades {
                 @Override
                 public void run() {
                     if(e.toString().contains("timed out")) {
-                        Toast.makeText(activity, "Tiempo de espera agotado, favor reintentar", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, "Ocurrio un problema, favor reintentar", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
@@ -188,7 +188,7 @@ public class Utilidades {
                 @Override
                 public void run() {
                     if(ioe.toString().contains("timed out")) {
-                        Toast.makeText(activity, "Tiempo de espera agotado, favor reintentar", Toast.LENGTH_SHORT).show();;
+                        Toast.makeText(activity, "Ocurrio un problema, favor reintentar", Toast.LENGTH_SHORT).show();;
                     }
                 }
             });
@@ -198,7 +198,7 @@ public class Utilidades {
                 @Override
                 public void run() {
                     if(e.toString().contains("timed out")) {
-                        Toast.makeText(activity, "Tiempo de espera agotado, favor reintentar", Toast.LENGTH_SHORT).show();;
+                        Toast.makeText(activity, "Ocurrio un problema, favor reintentar", Toast.LENGTH_SHORT).show();;
                     }
                 }
             });
