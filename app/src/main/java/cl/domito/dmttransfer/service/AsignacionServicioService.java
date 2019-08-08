@@ -147,9 +147,9 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
 
     private void abrirActivity() {
         if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.P) {
-            String titulo  = "Llegaste a tu destino";
-            String contenido = "Pincha esta notificación para volver";
-            ActivityUtils.enviarNotificacionPermanente(1,this,titulo,contenido,R.drawable.furgoneta,PasajeroActivity.class);
+            //String titulo  = "Llegaste a tu destino";
+            //String contenido = "Pincha esta notificación para volver";
+            //ActivityUtils.enviarNotificacionPermanente(1,this,titulo,contenido,R.drawable.furgoneta,PasajeroActivity.class);
         }
         else{
             Intent dialogIntent = new Intent(this, PasajeroActivity.class);
