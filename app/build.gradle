@@ -7,8 +7,8 @@ android {
         applicationId "cl.domito.dmttransfer"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 11
-        versionName "2.1"
+        versionCode 15
+        versionName "2.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }

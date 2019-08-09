@@ -122,7 +122,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             //to grant the permission.
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
-            startActivityForResult(intent, CODE_DRAW_OVER_OTHER_APP_PERMISSION);
+            intent.setFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT |
+                    Intent.FLAG_ACTIVITY_NEW_TASK |
+                    Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            startActivity(intent);
         }
 
     }

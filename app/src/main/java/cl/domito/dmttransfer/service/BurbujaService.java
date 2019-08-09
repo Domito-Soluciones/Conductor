@@ -3,7 +3,9 @@ package cl.domito.dmttransfer.service;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.IBinder;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -13,13 +15,15 @@ import android.widget.ImageView;
 
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.PasajeroActivity;
+import cl.domito.dmttransfer.dominio.Conductor;
 
 public class BurbujaService extends Service {
     private WindowManager mWindowManager;
     private View mChatHeadView;
-
+    Conductor conductor;
 
     public BurbujaService() {
+        conductor = Conductor.getInstance();
     }
 
 
@@ -57,11 +61,14 @@ public class BurbujaService extends Service {
 
         //Specify the chat head position
 //Initially view will be added to top-left corner
-        params.gravity = Gravity.BOTTOM | Gravity.RIGHT;
+        params.gravity = Gravity.TOP | Gravity.RIGHT;
         params.x = 20;
         params.y = 100;
 
         //Add the view to the window
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) {
+            return;
+        }
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
         mWindowManager.addView(mChatHeadView, params);
 
@@ -76,12 +83,24 @@ public class BurbujaService extends Service {
                 dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
                 dialogIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(dialogIntent);
+                conductor.locationDestino = null;
+                if(conductor.servicioActualRuta.contains("RG"))
+                {
+                    conductor.pasajeroRecogido = true;
+                }
+                else if(conductor.servicioActualRuta.contains("ZP"))
+                {
+                    conductor.pasajeroRepartido = true;
+                }
+                else
+                {
+                    conductor.pasajeroRecogido = true;
+                }
             }
         });
 
 //Drag and move chat head using user's touch action.
-     /*   final ImageView chatHeadImage = (ImageView) mChatHeadView.findViewById(R.id.imagenLogo);
-        chatHeadImage.setOnTouchListener(new View.OnTouchListener() {
+       /* burbuja.setOnTouchListener(new View.OnTouchListener() {
             private int lastAction;
             private int initialX;
             private int initialY;
