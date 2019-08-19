@@ -1,6 +1,7 @@
 package cl.domito.dmttransfer.activity.adapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -18,11 +19,13 @@ import android.widget.TextView;
 
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.HistoricoDetalleActivity;
+import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 
 public class ReciclerViewHistorialAdapter extends RecyclerView.Adapter<ReciclerViewHistorialAdapter.MyViewHolder> {
 
     Activity activity;
     private String[] mDataset;
+    private AlertDialog dialog;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -44,6 +47,7 @@ public class ReciclerViewHistorialAdapter extends RecyclerView.Adapter<ReciclerV
     public ReciclerViewHistorialAdapter(Activity activity, String[] myDataset) {
         this.activity = activity;
         mDataset = myDataset;
+        dialog = ActivityUtils.setProgressDialog(activity);
     }
 
 

@@ -79,18 +79,18 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
         }
         for(int i = 0; i < jsonArray.length(); i++)
         {
-            try {
-                JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-                String servicioId = jsonObject.getString("servicio_id");
-                String servicioFecha = jsonObject.getString("servicio_fecha");
-                String servicioHora = jsonObject.getString("servicio_hora");
-                String servicioTarifa = jsonObject.getString("servicio_tarifa1");
-                total += Integer.parseInt(servicioTarifa);
-                lista.add( servicioFecha + "%"+ servicioHora + "%" + servicioTarifa + "%" + servicioId);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+            String servicioId = jsonObject.getString("servicio_id");
+            String servicioFecha = jsonObject.getString("servicio_fecha");
+            String servicioHora = jsonObject.getString("servicio_hora");
+            String servicioTarifa = jsonObject.getString("servicio_tarifa1");
+            total += Integer.parseInt(servicioTarifa);
+            lista.add( servicioFecha + "%"+ servicioHora + "%" + servicioTarifa + "%" + servicioId);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+    }
 
         if(lista.size() > 0 ) {
             String[] array = new String[lista.size()];
