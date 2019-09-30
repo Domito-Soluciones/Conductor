@@ -41,6 +41,7 @@
     import cl.domito.dmttransfer.service.BurbujaService;
     import cl.domito.dmttransfer.thread.CambiarEstadoServicioOperation;
     import cl.domito.dmttransfer.thread.CancelarRutaPasajeroOperation;
+    import cl.domito.dmttransfer.thread.EnviarLogOperation;
     import cl.domito.dmttransfer.thread.FinalizarRutaPasajeroOperation;
     import cl.domito.dmttransfer.thread.FinalizarRutaPasajerosOperation;
     import cl.domito.dmttransfer.thread.IniciarServicioOperation;
@@ -707,10 +708,14 @@
                 } catch (ActivityNotFoundException ex) {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.waze"));
                     activity.startActivity(intent);
+                    EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                    enviarLogOperation.execute(conductor.id,ex.getMessage(),ex.getClass().getName(),ex.getStackTrace()[0].getLineNumber()+"");
                 }
             } catch (Exception e)
             {
                 e.printStackTrace();
+                EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
             }
         }
 
@@ -725,6 +730,8 @@
             catch(Exception e)
             {
                 e.printStackTrace();
+                EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
             }
             if(conductor.servicio != null) {
                 try {
@@ -743,6 +750,8 @@
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
                 }
             }
             if(conductor.servicio != null) {
@@ -773,6 +782,8 @@
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                        EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                        enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
                     }
                 }
             }
@@ -789,6 +800,8 @@
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
                 }
             }
             if(lista.size() > 0 ) {

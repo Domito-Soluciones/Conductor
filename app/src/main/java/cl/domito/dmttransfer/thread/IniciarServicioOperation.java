@@ -65,6 +65,8 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
             catch (Exception e)
             {
                 e.printStackTrace();
+                EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
             }
         }
         if(conductor.servicio != null) {
@@ -95,6 +97,8 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
                 }
             }
         }
@@ -111,6 +115,8 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
             catch (Exception e)
             {
                 e.printStackTrace();
+                EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
             }
         }
         if(lista.size() > 0 ) {

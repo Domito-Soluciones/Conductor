@@ -15,6 +15,7 @@ import java.util.List;
 
 import cl.domito.dmttransfer.activity.SplashScreenActivity;
 import cl.domito.dmttransfer.dominio.Conductor;
+import cl.domito.dmttransfer.thread.EnviarLogOperation;
 
 public class RequestConductor {
 
@@ -38,12 +39,15 @@ public class RequestConductor {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+        enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         try {
         }
         catch(Exception e)
         {
-            e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         return null;
     }
@@ -55,6 +59,8 @@ public class RequestConductor {
         catch(Exception e)
         {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         return RESPUESTA;
     }
@@ -64,7 +70,11 @@ public class RequestConductor {
         try {
             jsonObject = Utilidades.enviarPost(reqUrl, params);
         }
-        catch (Exception e){e.printStackTrace();}
+        catch (Exception e){
+            e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+        }
         return jsonObject;
     }
 
@@ -79,6 +89,8 @@ public class RequestConductor {
         catch(Exception e)
         {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
 
@@ -95,6 +107,8 @@ public class RequestConductor {
         catch(Exception e)
         {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         return jsonArray;
     }
@@ -112,6 +126,8 @@ public class RequestConductor {
         catch(Exception e)
         {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
 
@@ -126,6 +142,8 @@ public class RequestConductor {
         catch(Exception e)
         {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
 
@@ -137,6 +155,8 @@ public class RequestConductor {
         catch(Exception e)
         {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         return object;
     }
@@ -152,6 +172,8 @@ public class RequestConductor {
             jsonObject = Utilidades.enviarPost(url2,params2);
         } catch (IOException e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         return jsonObject;
     }
@@ -166,6 +188,8 @@ public class RequestConductor {
             jsonObject = Utilidades.enviarPost(url,params);
         } catch (IOException e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         return jsonObject;
     }
@@ -181,6 +205,8 @@ public class RequestConductor {
             jsonObject = Utilidades.enviarPost(url2,params);
         } catch (IOException e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         return jsonObject;
     }
@@ -195,6 +221,8 @@ public class RequestConductor {
             Utilidades.enviarPost(url,params);
         } catch (IOException e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
 
@@ -206,6 +234,8 @@ public class RequestConductor {
             params.add(new BasicNameValuePair("idPasajero",new String(conductor.pasajeroActual.getBytes(), "ISO-8859-1")) );
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         params.add(new BasicNameValuePair("observacion",observacion));
         params.add(new BasicNameValuePair("tipo",conductor.servicioActualRuta));
@@ -216,6 +246,8 @@ public class RequestConductor {
             Utilidades.enviarPost(url,params);
         } catch (IOException e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
 
@@ -230,6 +262,8 @@ public class RequestConductor {
         catch (Exception e)
         {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
 
@@ -242,7 +276,11 @@ public class RequestConductor {
             jsonArray = Utilidades.enviarPostArray(url, params);
         }
         catch(Exception e)
-        {e.printStackTrace();}
+        {
+            e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+        }
         return jsonArray;
     }
 
@@ -255,6 +293,8 @@ public class RequestConductor {
             Utilidades.enviarPost(url,params);
         } catch (IOException e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
 
@@ -268,6 +308,8 @@ public class RequestConductor {
             Utilidades.enviarPost(url,params);
         } catch (IOException e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
 
@@ -286,6 +328,8 @@ public class RequestConductor {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
 
@@ -298,6 +342,8 @@ public class RequestConductor {
             Utilidades.enviarPost(url, params);
         } catch (IOException e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
 
@@ -313,6 +359,23 @@ public class RequestConductor {
                 params.add(new BasicNameValuePair("lat", conductor.location.getLatitude() + ""));
                 params.add(new BasicNameValuePair("lon", conductor.location.getLongitude() + ""));
             }
+            Utilidades.enviarPost(url, params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+        }
+    }
+
+    public static void enviarLogError(String conductor,String error,String clase, String linea)
+    {
+        String url = Utilidades.URL_BASE_LOG + "LogApp.php";
+        try {
+            List<NameValuePair> params = new ArrayList();
+            params.add(new BasicNameValuePair("id",conductor));
+            params.add(new BasicNameValuePair("error",error));
+            params.add(new BasicNameValuePair("clase", clase));
+            params.add(new BasicNameValuePair("linea", linea));
             Utilidades.enviarPost(url, params);
         } catch (Exception e) {
             e.printStackTrace();

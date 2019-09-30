@@ -17,6 +17,7 @@ import cl.domito.dmttransfer.activity.HistoricoActivity;
 import cl.domito.dmttransfer.activity.HistoricoDetalleActivity;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewDetalleAdapter;
 import cl.domito.dmttransfer.activity.utils.ActivityUtils;
+import cl.domito.dmttransfer.dominio.Conductor;
 
 public class ObtenerHistorialDetalleOperation extends AsyncTask<String, Void, Void> {
 
@@ -82,6 +83,8 @@ public class ObtenerHistorialDetalleOperation extends AsyncTask<String, Void, Vo
 
         } catch (Exception e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         return null;
     }

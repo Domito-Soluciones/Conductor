@@ -82,6 +82,8 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
                 lista.add( servicioId + "%" + servicioFecha + "%"+ servicioHora + "%" + servicioCliente + "%" + servicioEstado);
             } catch (Exception e) {
                 e.printStackTrace();
+                EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
             }
         }
 

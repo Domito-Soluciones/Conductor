@@ -27,6 +27,7 @@ import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.thread.CambiarEstadoServicioOperation;
 import cl.domito.dmttransfer.thread.DesAsignarServicioOperation;
+import cl.domito.dmttransfer.thread.EnviarLogOperation;
 import cl.domito.dmttransfer.thread.RealizarServicioOperation;
 
 public class ServicioDetalleActivity extends AppCompatActivity {
@@ -138,6 +139,8 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
             }
         }else if (estado.equals("4")) {
             Intent mainIntent = new Intent(this, PasajeroActivity.class);
@@ -257,6 +260,8 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
             }
 
             if (estado.equals("1")) {
@@ -271,6 +276,8 @@ public class ServicioDetalleActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
 

@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.ServicioDetalleActivity;
 import cl.domito.dmttransfer.dominio.Conductor;
+import cl.domito.dmttransfer.thread.EnviarLogOperation;
 
 public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<ReciclerViewProgramadoAdapter.MyViewHolder> {
 
@@ -75,6 +76,8 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
+                            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
                         }
                     }
                     conductor.servicio = servicio;

@@ -86,6 +86,8 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
     }
     catch(Exception e){
         e.printStackTrace();
+        EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+        enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
     }
         return null;
     }

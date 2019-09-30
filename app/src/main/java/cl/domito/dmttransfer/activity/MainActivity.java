@@ -53,6 +53,7 @@ import cl.domito.dmttransfer.http.Utilidades;
 import cl.domito.dmttransfer.service.BurbujaService;
 import cl.domito.dmttransfer.thread.CambiarEstadoOperation;
 import cl.domito.dmttransfer.thread.DatosConductorOperation;
+import cl.domito.dmttransfer.thread.EnviarLogOperation;
 import cl.domito.dmttransfer.thread.LogoutOperation;
 import cl.domito.dmttransfer.thread.NotificationOperation;
 import cl.domito.dmttransfer.thread.ObtenerServiciosOperation;
@@ -371,8 +372,12 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             jsonArray = obtenerServiciosOperation.execute().get();
         } catch (ExecutionException e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         } catch (InterruptedException e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         ArrayList<String> lista = new ArrayList();
         String ant = "";
@@ -393,6 +398,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     ant = servicioId;
                 } catch (Exception e) {
                     e.printStackTrace();
+                    EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
                 }
             }
         }

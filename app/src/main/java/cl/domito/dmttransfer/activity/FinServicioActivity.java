@@ -12,6 +12,7 @@ import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.thread.AgregarObservacionOperation;
 import cl.domito.dmttransfer.thread.CambiarMovilOperation;
+import cl.domito.dmttransfer.thread.EnviarLogOperation;
 
 public class FinServicioActivity extends AppCompatActivity {
 
@@ -47,6 +48,8 @@ public class FinServicioActivity extends AppCompatActivity {
         catch(Exception e)
         {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
 
         imageViewAtras.setOnClickListener(new View.OnClickListener() {

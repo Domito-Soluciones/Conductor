@@ -46,6 +46,8 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
             }
         } catch (JSONException e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         return  null;
     }

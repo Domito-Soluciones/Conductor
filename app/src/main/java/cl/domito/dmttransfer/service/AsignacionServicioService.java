@@ -43,6 +43,7 @@ import cl.domito.dmttransfer.activity.PasajeroActivity;
 import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.thread.CambiarUbicacionOperation;
+import cl.domito.dmttransfer.thread.EnviarLogOperation;
 import cl.domito.dmttransfer.thread.InsertarNavegacionOperation;
 import cl.domito.dmttransfer.thread.NotificationOperation;
 import cl.domito.dmttransfer.thread.ObtenerServiciosOperation;
@@ -125,6 +126,8 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
 
                     } catch (Exception e) {
                         e.printStackTrace();
+                       EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                       enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
                     }
                     finally {
                         try {
@@ -136,6 +139,8 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                                 Thread.sleep(1000);
                             }
                         } catch (InterruptedException e) {
+                            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
                         }
                    }
                 }
@@ -166,6 +171,8 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
             Thread.sleep(2000);
         } catch (InterruptedException e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         if(conductor.estado != 0) {
             Intent broadcastIntent = new Intent(this, RestartBroadcastReceived.class);
@@ -212,7 +219,9 @@ private void getUbicacion() throws InterruptedException {
         }
         mGoogleApiClient.disconnect();
         } catch (Exception e) {
-        e.printStackTrace();
+            e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         }
 

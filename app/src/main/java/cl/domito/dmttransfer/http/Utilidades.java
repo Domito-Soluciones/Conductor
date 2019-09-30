@@ -32,6 +32,7 @@ import java.util.List;
 
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.dominio.Conductor;
+import cl.domito.dmttransfer.thread.EnviarLogOperation;
 
 public class Utilidades {
 
@@ -44,6 +45,7 @@ public class Utilidades {
     public static String URL_BASE_NOTIFICACION = URL_BASE + "notificacion/";
     public static String URL_BASE_SERVICIO = URL_BASE + "servicio/";
     public static String URL_BASE_LIQUIDACION = URL_BASE + "liquidacion/";
+    public static String URL_BASE_LOG = URL_BASE + "log/";
     public static SimpleDateFormat FORMAT = new SimpleDateFormat("dd-MM-yyyy");
     private static Conductor conductor = Conductor.getInstance();
 
@@ -101,6 +103,8 @@ public class Utilidades {
             }
             jsonObject = new JSONObject(result.toString());
         } catch (UnknownHostException e) {
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
 
         } catch (IOException ioe) {
             tipoError = 1;
@@ -112,6 +116,8 @@ public class Utilidades {
                     }
                 }
             });
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,ioe.getMessage(),ioe.getStackTrace()[0].getClassName(),ioe.getStackTrace()[0].getLineNumber()+"");
         } catch (Exception e) {
             tipoError = 1;
             activity.runOnUiThread(new Runnable() {
@@ -123,6 +129,8 @@ public class Utilidades {
                 }
             });
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         return jsonObject;
     }
@@ -181,7 +189,8 @@ public class Utilidades {
             jsonArray = new JSONArray(result.toString());
 
         } catch (UnknownHostException e) {
-
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         } catch (IOException ioe) {
             tipoError = 1;
             activity.runOnUiThread(new Runnable() {
@@ -192,6 +201,8 @@ public class Utilidades {
                     }
                 }
             });
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,ioe.getMessage(),ioe.getStackTrace()[0].getClassName(),ioe.getStackTrace()[0].getLineNumber()+"");
         } catch (Exception e) {
             tipoError = 1;
             activity.runOnUiThread(new Runnable() {
@@ -203,6 +214,8 @@ public class Utilidades {
                 }
             });
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
 
         return jsonArray;

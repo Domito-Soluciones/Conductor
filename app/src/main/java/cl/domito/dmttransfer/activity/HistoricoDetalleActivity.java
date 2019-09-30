@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewDetalleAdapter;
 import cl.domito.dmttransfer.dominio.Conductor;
+import cl.domito.dmttransfer.thread.EnviarLogOperation;
 import cl.domito.dmttransfer.thread.ObtenerServicioHistoricoOperation;
 
 public class HistoricoDetalleActivity extends AppCompatActivity {
@@ -107,6 +108,8 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
 

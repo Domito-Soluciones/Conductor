@@ -89,6 +89,8 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
             lista.add( servicioFecha + "%"+ servicioHora + "%" + servicioTarifa + "%" + servicioId);
         } catch (Exception e) {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
 

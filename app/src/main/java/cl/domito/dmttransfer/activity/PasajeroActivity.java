@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewPasajeroAdapter;
 import cl.domito.dmttransfer.dominio.Conductor;
+import cl.domito.dmttransfer.thread.EnviarLogOperation;
 import cl.domito.dmttransfer.thread.IniciarServicioOperation;
 import cl.domito.dmttransfer.thread.ObtenerServicioOperation;
 
@@ -92,6 +93,8 @@ public class PasajeroActivity extends AppCompatActivity {
         catch(Exception e)
         {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         if(conductor.servicio != null) {
             try {
@@ -110,6 +113,8 @@ public class PasajeroActivity extends AppCompatActivity {
             catch (Exception e)
             {
                 e.printStackTrace();
+                EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
             }
         }
         if(conductor.servicio != null) {
@@ -140,6 +145,8 @@ public class PasajeroActivity extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
                 }
             }
         }
@@ -156,6 +163,8 @@ public class PasajeroActivity extends AppCompatActivity {
             catch (Exception e)
             {
                 e.printStackTrace();
+                EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
             }
         }
         if(lista.size() > 0 ) {

@@ -30,7 +30,11 @@ public class ObtenerServicioOperation extends AsyncTask<String, Void, JSONArray>
             jsonArray = RequestConductor.getServicios(url, params);
         }
         catch(Exception e)
-        {e.printStackTrace();}
+        {
+            e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+        }
         return jsonArray;
     }
 }

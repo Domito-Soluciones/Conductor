@@ -42,6 +42,7 @@ import cl.domito.dmttransfer.activity.FinServicioActivity;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewPasajeroAdapter;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.thread.CambiarEstadoServicioOperation;
+import cl.domito.dmttransfer.thread.EnviarLogOperation;
 import cl.domito.dmttransfer.thread.FinalizarRutaPasajerosOperation;
 import cl.domito.dmttransfer.thread.ObtenerServicioOperation;
 
@@ -104,7 +105,8 @@ public class ActivityUtils {
         }
         catch(Exception e)
         {
-
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
 
@@ -142,7 +144,8 @@ public class ActivityUtils {
         }
         catch(Exception e)
         {
-
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
 
@@ -238,6 +241,8 @@ public class ActivityUtils {
         catch(Exception e)
         {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
         if(conductor.servicio != null && conductor.servicio.length() > 0) {
             try {
@@ -256,6 +261,8 @@ public class ActivityUtils {
             catch (Exception e)
             {
                 e.printStackTrace();
+                EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
             }
         }
         if(conductor.servicio != null && conductor.servicio.length() > 0) {
@@ -285,6 +292,8 @@ public class ActivityUtils {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
                 }
             }
         }
@@ -301,6 +310,8 @@ public class ActivityUtils {
             catch (Exception e)
             {
                 e.printStackTrace();
+                EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
             }
         }
         if(lista.size() > 0 ) {
@@ -367,6 +378,10 @@ public class ActivityUtils {
         catch (Exception e)
         {
             e.printStackTrace();
+            EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
         }
     }
+
+
 }
