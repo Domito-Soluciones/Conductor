@@ -75,30 +75,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </android.support.constraint.ConstraintLayout>
 
-        <Button
-            android:id="@+id/buttonCancelar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/estilo_boton"
-            android:text="Rechazar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/buttonFinalizar"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <Button
-            android:id="@+id/buttonFinalizar"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/estilo_boton"
-            android:text="Aceptar"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/buttonCancelar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
         <TextView
             android:id="@+id/textViewIdServicio"
             android:layout_width="0dp"
@@ -347,12 +323,12 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="100dp"
             android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@+id/buttonFinalizar"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/view" />
 
         <TextView
             android:id="@+id/textViewObservacion"
@@ -433,6 +409,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.21" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="66dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="83dp"
+            android:layout_marginBottom="7dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewDetalle"
+            app:srcCompat="@drawable/okverde" />
+
+        <ImageButton
+            android:id="@+id/imageButton2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="83dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="87dp"
+            android:layout_marginBottom="7dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageButton"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewDetalle"
+            app:srcCompat="@drawable/cerrar" />
 
     </android.support.constraint.ConstraintLayout>
 

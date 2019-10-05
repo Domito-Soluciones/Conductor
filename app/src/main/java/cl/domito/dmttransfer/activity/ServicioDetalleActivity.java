@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,8 +38,8 @@ public class ServicioDetalleActivity extends AppCompatActivity {
     private RecyclerView recyclerViewDetalle;
     private RecyclerView.Adapter mAdapterDetalle;
     private RecyclerView.LayoutManager layoutManagerDetalle;
-    private Button buttonConfirmar;
-    private Button buttonCancelar;
+    private ImageButton buttonConfirmar;
+    private ImageButton buttonCancelar;
     private TextView textviewServicioValor;
     private TextView textviewFechaValor;
     private TextView textViewHoraValor;
@@ -60,8 +62,8 @@ public class ServicioDetalleActivity extends AppCompatActivity {
         layoutManagerDetalle = new LinearLayoutManager(this);
         recyclerViewDetalle.setLayoutManager(layoutManagerDetalle);
         imageViewAtrasInt = findViewById(R.id.imageViewAtrasInt);
-        buttonConfirmar = findViewById(R.id.buttonFinalizar);
-        buttonCancelar = findViewById(R.id.buttonCancelar);
+        buttonConfirmar = findViewById(R.id.imageButton);
+        buttonCancelar = findViewById(R.id.imageButton2);
         textviewServicioValor = findViewById(R.id.textViewIdServicioValor);
         textviewFechaValor = findViewById(R.id.textViewFechaValor);
         textViewHoraValor = findViewById(R.id.textViewHoraValor);
@@ -256,7 +258,6 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     array = lista.toArray(array);
                     ReciclerViewDetalleAdapter mAdapter = new ReciclerViewDetalleAdapter(this, array);
                     recyclerViewDetalle.setAdapter(mAdapter);
-                    //conductor.setOcupado(true);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -265,12 +266,11 @@ public class ServicioDetalleActivity extends AppCompatActivity {
             }
 
             if (estado.equals("1")) {
-                buttonConfirmar.setText("Aceptar");
+                buttonConfirmar.setImageResource(R.drawable.oknaranjo);
             } else if (estado.equals("3")) {
-                buttonConfirmar.setText("Iniciar");
+                buttonConfirmar.setImageResource(R.drawable.okverde);
             } else if (estado.equals("4")) {
-                buttonConfirmar.setText("Continuar");
-                buttonConfirmar.setWidth(0);
+                buttonConfirmar.setImageResource(R.drawable.okazul);
                 buttonCancelar.setVisibility(View.GONE);
             }
 

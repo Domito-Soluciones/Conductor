@@ -110,17 +110,17 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
         Resources resources = myViewHolder.textView.getContext().getResources();
         if(estado.equals("1"))
         {
-            imagen = resources.getDrawable(R.drawable.confirmar);
+            imagen = resources.getDrawable(R.drawable.oknaranjo);
             color = resources.getColor(R.color.naranjo);
         }
         else if (estado.equals("3"))
         {
-            imagen = resources.getDrawable(R.drawable.arriba);
+            imagen = resources.getDrawable(R.drawable.okverde);
             color = resources.getColor(R.color.verde);
         }
         else if (estado.equals("4"))
         {
-            imagen = resources.getDrawable(R.drawable.furgon);
+            imagen = resources.getDrawable(R.drawable.okazul);
             color = resources.getColor(R.color.azul);
         }
         Bundle bundle = activity.getIntent().getExtras();
@@ -133,17 +133,17 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
         if(intentId != null && intentId.equals(data[0]))
         {
             if(tipo.equals("0")) {
-                imagen = resources.getDrawable(R.drawable.arriba);
+                imagen = resources.getDrawable(R.drawable.okverde);
                 color = resources.getColor(R.color.verde);
             }
             else if (estado.equals("3"))
             {
-                imagen = resources.getDrawable(R.drawable.confirmar);
+                imagen = resources.getDrawable(R.drawable.oknaranjo);
                 color = resources.getColor(R.color.naranjo);
             }
             else if (estado.equals("4"))
             {
-                imagen = resources.getDrawable(R.drawable.furgon);
+                imagen = resources.getDrawable(R.drawable.okazul);
                 color = resources.getColor(R.color.azul);
             }
         }
