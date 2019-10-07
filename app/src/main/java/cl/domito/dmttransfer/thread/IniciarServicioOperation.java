@@ -137,7 +137,9 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dialog.show();
+                if(!context.get().isDestroyed()) {
+                    dialog.show();
+                }
             }
         });
     }
@@ -148,6 +150,8 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
             CambiarMovilOperation cambiarMovilOperation = new CambiarMovilOperation();
             cambiarMovilOperation.execute(aString);
         }
-        dialog.dismiss();
+        if(!context.get().isDestroyed()) {
+            dialog.dismiss();
+        }
     }
 }

@@ -56,7 +56,9 @@ public class FinalizarRutaPasajeroOperation extends AsyncTask<String, Void, Void
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dialog.show();
+                if(!context.get().isDestroyed()) {
+                    dialog.show();
+                }
             }
         });
     }
@@ -73,7 +75,9 @@ public class FinalizarRutaPasajeroOperation extends AsyncTask<String, Void, Void
                 else {
                     ActivityUtils.recargarPasajeros(context.get());
                 }
-                dialog.dismiss();
+                if(!context.get().isDestroyed()) {
+                    dialog.dismiss();
+                }
                 if(conductor.servicioActualRuta.contains("RG"))
                 {
                     Toast.makeText(context.get(), "Pasajero Recogido", Toast.LENGTH_SHORT).show();

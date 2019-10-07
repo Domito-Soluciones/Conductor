@@ -94,7 +94,9 @@ public class ObtenerHistorialDetalleOperation extends AsyncTask<String, Void, Vo
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dialog.show();
+                if(!context.get().isDestroyed()) {
+                    dialog.show();
+                }
             }
         });
         super.onPreExecute();
@@ -105,7 +107,9 @@ public class ObtenerHistorialDetalleOperation extends AsyncTask<String, Void, Vo
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dialog.dismiss();
+                if(!context.get().isDestroyed()) {
+                    dialog.dismiss();
+                }
             }
         });
     }

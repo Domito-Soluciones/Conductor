@@ -44,7 +44,9 @@ public class LogoutOperation extends AsyncTask<String, Void, Void> {
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dialog.dismiss();
+                if(!context.get().isDestroyed()) {
+                    dialog.dismiss();
+                }
             }
         });
         Intent i = new Intent(context.get(), AsignacionServicioService.class);

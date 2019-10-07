@@ -56,7 +56,9 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dialog.show();
+                if(!context.get().isDestroyed()) {
+                    dialog.show();
+                }
             }
         });
         super.onPreExecute();
@@ -113,7 +115,9 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dialog.dismiss();
+                if(!context.get().isDestroyed()) {
+                    dialog.dismiss();
+                }
             }
         });
     }

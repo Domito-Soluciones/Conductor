@@ -52,6 +52,12 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        System.out.println();
+        super.onResume();
+    }
+
+    @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 

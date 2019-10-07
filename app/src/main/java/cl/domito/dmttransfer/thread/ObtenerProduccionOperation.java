@@ -62,7 +62,9 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dialog.show();
+                if(!context.get().isDestroyed()) {
+                    dialog.show();
+                }
             }
         });
         super.onPreExecute();
@@ -110,7 +112,9 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
             context.get().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    dialog.dismiss();
+                    if(!context.get().isDestroyed()) {
+                        dialog.dismiss();
+                    }
                     Toast.makeText(context.get(), "No hay producción registrada", Toast.LENGTH_LONG).show();
                 }
             });
@@ -121,7 +125,11 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dialog.dismiss();
+                if(!context.get().isDestroyed()) {
+                    if(!context.get().isDestroyed()) {
+                        dialog.dismiss();
+                    }
+                }
             }
         });
     }

@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         conductor = Conductor.getInstance();
-        if(!conductor.activo){
+        if(conductor.id == null){
             Intent i = new Intent(this,LoginActivity.class);
             startActivity(i);
             finish();

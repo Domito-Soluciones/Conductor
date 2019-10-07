@@ -251,7 +251,9 @@
                                             new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.dismiss();
+                                                    if(!activity.isDestroyed()) {
+                                                        dialog.dismiss();
+                                                    }
                                                     if(which != 2) {
                                                         CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation(activity);
                                                         cancelarRutaPasajeroOperation.execute(items[which].toString());
@@ -442,7 +444,9 @@
                                             new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.dismiss();
+                                                    if(!activity.isDestroyed()) {
+                                                        dialog.dismiss();
+                                                    }
                                                     if(which != 2)
                                                     {
                                                         CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation(activity);
@@ -468,8 +472,11 @@
                                                                 }
                                                             }
                                                         });
-                                                        dialogo2.show();
-                                                        dialog.dismiss();
+
+                                                        if(!activity.isDestroyed()) {
+                                                            dialogo2.show();
+                                                            dialog.dismiss();
+                                                        }
                                                     }
                                                 }
                                             });
@@ -619,7 +626,9 @@
                                             new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    dialog.dismiss();
+                                                    if(!activity.isDestroyed()) {
+                                                        dialog.dismiss();
+                                                    }
                                                     if(which != 2) {
                                                         CancelarRutaPasajeroOperation cancelarRutaPasajeroOperation = new CancelarRutaPasajeroOperation(activity);
                                                         cancelarRutaPasajeroOperation.execute(items[which].toString());
@@ -644,8 +653,10 @@
                                                                 }
                                                             }
                                                         });
-                                                        dialogo2.show();
-                                                        dialog.dismiss();
+                                                        if(!activity.isDestroyed()) {
+                                                            dialogo2.show();
+                                                            dialog.dismiss();
+                                                        }
                                                     }
                                                 }
                                             });

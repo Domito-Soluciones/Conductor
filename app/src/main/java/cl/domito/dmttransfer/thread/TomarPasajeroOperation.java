@@ -55,7 +55,9 @@ public class TomarPasajeroOperation extends AsyncTask<String, Void, Void> {
             context.get().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    dialog.show();
+                    if(!context.get().isDestroyed()) {
+                        dialog.show();
+                    }
                 }
             });
         }
@@ -76,8 +78,9 @@ public class TomarPasajeroOperation extends AsyncTask<String, Void, Void> {
                     } else {
                         Toast.makeText(context.get(), "Pasajero Recogido", Toast.LENGTH_SHORT).show();
                     }
-
-                    dialog.dismiss();
+                    if(!context.get().isDestroyed()) {
+                        dialog.dismiss();
+                    }
                 }
             });
         }

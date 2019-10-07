@@ -33,14 +33,18 @@ public class AgregarObservacionOperation extends AsyncTask<String, Void, Void> {
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dialog.show();
+                if(!context.get().isDestroyed()) {
+                    dialog.show();
+                }
             }
         });
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        dialog.dismiss();
+        if(!context.get().isDestroyed()) {
+            dialog.dismiss();
+        }
     }
 
 }

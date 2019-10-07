@@ -37,7 +37,9 @@ public class RealizarServicioOperation extends AsyncTask<Void, Void, String> {
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                dialog.show();
+                if(!context.get().isDestroyed()) {
+                    dialog.show();
+                }
             }
         });
     }

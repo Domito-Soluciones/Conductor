@@ -56,6 +56,9 @@ public class NotificationOperation extends AsyncTask<Void, Void, String[]> {
                         ActivityUtils.enviarNotificacion(Integer.parseInt(id),context, "", jsonObject.getString("notificacion_texto"), R.drawable.furgoneta,MainActivity.class);
                     }
                 }
+                else if(tipo.equals("2")){
+                    ActivityUtils.enviarNotificacion(Integer.parseInt(id),context, "", jsonObject.getString("notificacion_texto"), R.drawable.furgoneta,MainActivity.class);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
                 EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
@@ -69,7 +72,7 @@ public class NotificationOperation extends AsyncTask<Void, Void, String[]> {
     protected void onPostExecute(String[] aString) {
         if (aString != null) {
             if (aString[0] != null && aString[1] != null) {
-                if (aString[1].equals("1")) {
+                if (aString[1].equals("1") || aString[1].equals("2")) {
                     CambiarEstadoNotificacionOperation cambiarEstadoNotificacionOperation = new CambiarEstadoNotificacionOperation();
                     cambiarEstadoNotificacionOperation.execute(aString[0]);
                 }
