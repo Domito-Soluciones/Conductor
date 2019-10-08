@@ -1,6 +1,7 @@
 package cl.domito.dmttransfer.activity.adapter;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
@@ -22,6 +23,7 @@ import org.json.JSONObject;
 
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.ServicioDetalleActivity;
+import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.thread.EnviarLogOperation;
 
@@ -29,6 +31,7 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
 
     Activity activity;
     private String[] mDataset;
+    private AlertDialog dialog;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -50,6 +53,7 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
     public ReciclerViewProgramadoAdapter(Activity activity, String[] myDataset) {
         this.activity = activity;
         mDataset = myDataset;
+        dialog = ActivityUtils.setProgressDialog(activity);
     }
 
 
@@ -62,6 +66,7 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
         vh.relativeLayout3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.show();
                 JSONArray servicio = new JSONArray();
                 Conductor conductor = Conductor.getInstance();
                 JSONArray servicios = conductor.servicios;
@@ -86,6 +91,7 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
                     intent.putExtra("fecha", vh.textViewFecha.getText().toString());
                     intent.putExtra("id", vh.textView.getText().toString());
                     intent.putExtra("activity",activity.getComponentName().getClassName());
+                    dialog.dismiss();
                     activity.startActivity(intent);
                     //activity.finish();
                 }

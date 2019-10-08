@@ -823,6 +823,9 @@
                     @Override
                     public void run() {
                         RecyclerView recyclerView = activity.findViewById(R.id.recyclerViewPasajero);
+                        recyclerView.setItemViewCacheSize(20);
+                        recyclerView.setDrawingCacheEnabled(true);
+                        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
                         recyclerView.setAdapter(mAdapter);
                     }
                 });

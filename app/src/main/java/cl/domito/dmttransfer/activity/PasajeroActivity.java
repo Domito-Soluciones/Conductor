@@ -33,6 +33,9 @@ public class PasajeroActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pasajero);
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         recyclerView = this.findViewById(R.id.recyclerViewPasajero);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         imageView = this.findViewById(R.id.imageView3);
 
         conductor = Conductor.getInstance();

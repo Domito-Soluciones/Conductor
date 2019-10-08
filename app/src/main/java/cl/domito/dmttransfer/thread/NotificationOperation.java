@@ -36,6 +36,22 @@ public class NotificationOperation extends AsyncTask<Void, Void, String[]> {
         {
             return null;
         }
+        int aux = 0;
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                if (jsonObject.getString("notificacion_tipo").equals("0")) {
+                    aux++;
+                }
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        if(aux > 20){
+            ActivityUtils.enviarNotificacion(99999999,context, "", "Tiene mas de 20 notificaciones de servicio, favor gestionar", R.drawable.furgoneta,MainActivity.class);
+            return null;
+        }
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);

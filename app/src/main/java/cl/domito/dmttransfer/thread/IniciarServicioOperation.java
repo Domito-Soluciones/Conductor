@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import org.json.JSONObject;
 
@@ -42,6 +43,9 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
             @Override
             public void run() {
                 recyclerView.setHasFixedSize(true);
+                recyclerView.setItemViewCacheSize(20);
+                recyclerView.setDrawingCacheEnabled(true);
+                recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
                 layoutManager[0] = new LinearLayoutManager(context.get());
                 recyclerView.setLayoutManager(layoutManager[0]);
             }

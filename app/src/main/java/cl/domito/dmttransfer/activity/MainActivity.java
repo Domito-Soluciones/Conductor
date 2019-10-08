@@ -48,6 +48,7 @@ import java.util.concurrent.ExecutionException;
 
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewProgramadoAdapter;
+import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.http.Utilidades;
 import cl.domito.dmttransfer.service.BurbujaService;
@@ -71,6 +72,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private RecyclerView.LayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Conductor conductor;
+    private AlertDialog dialog;
+
 
     private static final int CODE_DRAW_OVER_OTHER_APP_PERMISSION = 2084;
 
@@ -85,11 +88,13 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
             finish();
             return;
         }
-
         imageButton = findViewById(R.id.imageViewMenu);
         navigationView = findViewById(R.id.nav_view);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         swipeRefreshLayout = findViewById(R.id.swiperefresh);

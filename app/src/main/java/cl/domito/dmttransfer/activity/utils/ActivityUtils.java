@@ -322,6 +322,9 @@ public class ActivityUtils {
                 @Override
                 public void run() {
                     RecyclerView recyclerView = activity.findViewById(R.id.recyclerViewPasajero);
+                    recyclerView.setItemViewCacheSize(20);
+                    recyclerView.setDrawingCacheEnabled(true);
+                    recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
                     recyclerView.setAdapter(mAdapter);
                 }
             });
@@ -358,6 +361,7 @@ public class ActivityUtils {
     {
         Conductor conductor = Conductor.getInstance();
         try {
+            activity.finish();
             JSONObject json = conductor.servicio.getJSONObject(0);
             Intent intent = new Intent(conductor.context, FinServicioActivity.class);
             Bundle bundle = new Bundle();

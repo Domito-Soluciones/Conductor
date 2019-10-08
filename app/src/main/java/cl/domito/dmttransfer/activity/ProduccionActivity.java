@@ -30,6 +30,9 @@ public class ProduccionActivity extends AppCompatActivity {
         imageViewAtras = findViewById(R.id.imageViewAtras);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewProduccion);
         recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(20);
+        recyclerView.setDrawingCacheEnabled(true);
+        recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
