@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewDetalleAdapter;
 import cl.domito.dmttransfer.dominio.Conductor;
+import cl.domito.dmttransfer.http.Utilidades;
 import cl.domito.dmttransfer.thread.EnviarLogOperation;
 import cl.domito.dmttransfer.thread.ObtenerServicioHistoricoOperation;
 
@@ -89,7 +90,7 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
                     textviewFechaValor.setText(servicio.getString("servicio_fecha") + " " + servicio.getString("servicio_hora"));
                     textviewClienteValor.setText(servicio.getString("servicio_cliente"));
                     textviewRutaValor.setText(servicio.getString("servicio_ruta"));
-                    textviewTarifaValor.setText(servicio.getString("servicio_tarifa"));
+                    textviewTarifaValor.setText("$ "+ Utilidades.formatoMoneda(servicio.getString("servicio_tarifa")));
                     textviewObservacionValor.setText(servicio.getString("servicio_observacion").equals("") ? "Sin observaciones" : servicio.getString("servicio_observacion"));
                     cantidad++;
                 }

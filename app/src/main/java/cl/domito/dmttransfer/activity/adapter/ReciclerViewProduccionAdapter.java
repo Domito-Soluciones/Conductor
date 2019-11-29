@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import cl.domito.dmttransfer.R;
+import cl.domito.dmttransfer.http.Utilidades;
 
 public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<ReciclerViewProduccionAdapter.MyViewHolder> {
 
@@ -27,14 +28,14 @@ public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<Recicler
         public ImageView imageView;
         public TextView textView;
         public TextView textViewFecha;
-        public TextView textViewCliente;
+        public TextView textViewProduccion;
         public ConstraintLayout relativeLayout3;
         public MyViewHolder(View v) {
             super(v);
             imageView = v.findViewById(R.id.imageView2);
             textView = v.findViewById(R.id.textviewId);
             textViewFecha = v.findViewById(R.id.textviewNombre);
-            textViewCliente = v.findViewById(R.id.textViewCliente);
+            textViewProduccion = v.findViewById(R.id.textViewProduccion);
             relativeLayout3 = v.findViewById(R.id.relativeLayout3);
         }
     }
@@ -69,9 +70,9 @@ public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<Recicler
             tipo = activity.getIntent().getExtras().getString("accion");
         }
         myViewHolder.textView.setText(data[3]);
-       // myViewHolder.imageView.setImageDrawable(imagen);
         myViewHolder.textViewFecha.setText(fecha);
-        myViewHolder.textViewCliente.setText("$"+data[2]);
+        String aux = data[2];
+        myViewHolder.textViewProduccion.setText("$ "+Utilidades.formatoMoneda(aux+""));
     }
 
     @Override

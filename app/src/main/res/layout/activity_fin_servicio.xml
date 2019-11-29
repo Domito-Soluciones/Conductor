@@ -98,6 +98,7 @@
             android:paddingLeft="@dimen/ancho_menu"
             android:text="Fecha"
             android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -107,7 +108,7 @@
             app:layout_constraintVertical_bias="0.36" />
 
         <TextView
-            android:id="@+id/textViewCliente"
+            android:id="@+id/textViewProduccion"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -117,6 +118,7 @@
             android:paddingLeft="@dimen/ancho_menu"
             android:text="Cliente"
             android:textSize="24sp"
+            android:textStyle="bold"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/constrainLayoutTituloInt"
@@ -136,6 +138,7 @@
             android:paddingLeft="@dimen/ancho_menu"
             android:text="Tarifa"
             android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
