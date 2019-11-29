@@ -120,7 +120,7 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
             });
         }
 
-        textViewTotal.setText(total+"");
+        textViewTotal.setText(Utilidades.formatoMoneda(total+""));
 
         context.get().runOnUiThread(new Runnable() {
             @Override

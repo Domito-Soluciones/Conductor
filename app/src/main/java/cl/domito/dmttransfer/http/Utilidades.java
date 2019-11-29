@@ -37,7 +37,7 @@ import cl.domito.dmttransfer.thread.EnviarLogOperation;
 public class Utilidades {
 
     public static int tipoError = 0;
-    public static boolean DEBUG = false;
+    public static boolean DEBUG = true;
 
     public static String URL_BASE = "https://transfer.domitoapp.cl/source/httprequest/";
     public static String URL_BASE_CONDUCTOR = URL_BASE + "conductor/";
@@ -244,6 +244,46 @@ public class Utilidades {
         {
             Log.i(tag,texto);
         }
+    }
+
+    public static String formatoMoneda(String cantidad){
+        if(cantidad.length() < 4){
+            return cantidad;
+        }
+        if(cantidad.length() == 4){
+            String mil = cantidad.substring(0,1);
+            String resto = cantidad.substring(1,4);
+            return mil+"."+resto;
+        }
+        if(cantidad.length() == 5){
+            String mil = cantidad.substring(0,2);
+            String resto = cantidad.substring(2,5);
+            return mil+"."+resto;
+        }
+        if(cantidad.length() == 6){
+            String mil = cantidad.substring(0,3);
+            String resto = cantidad.substring(3,6);
+            return mil+"."+resto;
+        }
+        if(cantidad.length() == 7){
+            String millon = cantidad.substring(0,1);
+            String mil = cantidad.substring(1,4);
+            String resto = cantidad.substring(4,7);
+            return millon+"."+mil+"."+resto;
+        }
+        if(cantidad.length() == 8){
+            String millon = cantidad.substring(0,2);
+            String mil = cantidad.substring(2,5);
+            String resto = cantidad.substring(5,8);
+            return millon+"."+mil+"."+resto;
+        }
+        if(cantidad.length() == 9){
+            String millon = cantidad.substring(0,3);
+            String mil = cantidad.substring(3,6);
+            String resto = cantidad.substring(6,9);
+            return millon+"."+mil+"."+resto;
+        }
+        return cantidad;
     }
 
 }

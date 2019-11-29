@@ -27,6 +27,7 @@ import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewDetalleAdapter;
 import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.dominio.Conductor;
+import cl.domito.dmttransfer.http.Utilidades;
 import cl.domito.dmttransfer.thread.CambiarEstadoServicioOperation;
 import cl.domito.dmttransfer.thread.DesAsignarServicioOperation;
 import cl.domito.dmttransfer.thread.EnviarLogOperation;
@@ -230,7 +231,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     textviewClienteValor.setText(servicio.getString("servicio_cliente"));
                     textviewRutaValor.setText(servicio.getString("servicio_ruta"));
                     textviewTRutaValor.setText(servicio.getString("servicio_truta"));
-                    textviewTarifaValor.setText("$ "+servicio.getString("servicio_tarifa"));
+                    textviewTarifaValor.setText("$ "+ Utilidades.formatoMoneda(servicio.getString("servicio_tarifa")));
                     textviewObservacionValor.setText(servicio.getString("servicio_observacion").equals("") ? "Sin observaciones" : servicio.getString("servicio_observacion"));
                     cantidad++;
                     estado = servicio.getString("servicio_estado");

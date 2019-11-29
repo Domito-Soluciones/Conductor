@@ -45,7 +45,7 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
             imageView = v.findViewById(R.id.imageView2);
             textView = v.findViewById(R.id.textviewId);
             textViewFecha = v.findViewById(R.id.textviewNombre);
-            textViewCliente = v.findViewById(R.id.textViewCliente);
+            textViewCliente = v.findViewById(R.id.textViewProduccion);
             relativeLayout3 = v.findViewById(R.id.relativeLayout3);
         }
     }
