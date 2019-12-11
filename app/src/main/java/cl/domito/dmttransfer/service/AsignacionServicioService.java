@@ -39,6 +39,7 @@ import com.google.android.gms.location.LocationServices;
 
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.FinServicioActivity;
+import cl.domito.dmttransfer.activity.MainActivity;
 import cl.domito.dmttransfer.activity.PasajeroActivity;
 import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.dominio.Conductor;
@@ -264,11 +265,16 @@ public void onConnected(@Nullable Bundle bundle) {
         }
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
+        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
         Notification notification = notificationBuilder.setOngoing(true)
                 .setSmallIcon(0)
                 .setContentTitle("App is running in background")
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setCategory(Notification.CATEGORY_SERVICE)
+                .setContentIntent(pendingIntent)
                 .build();
         startForeground(2, notification);
     }
