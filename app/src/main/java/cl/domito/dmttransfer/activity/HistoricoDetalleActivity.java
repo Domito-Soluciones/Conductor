@@ -92,12 +92,23 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
                     textviewRutaValor.setText(servicio.getString("servicio_ruta"));
                     textviewTarifaValor.setText("$ "+ Utilidades.formatoMoneda(servicio.getString("servicio_tarifa")));
                     textviewObservacionValor.setText(servicio.getString("servicio_observacion").equals("") ? "Sin observaciones" : servicio.getString("servicio_observacion"));
-                    cantidad++;
                 }
                 String nombre = servicio.getString("servicio_pasajero_nombre");
                 String celular = servicio.getString("servicio_pasajero_celular");
                 String destino = servicio.getString("servicio_destino");
-                lista.add(nombre + "%" + celular + "%" + destino);
+                if(!destino.trim().equals("")) {
+                    cantidad++;
+                    if (nombre.trim().equals("")) {
+                        String aux = servicio.getString("servicio_pasajero_id_pasajero");
+                        String[] data = aux.split("-");
+                        nombre = data[0];
+                        if (data.length > 1) {
+                            celular = data[1];
+                        }
+                    }
+
+                    lista.add(nombre + "%" + celular + "%" + destino);
+                }
             }
             textviewCantidadValor.setText(cantidad + "");
             if (lista.size() > 0) {

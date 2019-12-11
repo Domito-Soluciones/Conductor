@@ -241,7 +241,9 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     String cliente = servicio.getString("servicio_cliente_direccion");
                     conductor.servicioActual = servicio.getString("servicio_id");
                     conductor.servicioActualRuta = servicio.getString("servicio_truta");
-                    lista.add(nombre + "%" + celular + "%" + destino);
+                    if(!destino.equals("")) {
+                        lista.add(nombre + "%" + celular + "%" + destino);
+                    }
                 }
                 if (conductor.servicio != null) {
                     JSONObject ultimo = conductor.servicio.getJSONObject(conductor.servicio.length() - 1);
