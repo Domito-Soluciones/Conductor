@@ -51,6 +51,7 @@ public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, String> 
                 context.get().finish();
                 CambiarEstadoNotificacionOperation cambiarEstadoNotificacionOperation = new CambiarEstadoNotificacionOperation();
                 cambiarEstadoNotificacionOperation.execute(aString);
+                ActivityUtils.eliminarNotificacion(context.get(),aString);
                 Toast.makeText(context.get(),"Servicio cancelado",Toast.LENGTH_LONG).show();
             }
         });

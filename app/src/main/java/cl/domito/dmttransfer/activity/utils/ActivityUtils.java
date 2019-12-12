@@ -390,4 +390,9 @@ public class ActivityUtils {
     }
 
 
+    public static void eliminarNotificacion(Context activity,String id) {
+        NotificationManager mNotifyMgr = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
+        int aux = Integer.parseInt(id);
+        mNotifyMgr.cancel(aux);
+    }
 }

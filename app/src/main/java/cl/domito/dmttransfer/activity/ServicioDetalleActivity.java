@@ -25,6 +25,7 @@ import java.util.Date;
 
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewDetalleAdapter;
+import cl.domito.dmttransfer.activity.adapter.ReciclerViewDetalleEspAdapter;
 import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.http.Utilidades;
@@ -244,6 +245,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     if(!destino.equals("")) {
                         lista.add(nombre + "%" + celular + "%" + destino);
                     }
+
                 }
                 if (conductor.servicio != null) {
                     JSONObject ultimo = conductor.servicio.getJSONObject(conductor.servicio.length() - 1);
@@ -257,10 +259,67 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                 textviewCantidadValor.setText(cantidad + "");
                 conductor.cantidadPasajeros = cantidad;
                 if (lista.size() > 0) {
-                    String[] array = new String[lista.size()];
-                    array = lista.toArray(array);
-                    ReciclerViewDetalleAdapter mAdapter = new ReciclerViewDetalleAdapter(this, array);
-                    recyclerViewDetalle.setAdapter(mAdapter);
+                    if(conductor.servicioActualRuta.equals("XX-ESP")){
+                        ArrayList<String> listaEspecial = new ArrayList();
+                        String nombre = null;
+                        int i = 0;
+                        for(String dato : lista){
+                            String aux = dato.split("%")[0];
+                            if(nombre == null){
+                                listaEspecial.add(dato);
+                                nombre = aux;
+                                i++;
+                            }
+                            else if(!nombre.equals(aux)){
+                                listaEspecial.set(i-1,listaEspecial.get(i-1)+"%");
+                                listaEspecial.add(dato);
+                                nombre = aux;
+                            }
+                            else {
+                                String[] arr = dato.split("%");
+                                try{
+                                    if (listaEspecial.get(i).split("%")[0].equals(nombre)) {
+                                        String ant = listaEspecial.get(i);
+                                        String fin = ant + "%" + arr[2];
+                                        listaEspecial.remove(i);
+                                        listaEspecial.add(fin);
+                                        nombre = null;
+                                    } else {
+                                        String ant = listaEspecial.get(i - 1);
+                                        String fin = ant + "%" + arr[2];
+                                        listaEspecial.remove(i - 1);
+                                        listaEspecial.add(fin);
+                                        nombre = null;
+                                    }
+                                }
+                                catch (Exception e){
+                                    if (listaEspecial.get(i-1).split("%")[0].equals(nombre)) {
+                                        String ant = listaEspecial.get(i-1);
+                                        String fin = ant + "%" + arr[2];
+                                        listaEspecial.remove(i-1);
+                                        listaEspecial.add(fin);
+                                        nombre = null;
+                                    } else {
+                                        String ant = listaEspecial.get(i);
+                                        String fin = ant + "%" + arr[2];
+                                        listaEspecial.remove(i );
+                                        listaEspecial.add(fin);
+                                        nombre = null;
+                                    }
+                                }
+                            }
+                        }
+                        String[] array = new String[listaEspecial.size()];
+                        array = listaEspecial.toArray(array);
+                        ReciclerViewDetalleEspAdapter mAdapter = new ReciclerViewDetalleEspAdapter(this, array);
+                        recyclerViewDetalle.setAdapter(mAdapter);
+                    }
+                    else {
+                        String[] array = new String[lista.size()];
+                        array = lista.toArray(array);
+                        ReciclerViewDetalleAdapter mAdapter = new ReciclerViewDetalleAdapter(this, array);
+                        recyclerViewDetalle.setAdapter(mAdapter);
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

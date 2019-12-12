@@ -2,6 +2,7 @@ package cl.domito.dmttransfer.thread;
 
 import android.os.AsyncTask;
 
+import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.http.RequestConductor;
 
 public class CambiarEstadoNotificacionOperation extends AsyncTask<String,Void,Void> {

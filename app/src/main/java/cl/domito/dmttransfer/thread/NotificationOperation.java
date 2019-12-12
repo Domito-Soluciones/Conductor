@@ -1,6 +1,7 @@
 package cl.domito.dmttransfer.thread;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -23,6 +24,8 @@ public class NotificationOperation extends AsyncTask<Void, Void, String[]> {
 
     private Context context;
 
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
     public NotificationOperation(Context context) {
         this.context = context;
     }
@@ -40,7 +43,18 @@ public class NotificationOperation extends AsyncTask<Void, Void, String[]> {
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                if (jsonObject.getString("notificacion_tipo").equals("0")) {
+                String id = jsonObject.getString("notificacion_id");
+                String fecha = jsonObject.getString("notificacion_fecha");
+                String tipo = jsonObject.getString("notificacion_tipo");
+                Date dateNot = sdf.parse(fecha);
+                Date date = new Date();
+                System.out.println(dateNot.toString()+" "+date.toString());
+                if(dateNot.before(date) && !tipo.equals("0")){
+                    CambiarEstadoNotificacionOperation cambiarEstadoNotificacionOperation = new CambiarEstadoNotificacionOperation();
+                    cambiarEstadoNotificacionOperation.execute(id);
+                    ActivityUtils.eliminarNotificacion(context,id);
+                }
+                if (tipo.equals("0")) {
                     aux++;
                 }
             }
@@ -91,6 +105,7 @@ public class NotificationOperation extends AsyncTask<Void, Void, String[]> {
                 if (aString[1].equals("1") || aString[1].equals("2")) {
                     CambiarEstadoNotificacionOperation cambiarEstadoNotificacionOperation = new CambiarEstadoNotificacionOperation();
                     cambiarEstadoNotificacionOperation.execute(aString[0]);
+                    ActivityUtils.eliminarNotificacion(context,aString[0]);
                 }
             }
         }

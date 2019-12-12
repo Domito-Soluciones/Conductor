@@ -52,6 +52,7 @@ public class RealizarServicioOperation extends AsyncTask<Void, Void, String> {
                 Toast.makeText(context.get(),"Servicio aceptado",Toast.LENGTH_LONG).show();
                 CambiarEstadoNotificacionOperation cambiarEstadoNotificacionOperation = new CambiarEstadoNotificacionOperation();
                 cambiarEstadoNotificacionOperation.execute(aString);
+                ActivityUtils.eliminarNotificacion(context.get(),aString);
                 //dialog.dismiss();
                 context.get().finish();
             }
