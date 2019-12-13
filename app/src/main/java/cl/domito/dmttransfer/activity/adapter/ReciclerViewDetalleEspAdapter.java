@@ -69,7 +69,7 @@ public class ReciclerViewDetalleEspAdapter extends RecyclerView.Adapter<Recicler
         texto = Html.fromHtml(mDataset[i]);
     }
     String[] data = mDataset[i].split("%");
-        if (data[0].split("-")[1].equals("")) {
+        if (data[0].split("-").length > 1 && data[0].split("-")[1].equals("")) {
         myViewHolder.imageViewLlamar.setVisibility(View.GONE);
     } else {
         myViewHolder.imageViewLlamar.setTag(data[1]);
