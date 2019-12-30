@@ -1,6 +1,8 @@
 package cl.domito.dmttransfer.activity;
 
 import android.app.AlertDialog;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -118,6 +120,8 @@ public class ServicioDetalleActivity extends AppCompatActivity {
     }
 
     private void aceptarServicio() {
+        NotificationManager notificationManager = ((NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE));
+        notificationManager.cancelAll();
         if (estado.equals("1")) {
             RealizarServicioOperation realizarServicioOperation = new RealizarServicioOperation(this);
             realizarServicioOperation.execute();
