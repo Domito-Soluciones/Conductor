@@ -76,7 +76,7 @@ public class TomarPasajeroOperation extends AsyncTask<String, Void, Void> {
                     } else if (conductor.servicioActualRuta.contains("ZP")) {
                         Toast.makeText(context.get(), "Pasajero Abordado", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(context.get(), "Pasajero Recogido", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context.get(), "Tramo Finalizado", Toast.LENGTH_SHORT).show();
                     }
                     if(!context.get().isDestroyed()) {
                         dialog.dismiss();

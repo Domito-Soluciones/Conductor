@@ -96,7 +96,7 @@
         public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
             Spanned texto = Html.fromHtml(mDataset[i]);
             String[] data = mDataset[i].split("%");
-            String nombrePasajero = data[0].split("-")[0];
+            String nombrePasajero = data[0].split("-")[0].replace("_"," ");
             String celularPasajero = data[1];
             String direccionPasajero = data[2];
             String estadoPasajero = data[3];
@@ -520,6 +520,7 @@
                                 tomarPasajeroOperation.execute();
                                 if (i == getItemCount() -1) {
                                     ActivityUtils.finalizar(activity);
+                                    activity.finish();
                                 }
                             } else {
                                 navegar(direccionPasajero);
@@ -550,6 +551,7 @@
                                     tomarPasajeroOperation.execute();
                                     if (i == getItemCount() -1) {
                                         ActivityUtils.finalizar(activity);
+                                        activity.finish();
                                     }
                                 }
                             });

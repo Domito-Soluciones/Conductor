@@ -68,20 +68,30 @@ public class ReciclerViewDetalleEspAdapter extends RecyclerView.Adapter<Recicler
     } else {
         texto = Html.fromHtml(mDataset[i]);
     }
-    String[] data = mDataset[i].split("%");
-        if (data[0].split("-").length > 1 && data[0].split("-")[1].equals("")) {
+    String[] data = mDataset[i].split("%%%");
+    String[] origen = data[0].split("%");
+    String[] destino = null;
+    if(data.length == 2){
+        destino = data[1].split("%");
+    }
+    int a = origen[0].indexOf("-");
+    int b = origen[0].endsWith("_par") ? origen[0].indexOf("_par") : origen[0].indexOf("_des");
+    String telefono = origen[0].substring(a+1,b);
+    if(telefono != null){
         myViewHolder.imageViewLlamar.setVisibility(View.GONE);
-    } else {
+    }
+    else {
         myViewHolder.imageViewLlamar.setTag(data[1]);
     }
-        myViewHolder.textViewNombre.setText(data[0].split("-")[0]);
-        myViewHolder.textViewDireccion.setText(data[2]);
-        if(data.length == 4) {
-            myViewHolder.textViewDestino.setText(data[3]);
-        }
-        else{
-            myViewHolder.textViewDestino.setText("");
-        }
+    String nombreAux = data[0].split("-")[0].replace("_"," ");
+    myViewHolder.textViewNombre.setText(nombreAux);
+    myViewHolder.textViewDireccion.setText(origen[2]);
+    if(destino != null) {
+        myViewHolder.textViewDestino.setText(destino[2]);
+    }
+    else{
+        myViewHolder.textViewDestino.setText("");
+    }
 
     String nombre = activity.getComponentName().getClassName();
         if(nombre.equals("cl.domito.dmttransfer.activity.HistoricoDetalleActivity"))

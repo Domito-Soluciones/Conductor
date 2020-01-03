@@ -265,51 +265,20 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                 if (lista.size() > 0) {
                     if(conductor.servicioActualRuta.equals("XX-ESP")){
                         ArrayList<String> listaEspecial = new ArrayList();
-                        String nombre = null;
                         int i = 0;
-                        for(String dato : lista){
-                            String aux = dato.split("%")[0];
-                            if(nombre == null){
+                        for(String dato : lista) {
+                            String idAux = dato.split("%")[0];
+                            String id2Aux = dato.split("%")[0].replace("_par","").replace("_des","");
+                            if(idAux.endsWith("_par")){
                                 listaEspecial.add(dato);
-                                nombre = aux;
                                 i++;
                             }
-                            else if(!nombre.equals(aux)){
-                                listaEspecial.set(i-1,listaEspecial.get(i-1)+"%");
-                                listaEspecial.add(dato);
-                                nombre = aux;
-                            }
-                            else {
-                                String[] arr = dato.split("%");
-                                try{
-                                    if (listaEspecial.get(i).split("%")[0].equals(nombre)) {
-                                        String ant = listaEspecial.get(i);
-                                        String fin = ant + "%" + arr[2];
-                                        listaEspecial.remove(i);
-                                        listaEspecial.add(fin);
-                                        nombre = null;
-                                    } else {
-                                        String ant = listaEspecial.get(i - 1);
-                                        String fin = ant + "%" + arr[2];
-                                        listaEspecial.remove(i - 1);
-                                        listaEspecial.add(fin);
-                                        nombre = null;
-                                    }
+                            else if(idAux.endsWith("_des")){
+                                if(listaEspecial.size() == 0){
+                                    listaEspecial.add(dato);
                                 }
-                                catch (Exception e){
-                                    if (listaEspecial.get(i-1).split("%")[0].equals(nombre)) {
-                                        String ant = listaEspecial.get(i-1);
-                                        String fin = ant + "%" + arr[2];
-                                        listaEspecial.remove(i-1);
-                                        listaEspecial.add(fin);
-                                        nombre = null;
-                                    } else {
-                                        String ant = listaEspecial.get(i);
-                                        String fin = ant + "%" + arr[2];
-                                        listaEspecial.remove(i );
-                                        listaEspecial.add(fin);
-                                        nombre = null;
-                                    }
+                                else{
+                                    listaEspecial.set(i-1,listaEspecial.get(i-1)+"%%%"+dato);
                                 }
                             }
                         }
