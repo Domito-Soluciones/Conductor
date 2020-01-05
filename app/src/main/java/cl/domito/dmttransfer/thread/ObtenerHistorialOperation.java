@@ -72,6 +72,7 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
         {
             return;
         }
+        String servicioRuta = "";
         for(int i = 0; i < jsonArray.length(); i++)
         {
             try {
@@ -81,6 +82,7 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
                 String servicioHora = jsonObject.getString("servicio_hora");
                 String servicioCliente = jsonObject.getString("servicio_cliente");
                 String servicioEstado = jsonObject.getString("servicio_estado");
+                servicioRuta = jsonObject.getString("servicio_truta");
                 lista.add( servicioId + "%" + servicioFecha + "%"+ servicioHora + "%" + servicioCliente + "%" + servicioEstado);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -91,8 +93,8 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
 
         if(lista.size() > 0 ) {
             String[] array = new String[lista.size()];
-            array  = lista.toArray(array);
-            ReciclerViewHistorialAdapter mAdapter = new ReciclerViewHistorialAdapter(context.get(),array);
+            array = lista.toArray(array);
+            ReciclerViewHistorialAdapter mAdapter = new ReciclerViewHistorialAdapter(context.get(), array);
             context.get().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

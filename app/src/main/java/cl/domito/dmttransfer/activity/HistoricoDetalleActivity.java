@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewDetalleAdapter;
+import cl.domito.dmttransfer.activity.adapter.ReciclerViewDetalleEspAdapter;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.http.Utilidades;
 import cl.domito.dmttransfer.thread.EnviarLogOperation;
@@ -83,6 +84,7 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
             JSONArray historico = obtenerServicioHistoricoOperation.execute(idServicio).get();
             int cantidad = 0;
             ArrayList<String> lista = new ArrayList();
+            String servicioRuta = "";
             for (int i = 0; i < historico.length(); i++) {
                 JSONObject servicio = historico.getJSONObject(i);
                 if (i == 0) {
@@ -92,6 +94,7 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
                     textviewRutaValor.setText(servicio.getString("servicio_ruta"));
                     textviewTarifaValor.setText("$ "+ Utilidades.formatoMoneda(servicio.getString("servicio_tarifa")));
                     textviewObservacionValor.setText(servicio.getString("servicio_observacion").equals("") ? "Sin observaciones" : servicio.getString("servicio_observacion"));
+                    servicioRuta = servicio.getString("servicio_truta");
                 }
                 String nombre = servicio.getString("servicio_pasajero_nombre");
                 String celular = servicio.getString("servicio_pasajero_celular");
@@ -112,10 +115,34 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
             }
             textviewCantidadValor.setText(cantidad + "");
             if (lista.size() > 0) {
-                String[] array = new String[lista.size()];
-                array = lista.toArray(array);
-                ReciclerViewDetalleAdapter mAdapter = new ReciclerViewDetalleAdapter(this, array);
-                recyclerViewDetalle.setAdapter(mAdapter);
+                Conductor conductor = Conductor.getInstance();
+                if (servicioRuta.equals("XX-ESP")) {
+                    ArrayList<String> listaEspecial = new ArrayList();
+                    int i = 0;
+                    for (String dato : lista) {
+                        String idAux = dato.split("%")[0];
+                        String id2Aux = dato.split("%")[0].replace("_par", "").replace("_des", "");
+                        if (idAux.endsWith("_par")) {
+                            listaEspecial.add(dato);
+                            i++;
+                        } else if (idAux.endsWith("_des")) {
+                            if (listaEspecial.size() == 0) {
+                                listaEspecial.add(dato);
+                            } else {
+                                listaEspecial.set(i - 1, listaEspecial.get(i - 1) + "%%%" + dato);
+                            }
+                        }
+                    }
+                    String[] array = new String[listaEspecial.size()];
+                    array = listaEspecial.toArray(array);
+                    ReciclerViewDetalleEspAdapter mAdapter = new ReciclerViewDetalleEspAdapter(this, array);
+                    recyclerViewDetalle.setAdapter(mAdapter);
+                } else {
+                    String[] array = new String[lista.size()];
+                    array = lista.toArray(array);
+                    ReciclerViewDetalleAdapter mAdapter = new ReciclerViewDetalleAdapter(this, array);
+                    recyclerViewDetalle.setAdapter(mAdapter);
+                }
             }
 
         } catch (Exception e) {

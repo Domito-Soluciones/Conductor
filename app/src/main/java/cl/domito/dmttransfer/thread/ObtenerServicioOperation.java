@@ -19,7 +19,7 @@ public class ObtenerServicioOperation extends AsyncTask<String, Void, JSONArray>
 
     @Override
     protected JSONArray doInBackground(String... strings) {
-       JSONArray jsonArray = null;
+        JSONArray jsonArray = null;
         Conductor conductor = Conductor.getInstance();
         String idServicio = strings[0];
         String url = Utilidades.URL_BASE_SERVICIO + "GetServicioProgramado.php";
