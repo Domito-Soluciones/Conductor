@@ -77,11 +77,11 @@ public class ReciclerViewDetalleEspAdapter extends RecyclerView.Adapter<Recicler
     int a = origen[0].indexOf("-");
     int b = origen[0].endsWith("_par") ? origen[0].indexOf("_par") : origen[0].indexOf("_des");
     String telefono = origen[0].substring(a+1,b);
-    if(telefono != null){
+    if(telefono == null){
         myViewHolder.imageViewLlamar.setVisibility(View.GONE);
     }
     else {
-        myViewHolder.imageViewLlamar.setTag(data[1]);
+        myViewHolder.imageViewLlamar.setTag(telefono);
     }
     String nombreAux = data[0].split("-")[0].replace("_"," ");
     myViewHolder.textViewNombre.setText(nombreAux);

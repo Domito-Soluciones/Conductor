@@ -70,8 +70,8 @@ public class ReciclerViewDetalleAdapter extends RecyclerView.Adapter<ReciclerVie
             } else {
                 myViewHolder.imageViewLlamar.setTag(data[1]);
             }
-
-            myViewHolder.textViewNombre.setText(data[0].split("-")[0]);
+            String nombre = data[0].split("-")[0].replace("_"," ");
+            myViewHolder.textViewNombre.setText(nombre);
             myViewHolder.textViewDireccion.setText(data[2]);
         }
 
