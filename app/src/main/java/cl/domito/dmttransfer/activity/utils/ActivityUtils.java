@@ -331,7 +331,7 @@ public class ActivityUtils {
                 }
             });
         }
-        /*else if(conductor.servicioActualRuta.contains("XX"))
+        else if(conductor.servicioActualRuta.contains("XX"))
         {
             AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
             dialogo2.setTitle("Motivo Cancelación");
@@ -356,7 +356,7 @@ public class ActivityUtils {
                 }
             });
             dialogo2.show();
-        }*/
+        }
     }
 
     public static void finalizar(Activity activity)
