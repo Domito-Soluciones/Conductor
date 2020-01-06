@@ -81,10 +81,10 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
         try
         {
             String idServicio = getIntent().getExtras().getString("idServicio");
+            String ruta = getIntent().getExtras().getString("tipoServicio");
             JSONArray historico = obtenerServicioHistoricoOperation.execute(idServicio).get();
             int cantidad = 0;
             ArrayList<String> lista = new ArrayList();
-            String servicioRuta = "";
             for (int i = 0; i < historico.length(); i++) {
                 JSONObject servicio = historico.getJSONObject(i);
                 if (i == 0) {
@@ -94,7 +94,6 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
                     textviewRutaValor.setText(servicio.getString("servicio_ruta"));
                     textviewTarifaValor.setText("$ "+ Utilidades.formatoMoneda(servicio.getString("servicio_tarifa")));
                     textviewObservacionValor.setText(servicio.getString("servicio_observacion").equals("") ? "Sin observaciones" : servicio.getString("servicio_observacion"));
-                    servicioRuta = servicio.getString("servicio_truta");
                 }
                 String nombre = servicio.getString("servicio_pasajero_nombre");
                 String celular = servicio.getString("servicio_pasajero_celular");
@@ -103,20 +102,19 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
                     cantidad++;
                     if (nombre.trim().equals("")) {
                         String aux = servicio.getString("servicio_pasajero_id_pasajero");
+                        nombre = aux;
                         String[] data = aux.split("-");
-                        nombre = data[0];
                         if (data.length > 1) {
-                            celular = data[1];
+                            celular = data[1].replace("_par","").replace("_des","");
                         }
                     }
-
                     lista.add(nombre + "%" + celular + "%" + destino);
                 }
             }
             textviewCantidadValor.setText(cantidad + "");
             if (lista.size() > 0) {
                 Conductor conductor = Conductor.getInstance();
-                if (servicioRuta.equals("XX-ESP")) {
+                if (ruta.equals("ESP")) {
                     ArrayList<String> listaEspecial = new ArrayList();
                     int i = 0;
                     for (String dato : lista) {

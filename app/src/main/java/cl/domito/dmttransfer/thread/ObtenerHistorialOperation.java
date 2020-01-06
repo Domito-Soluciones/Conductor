@@ -72,7 +72,6 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
         {
             return;
         }
-        String servicioRuta = "";
         for(int i = 0; i < jsonArray.length(); i++)
         {
             try {
@@ -82,14 +81,14 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
                 String servicioHora = jsonObject.getString("servicio_hora");
                 String servicioCliente = jsonObject.getString("servicio_cliente");
                 String servicioEstado = jsonObject.getString("servicio_estado");
-                servicioRuta = jsonObject.getString("servicio_truta");
-                lista.add( servicioId + "%" + servicioFecha + "%"+ servicioHora + "%" + servicioCliente + "%" + servicioEstado);
+                String servicioRuta = jsonObject.getString("servicio_ruta");
+                lista.add( servicioId + "%" + servicioFecha + "%"+ servicioHora + "%" + servicioCliente + "%" + servicioEstado + "%" + servicioRuta);
             } catch (Exception e) {
                 e.printStackTrace();
                 EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
                 enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
             }
-        }
+    }
 
         if(lista.size() > 0 ) {
             String[] array = new String[lista.size()];

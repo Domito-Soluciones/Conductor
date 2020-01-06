@@ -69,7 +69,9 @@ public class ReciclerViewHistorialAdapter extends RecyclerView.Adapter<ReciclerV
             texto = Html.fromHtml(mDataset[i]);
         }
         String[] data = mDataset[i].split("%");
+        String idServicio = data[0];
         String estado = data[4];
+        String ruta = data[5];
         int color = 0;
         Resources resources = myViewHolder.textView.getContext().getResources();
         if(estado.equals("1"))
@@ -94,7 +96,7 @@ public class ReciclerViewHistorialAdapter extends RecyclerView.Adapter<ReciclerV
             myViewHolder.imageView.setImageDrawable(imagen);
             color = resources.getColor(R.color.negro);
         }
-        myViewHolder.textView.setText(data[0]);
+        myViewHolder.textView.setText(idServicio);
         myViewHolder.textView.setTextColor(color);
         myViewHolder.textViewFecha.setText(data[1] + " " + data[2]);
         myViewHolder.textViewCliente.setText(data[3]);
@@ -103,7 +105,8 @@ public class ReciclerViewHistorialAdapter extends RecyclerView.Adapter<ReciclerV
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(activity,HistoricoDetalleActivity.class);
-                i.putExtra("idServicio",data[0]);
+                i.putExtra("idServicio",idServicio);
+                i.putExtra("tipoServicio",ruta);
                 activity.startActivity(i);
             }
         });

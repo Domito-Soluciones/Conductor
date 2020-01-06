@@ -74,9 +74,8 @@ public class ReciclerViewDetalleEspAdapter extends RecyclerView.Adapter<Recicler
     if(data.length == 2){
         destino = data[1].split("%");
     }
-    int a = origen[0].indexOf("-");
-    int b = origen[0].endsWith("_par") ? origen[0].indexOf("_par") : origen[0].indexOf("_des");
-    String telefono = origen[0].substring(a+1,b);
+    //int b = origen[1].endsWith("_par") ? origen[1].indexOf("_par") : origen[1].indexOf("_des");
+    String telefono =  origen[0].split("-")[1].replace("_par","").replace("_des","");;
     if(telefono == null){
         myViewHolder.imageViewLlamar.setVisibility(View.GONE);
     }
