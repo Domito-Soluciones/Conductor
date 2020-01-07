@@ -216,10 +216,12 @@ public class ServicioDetalleActivity extends AppCompatActivity {
             Long data = Math.abs(lNow - l);
             try {
                 int cantidad = 0;
+                String nombreAux = "";
+                String ruta = "";
                 ArrayList<String> lista = new ArrayList();
                 if (conductor.servicio != null) {
                     JSONObject primero = conductor.servicio.getJSONObject(0);
-                    String ruta = primero.getString("servicio_truta").split("-")[0];
+                   ruta = primero.getString("servicio_truta").split("-")[0];
                     if (ruta.equals("ZP")) {
                         String cliente = primero.getString("servicio_cliente");
                         String destino = primero.getString("servicio_cliente_direccion");
@@ -238,7 +240,6 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     textviewTRutaValor.setText(servicio.getString("servicio_truta"));
                     textviewTarifaValor.setText("$ "+ Utilidades.formatoMoneda(servicio.getString("servicio_tarifa")));
                     textviewObservacionValor.setText(servicio.getString("servicio_observacion").equals("") ? "Sin observaciones" : servicio.getString("servicio_observacion"));
-                    cantidad++;
                     estado = servicio.getString("servicio_estado");
                     String nombre = servicio.getString("servicio_pasajero_nombre");
                     String celular = servicio.getString("servicio_pasajero_celular");
@@ -246,6 +247,14 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     String cliente = servicio.getString("servicio_cliente_direccion");
                     conductor.servicioActual = servicio.getString("servicio_id");
                     conductor.servicioActualRuta = servicio.getString("servicio_truta");
+                    String nombreComp = nombre.replace("_par","").replace("_des","");
+                    if(!nombreComp.equals(nombreAux) && ruta.equals("XX")) {
+                        nombreAux = nombreComp;
+                        cantidad++;
+                    }
+                    else if(!ruta.equals("XX")){
+                        cantidad++;
+                    }
                     if(!destino.equals("")) {
                         lista.add(nombre + "%" + celular + "%" + destino);
                     }
@@ -253,7 +262,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                 }
                 if (conductor.servicio != null) {
                     JSONObject ultimo = conductor.servicio.getJSONObject(conductor.servicio.length() - 1);
-                    String ruta = ultimo.getString("servicio_truta").split("-")[0];
+                    ruta = ultimo.getString("servicio_truta").split("-")[0];
                     if (ruta.equals("RG")) {
                         String cliente = ultimo.getString("servicio_cliente");
                         String destino = ultimo.getString("servicio_cliente_direccion");

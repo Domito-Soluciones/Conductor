@@ -85,6 +85,7 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
             JSONArray historico = obtenerServicioHistoricoOperation.execute(idServicio).get();
             int cantidad = 0;
             ArrayList<String> lista = new ArrayList();
+            String nombreAux = "";
             for (int i = 0; i < historico.length(); i++) {
                 JSONObject servicio = historico.getJSONObject(i);
                 if (i == 0) {
@@ -99,11 +100,18 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
                 String celular = servicio.getString("servicio_pasajero_celular");
                 String destino = servicio.getString("servicio_destino");
                 if(!destino.trim().equals("")) {
-                    cantidad++;
                     if (nombre.trim().equals("")) {
                         String aux = servicio.getString("servicio_pasajero_id_pasajero");
                         nombre = aux;
-                        String[] data = aux.split("-");
+                        String nombreComp = nombre.replace("_par","").replace("_des","");
+                        if(!nombreComp.equals(nombreAux) && ruta.equals("ESP")){
+                            nombreAux = nombreComp;
+                            cantidad++;
+                        }
+                        else if(!ruta.equals("XX")){
+                            cantidad++;
+                        }
+                            String[] data = aux.split("-");
                         if (data.length > 1) {
                             celular = data[1].replace("_par","").replace("_des","");
                         }
