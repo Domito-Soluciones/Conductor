@@ -20,6 +20,7 @@ import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.ProduccionActivity;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewProduccionAdapter;
 import cl.domito.dmttransfer.activity.utils.ActivityUtils;
+import cl.domito.dmttransfer.activity.utils.StringBuilderUtil;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.http.RequestConductor;
 import cl.domito.dmttransfer.http.Utilidades;
@@ -42,14 +43,18 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
     protected JSONArray doInBackground(Void... voids) {
         Conductor conductor = Conductor.getInstance();
         Calendar c = Calendar.getInstance();
-        String fechaDesde = "01/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
-        c.add(Calendar.MONTH,1);
-        String fechaHasta = "01/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
-        String url = Utilidades.URL_BASE_LIQUIDACION + "GetProduccion.php";
         List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("desde",fechaDesde));
+        StringBuilder fechaDesde = StringBuilderUtil.getInstance();
+        fechaDesde.append("01/").append((c.get(Calendar.MONTH) + 1)).append("/").append(c.get(Calendar.YEAR));
+        params.add(new BasicNameValuePair("desde",fechaDesde.toString()));
+        c.add(Calendar.MONTH,1);
+        StringBuilder fechaHasta = StringBuilderUtil.getInstance();
+        fechaHasta.append("01/").append((c.get(Calendar.MONTH) + 1)).append("/").append(c.get(Calendar.YEAR));
+        params.add(new BasicNameValuePair("hasta",fechaHasta.toString()));
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_LIQUIDACION).append("GetProduccion.php");
+        String url =  builder.toString();
         params.add(new BasicNameValuePair("hdesde","00:00:00"));
-        params.add(new BasicNameValuePair("hasta",fechaHasta));
         params.add(new BasicNameValuePair("hhasta","00:00:00"));
         params.add(new BasicNameValuePair("estado","5"));
         params.add(new BasicNameValuePair("conductor",conductor.id));
@@ -88,11 +93,14 @@ public class ObtenerProduccionOperation extends AsyncTask<Void, Void, JSONArray>
             String servicioHora = jsonObject.getString("servicio_hora");
             String servicioTarifa = jsonObject.getString("servicio_tarifa1");
             total += Integer.parseInt(servicioTarifa);
-            lista.add( servicioFecha + "%"+ servicioHora + "%" + servicioTarifa + "%" + servicioId);
+            StringBuilder builder = StringBuilderUtil.getInstance();
+            builder.append(servicioFecha).append("%").append(servicioHora).append("%").append(servicioTarifa)
+                    .append("%").append(servicioId);
+            lista.add(builder.toString());
         } catch (Exception e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 

@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import cl.domito.dmttransfer.R;
+import cl.domito.dmttransfer.activity.utils.StringBuilderUtil;
 import cl.domito.dmttransfer.http.Utilidades;
 
 public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<ReciclerViewProduccionAdapter.MyViewHolder> {
@@ -59,7 +60,9 @@ public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<Recicler
     public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
         Spanned texto = Html.fromHtml(mDataset[i]);
         String[] data = mDataset[i].split("%");
-        String fecha = data[0] + " " + data[1];
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(data[0]).append(" ").append(data[1]);
+        String fecha = builder.toString();
         Resources resources = myViewHolder.textView.getContext().getResources();
         //Drawable imagen = resources.getDrawable(R.drawable.arriba);
         Bundle bundle = activity.getIntent().getExtras();
@@ -72,7 +75,8 @@ public class ReciclerViewProduccionAdapter extends RecyclerView.Adapter<Recicler
         myViewHolder.textView.setText(data[3]);
         myViewHolder.textViewFecha.setText(fecha);
         String aux = data[2];
-        myViewHolder.textViewProduccion.setText("$ "+Utilidades.formatoMoneda(aux+""));
+        String valor = Utilidades.formatoMoneda(aux);
+        myViewHolder.textViewProduccion.setText(valor);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package cl.domito.dmttransfer.activity;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import cl.domito.dmttransfer.R;
+import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.thread.ObtenerHistorialOperation;
 
@@ -22,6 +24,7 @@ public class HistoricoActivity extends AppCompatActivity {
     private ImageView imageViewAtras;
     private Conductor conductor;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,8 @@ public class HistoricoActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
+        dialog = ActivityUtils.setProgressDialog(this);
+
 
         conductor = Conductor.getInstance();
 
@@ -55,6 +60,7 @@ public class HistoricoActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {

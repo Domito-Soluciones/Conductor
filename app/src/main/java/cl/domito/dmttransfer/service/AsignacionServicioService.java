@@ -128,7 +128,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                     } catch (Exception e) {
                         e.printStackTrace();
                        EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                       enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                       enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
                     }
                     finally {
                         try {
@@ -141,7 +141,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                             }
                         } catch (InterruptedException e) {
                             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
                         }
                    }
                 }
@@ -173,7 +173,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
         } catch (InterruptedException e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         if(conductor.estado != 0) {
             Intent broadcastIntent = new Intent(this, RestartBroadcastReceived.class);
@@ -222,7 +222,7 @@ private void getUbicacion() throws InterruptedException {
         } catch (Exception e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         }
 

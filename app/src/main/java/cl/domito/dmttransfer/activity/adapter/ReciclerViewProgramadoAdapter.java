@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,6 +25,7 @@ import org.json.JSONObject;
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.ServicioDetalleActivity;
 import cl.domito.dmttransfer.activity.utils.ActivityUtils;
+import cl.domito.dmttransfer.activity.utils.StringBuilderUtil;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.thread.EnviarLogOperation;
 
@@ -66,7 +68,6 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
         vh.relativeLayout3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.show();
                 JSONArray servicio = new JSONArray();
                 Conductor conductor = Conductor.getInstance();
                 JSONArray servicios = conductor.servicios;
@@ -82,17 +83,22 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
                         } catch (Exception e) {
                             e.printStackTrace();
                             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
                         }
                     }
                     conductor.servicio = servicio;
-                    Intent intent = new Intent(activity, ServicioDetalleActivity.class);
-
-                    intent.putExtra("fecha", vh.textViewFecha.getText().toString());
-                    intent.putExtra("id", vh.textView.getText().toString());
-                    intent.putExtra("activity",activity.getComponentName().getClassName());
-                    dialog.dismiss();
-                    activity.startActivity(intent);
+                    if(conductor.servicio.length() == 0){
+                        Toast.makeText(activity,"Este servicio ya no se encuentra disponible",Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        dialog.show();
+                        Intent intent = new Intent(activity, ServicioDetalleActivity.class);
+                        intent.putExtra("fecha", vh.textViewFecha.getText().toString());
+                        intent.putExtra("id", vh.textView.getText().toString());
+                        intent.putExtra("activity", activity.getComponentName().getClassName());
+                        dialog.dismiss();
+                        activity.startActivity(intent);
+                    }
                     //activity.finish();
                 }
             }
@@ -156,7 +162,9 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
         myViewHolder.imageView.setImageDrawable(imagen);
         myViewHolder.textView.setText(data[0]);
         myViewHolder.textView.setTextColor(color);
-        myViewHolder.textViewFecha.setText(data[1] + " " + data[2]);
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(data[1]).append(" ").append(data[2]);
+        myViewHolder.textViewFecha.setText(builder.toString());
         myViewHolder.textViewCliente.setText(data[3]);
 
 

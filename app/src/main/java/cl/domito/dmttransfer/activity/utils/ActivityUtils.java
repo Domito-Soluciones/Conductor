@@ -79,9 +79,11 @@ public class ActivityUtils {
         try {
             NotificationManager mNotifyMgr = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                CharSequence channelName = "canal-" + id;
+                StringBuilder builder = StringBuilderUtil.getInstance();;
+                builder.append( "canal-" ).append(id);
+                CharSequence channelName = builder.toString();
                 NotificationChannel notificationChannel = null;
-                notificationChannel = new NotificationChannel(id + "", channelName, NotificationManager.IMPORTANCE_HIGH);
+                notificationChannel = new NotificationChannel(Integer.toString(id ), channelName, NotificationManager.IMPORTANCE_HIGH);
                 notificationChannel.enableLights(true);
                 notificationChannel.setLightColor(Color.RED);
                 notificationChannel.enableVibration(true);
@@ -93,7 +95,7 @@ public class ActivityUtils {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(activity, 0, intent, 0);
-            mBuilder = new NotificationCompat.Builder(activity, id + "")
+            mBuilder = new NotificationCompat.Builder(activity, Integer.toString(id))
                     .setContentIntent(pendingIntent)
                     .setContentTitle(titulo)
                     .setSmallIcon(smallIcon)
@@ -106,7 +108,7 @@ public class ActivityUtils {
         catch(Exception e)
         {
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 
@@ -117,9 +119,11 @@ public class ActivityUtils {
         try {
             NotificationManager mNotifyMgr = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P) {
-                CharSequence channelName = "canal-" + id;
+                StringBuilder builder = StringBuilderUtil.getInstance();;
+                builder.append("canal-").append(id);
+                CharSequence channelName =  builder.toString();
                 NotificationChannel notificationChannel = null;
-                notificationChannel = new NotificationChannel(id + "", channelName, NotificationManager.IMPORTANCE_HIGH);
+                notificationChannel = new NotificationChannel(Integer.toString(id) , channelName, NotificationManager.IMPORTANCE_HIGH);
                 notificationChannel.enableLights(true);
                 notificationChannel.setLightColor(Color.RED);
                 notificationChannel.enableVibration(true);
@@ -131,7 +135,7 @@ public class ActivityUtils {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
             intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             PendingIntent pendingIntent = PendingIntent.getActivity(activity, 0, intent, 0);
-            mBuilder = new NotificationCompat.Builder(activity, id + "")
+            mBuilder = new NotificationCompat.Builder(activity, Integer.toString(id ))
                     .setContentIntent(pendingIntent)
                     .setContentTitle(titulo)
                     .setSmallIcon(smallIcon)
@@ -145,7 +149,7 @@ public class ActivityUtils {
         catch(Exception e)
         {
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 
@@ -168,7 +172,7 @@ public class ActivityUtils {
         ActivityManager manager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
             if (serviceClass.getName().equals(service.service.getClassName())) {
-                Log.i ("isMyServiceRunning?", true+"");
+                Log.i ("isMyServiceRunning?", Boolean.toString(true));
                 return true;
             }
         }
@@ -242,7 +246,7 @@ public class ActivityUtils {
         {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         if(conductor.servicio != null && conductor.servicio.length() > 0) {
             try {
@@ -255,14 +259,16 @@ public class ActivityUtils {
                 if ((ruta.equals("ZP") && !conductor.zarpeIniciado)){
                     String cliente = primero.getString("servicio_cliente");
                     String destino = primero.getString("servicio_cliente_direccion");
-                    lista.add(cliente + "%%" + destino + "%0%0");
+                    StringBuilder builder =StringBuilderUtil.getInstance();
+                    builder.append(cliente).append("%%").append(destino).append("%0%0");
+                    lista.add(builder.toString());
                 }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
                 EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
             }
         }
         if(conductor.servicio != null && conductor.servicio.length() > 0) {
@@ -275,19 +281,22 @@ public class ActivityUtils {
                         String celular = servicio.getString("servicio_pasajero_celular");
                         String destino = servicio.getString("servicio_destino");
                         String estado = servicio.getString("servicio_pasajero_estado");
+                        StringBuilder builder = StringBuilderUtil.getInstance();
+                        builder.append(nombre).append("%").append(celular).append("%")
+                                .append(destino).append("%").append(estado).append("%").append(id);
                         if (servicio.getString("servicio_truta").contains("ZP")) {
                             if (!estado.equals("3") && !estado.equals("2")) {
-                                lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                                lista.add(builder.toString());
                             }
                         } else if (servicio.getString("servicio_truta").contains("RG")) {
                             if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
-                                lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                                lista.add(builder.toString());
                             }
                         }else if(servicio.getString("servicio_truta").contains("XX"))
                         {
                             if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
                                 if(!destino.equals("")) {
-                                    lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                                    lista.add(builder.toString());
                                 }
                             }
                         }
@@ -295,7 +304,7 @@ public class ActivityUtils {
                 } catch (Exception e) {
                     e.printStackTrace();
                     EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
                 }
             }
         }
@@ -306,14 +315,16 @@ public class ActivityUtils {
                 if (ruta.equals("RG")) {
                     String cliente = ultimo.getString("servicio_cliente");
                     String destino = ultimo.getString("servicio_cliente_direccion");
-                    lista.add(cliente + "%%" + destino + "%0%0");
+                    StringBuilder builder = StringBuilderUtil.getInstance();
+                    builder.append(cliente).append("%%").append(destino).append("%0%0");
+                    lista.add(builder.toString());
                 }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
                 EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
             }
         }
         if(lista.size() > 0 ) {
@@ -331,32 +342,33 @@ public class ActivityUtils {
                 }
             });
         }
-        else if(conductor.servicioActualRuta.contains("XX"))
-        {
-            AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
-            dialogo2.setTitle("Motivo Cancelación");
-            dialogo2.setMessage("Ingrese motivo de cancelación");
-            dialogo2.setCancelable(false);
-            final EditText input = new EditText(activity);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT);
-            input.setLayoutParams(lp);
-            dialogo2.setView(input);
-            dialogo2.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    if(!input.getText().toString().equals("")) {
-                        activity.finish();
-                        CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
-                        cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6",input.getText().toString());
-                        conductor.zarpeIniciado = false;
-                        Toast.makeText(activity,"Servicio cancelado",Toast.LENGTH_SHORT).show();
+        else if(conductor.servicioActualRuta.contains("XX")) {
+                AlertDialog.Builder dialogo2 = new AlertDialog.Builder(activity);
+                dialogo2.setTitle("Motivo Cancelación");
+                dialogo2.setMessage("Ingrese motivo de cancelación");
+                dialogo2.setCancelable(false);
+                final EditText input = new EditText(activity);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setLayoutParams(lp);
+                dialogo2.setView(input);
+                dialogo2.setPositiveButton("Guardar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (!input.getText().toString().equals("")) {
+                            activity.finish();
+                            CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
+                            cambiarEstadoServicioOperation.execute(conductor.servicioActual, "6", input.getText().toString());
+                            conductor.zarpeIniciado = false;
+                            Toast.makeText(activity, "Servicio cancelado", Toast.LENGTH_SHORT).show();
+                        }
                     }
+                });
+                if(!activity.isDestroyed()) {
+                    dialogo2.show();
                 }
-            });
-            dialogo2.show();
-        }
+            }
     }
 
     public static void finalizar(Activity activity)
@@ -385,7 +397,7 @@ public class ActivityUtils {
         {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 

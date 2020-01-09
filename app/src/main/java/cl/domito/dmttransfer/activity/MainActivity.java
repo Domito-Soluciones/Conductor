@@ -50,6 +50,7 @@ import java.util.concurrent.ExecutionException;
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewProgramadoAdapter;
 import cl.domito.dmttransfer.activity.utils.ActivityUtils;
+import cl.domito.dmttransfer.activity.utils.StringBuilderUtil;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.http.Utilidades;
 import cl.domito.dmttransfer.service.BurbujaService;
@@ -379,15 +380,16 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         } catch (ExecutionException e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         } catch (InterruptedException e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
-        ArrayList<String> lista = new ArrayList();
-        String ant = "";
+        ArrayList<String> lista = null;
         if(jsonArray != null) {
+            lista = new ArrayList();
+            String ant = "";
             for (int i = 0; i < jsonArray.length(); i++) {
                 try
                 {
@@ -398,18 +400,22 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
                     String servicioHora = jsonObject.getString("servicio_hora");
                     String servicioCliente = jsonObject.getString("servicio_cliente");
                     String servicioEstado = jsonObject.getString("servicio_estado");
+                    StringBuilder builder = StringBuilderUtil.getInstance();
                     if (!servicioId.equals(ant)) {
-                        lista.add(servicioId + "%" + Utilidades.FORMAT.format(date) + "%" + servicioHora + "%" + servicioCliente + "%" + servicioEstado);
+                        builder.append(servicioId).append("%").append(Utilidades.FORMAT.format(date))
+                                .append("%").append(servicioHora).append("%").append(servicioCliente)
+                                .append("%").append(servicioEstado);
+                        lista.add(builder.toString());
                     }
                     ant = servicioId;
                 } catch (Exception e) {
                     e.printStackTrace();
                     EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
                 }
             }
         }
-        if(lista.size() > 0 ) {
+        if(lista != null && lista.size() > 0 ) {
             String[] array = new String[lista.size()];
             array = lista.toArray(array);
             mAdapter = new ReciclerViewProgramadoAdapter(this, array);

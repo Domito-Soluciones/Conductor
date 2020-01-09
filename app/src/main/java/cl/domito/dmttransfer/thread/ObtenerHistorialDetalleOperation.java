@@ -17,6 +17,7 @@ import cl.domito.dmttransfer.activity.HistoricoActivity;
 import cl.domito.dmttransfer.activity.HistoricoDetalleActivity;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewDetalleAdapter;
 import cl.domito.dmttransfer.activity.utils.ActivityUtils;
+import cl.domito.dmttransfer.activity.utils.StringBuilderUtil;
 import cl.domito.dmttransfer.dominio.Conductor;
 
 public class ObtenerHistorialDetalleOperation extends AsyncTask<String, Void, Void> {
@@ -50,6 +51,7 @@ public class ObtenerHistorialDetalleOperation extends AsyncTask<String, Void, Vo
 
     @Override
     protected Void doInBackground(String... strings) {
+        dialog.show();
         ObtenerServicioHistoricoOperation obtenerServicioHistoricoOperation = new ObtenerServicioHistoricoOperation();
         try
         {
@@ -61,7 +63,9 @@ public class ObtenerHistorialDetalleOperation extends AsyncTask<String, Void, Vo
                 JSONObject servicio = historico.getJSONObject(i);
                 if (i == 0) {
                     textviewServicioValor.setText(servicio.getString("servicio_id"));
-                    textviewFechaValor.setText(servicio.getString("servicio_fecha") + " " + servicio.getString("servicio_hora"));
+                    StringBuilder builder = StringBuilderUtil.getInstance();
+                    builder.append(servicio.getString("servicio_fecha")).append(" ").append(servicio.getString("servicio_hora"));
+                    textviewFechaValor.setText(builder.toString());
                     textviewClienteValor.setText(servicio.getString("servicio_cliente"));
                     textviewRutaValor.setText(servicio.getString("servicio_ruta"));
                     textviewTarifaValor.setText(servicio.getString("servicio_tarifa"));
@@ -71,9 +75,11 @@ public class ObtenerHistorialDetalleOperation extends AsyncTask<String, Void, Vo
                 String nombre = servicio.getString("servicio_pasajero_nombre");
                 String celular = servicio.getString("servicio_pasajero_celular");
                 String destino = servicio.getString("servicio_destino");
-                lista.add(nombre + "%" + celular + "%" + destino);
+                StringBuilder builder = StringBuilderUtil.getInstance();
+                builder.append(nombre).append("%").append(celular).append("%").append(destino);
+                lista.add(builder.toString());
             }
-            textviewCantidadValor.setText(cantidad + "");
+            textviewCantidadValor.setText(Integer.toString(cantidad));
             if (lista.size() > 0) {
                 String[] array = new String[lista.size()];
                 array = lista.toArray(array);
@@ -84,7 +90,7 @@ public class ObtenerHistorialDetalleOperation extends AsyncTask<String, Void, Vo
         } catch (Exception e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         return null;
     }
@@ -95,7 +101,7 @@ public class ObtenerHistorialDetalleOperation extends AsyncTask<String, Void, Vo
             @Override
             public void run() {
                 if(!context.get().isDestroyed()) {
-                    dialog.show();
+
                 }
             }
         });

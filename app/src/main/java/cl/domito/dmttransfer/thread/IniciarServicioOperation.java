@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewPasajeroAdapter;
 import cl.domito.dmttransfer.activity.utils.ActivityUtils;
+import cl.domito.dmttransfer.activity.utils.StringBuilderUtil;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.http.RequestConductor;
 
@@ -63,14 +64,16 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
                 if ((ruta.equals("ZP") && !conductor.zarpeIniciado) ) {
                     String cliente = primero.getString("servicio_cliente");
                     String destino = primero.getString("servicio_cliente_direccion");
-                    lista.add(cliente + "%%" + destino + "%0%0");
+                    StringBuilder builder = StringBuilderUtil.getInstance();
+                    builder.append(cliente).append("%%").append(destino).append("%0%0");
+                    lista.add(builder.toString());
                 }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
                 EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
             }
         }
         if(conductor.servicio != null) {
@@ -83,28 +86,34 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
                         String celular = servicio.getString("servicio_pasajero_celular");
                         String destino = servicio.getString("servicio_destino");
                         String estado = servicio.getString("servicio_pasajero_estado");
+                        StringBuilder builder = StringBuilderUtil.getInstance();
                         if (servicio.getString("servicio_truta").contains("ZP")) {
                             if (!estado.equals("3") && !estado.equals("2")) {
-                                lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                                builder.append(nombre).append("%").append(celular).append("%")
+                                        .append(destino).append("%").append(estado).append("%").append(id);
+                                lista.add(builder.toString());
                             }
                         } else if (servicio.getString("servicio_truta").contains("RG")) {
                             if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
-                                lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                                builder.append(nombre).append("%").append(celular).append("%")
+                                        .append(destino).append("%").append(estado).append("%").append(id);
+                                lista.add(builder.toString());
                             }
                         } else if(servicio.getString("servicio_truta").contains("XX"))
                         {
                             if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
                                 if(!destino.equals("")) {
-                                    lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                                    builder.append(nombre).append("%").append(celular).append("%")
+                                            .append(destino).append("%").append(estado).append("%").append(id);
+                                    lista.add(builder.toString());
                                 }
                             }
                         }
-
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                     EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
                 }
             }
         }
@@ -115,14 +124,16 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
                 if (ruta.equals("RG")) {
                     String cliente = ultimo.getString("servicio_cliente");
                     String destino = ultimo.getString("servicio_cliente_direccion");
-                    lista.add(cliente + "%%" + destino + "%0%0");
+                    StringBuilder builder = StringBuilderUtil.getInstance();
+                    builder.append(cliente).append("%%").append(destino).append("%0%0");
+                    lista.add(builder.toString());
                 }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
                 EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
             }
         }
         if(lista.size() > 0 ) {

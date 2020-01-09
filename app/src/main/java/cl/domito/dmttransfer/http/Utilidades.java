@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cl.domito.dmttransfer.R;
+import cl.domito.dmttransfer.activity.utils.StringBuilderUtil;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.thread.EnviarLogOperation;
 
@@ -52,6 +53,7 @@ public class Utilidades {
 
     public static JSONObject enviarPost(String urlDest, List<NameValuePair> params) throws IOException {
         JSONObject jsonObject = null;
+        BufferedReader rd = null;
         Activity activity = (Activity) conductor.context;
         TextView textViewError = activity.findViewById(R.id.textViewError);
         if (!validarConexion()) {
@@ -92,11 +94,11 @@ public class Utilidades {
                 params.add(new BasicNameValuePair("app", "app"));
             }
             HttpResponse response = client.execute(post);
-            BufferedReader rd = new BufferedReader(
+            rd = new BufferedReader(
                     new InputStreamReader(response.getEntity().getContent()));
 
             String line = "";
-            StringBuilder result = new StringBuilder();
+            StringBuilder result = StringBuilderUtil.getInstance();
             while ((line = rd.readLine()) != null) {
                 result.append(line);
                 log(urlDest,line);
@@ -104,7 +106,7 @@ public class Utilidades {
             jsonObject = new JSONObject(result.toString());
         } catch (UnknownHostException e) {
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
 
         } catch (IOException ioe) {
             tipoError = 1;
@@ -117,7 +119,7 @@ public class Utilidades {
                 }
             });
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,ioe.getMessage(),ioe.getStackTrace()[0].getClassName(),ioe.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,ioe.getMessage(),ioe.getStackTrace()[0].getClassName(),Integer.toString(ioe.getStackTrace()[0].getLineNumber()));
         } catch (Exception e) {
             tipoError = 1;
             activity.runOnUiThread(new Runnable() {
@@ -130,13 +132,20 @@ public class Utilidades {
             });
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
+        }
+        finally {
+            try {
+                rd.close();
+            }
+            catch (Exception e){}
         }
         return jsonObject;
     }
 
     public static JSONArray enviarPostArray(String urlDest, List<NameValuePair> params) {
         JSONArray jsonArray = null;
+        BufferedReader rd = null;
         Activity activity = (Activity) conductor.context;
         TextView textViewError = activity.findViewById(R.id.textViewError);
         if (!validarConexion()) {
@@ -171,17 +180,17 @@ public class Utilidades {
         try {
             if (params != null) {
                 params.add(new BasicNameValuePair("app", "app"));
-                post.setEntity(new UrlEncodedFormEntity(params));
-            } else {
-                params = new ArrayList();
-                params.add(new BasicNameValuePair("app", "app"));
-            }
-            HttpResponse response = client.execute(post);
-            BufferedReader rd = new BufferedReader(
+            post.setEntity(new UrlEncodedFormEntity(params));
+        } else {
+            params = new ArrayList();
+            params.add(new BasicNameValuePair("app", "app"));
+        }
+        HttpResponse response = client.execute(post);
+            rd = new BufferedReader(
                     new InputStreamReader(response.getEntity().getContent()));
 
             String line = "";
-            StringBuilder result = new StringBuilder();
+            StringBuilder result = StringBuilderUtil.getInstance();
             while ((line = rd.readLine()) != null) {
                 result.append(line);
                 log(urlDest,line);
@@ -190,7 +199,7 @@ public class Utilidades {
 
         } catch (UnknownHostException e) {
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         } catch (IOException ioe) {
             tipoError = 1;
             activity.runOnUiThread(new Runnable() {
@@ -202,7 +211,7 @@ public class Utilidades {
                 }
             });
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,ioe.getMessage(),ioe.getStackTrace()[0].getClassName(),ioe.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,ioe.getMessage(),ioe.getStackTrace()[0].getClassName(),Integer.toString(ioe.getStackTrace()[0].getLineNumber()));
         } catch (Exception e) {
             tipoError = 1;
             activity.runOnUiThread(new Runnable() {
@@ -215,7 +224,13 @@ public class Utilidades {
             });
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
+        }
+        finally {
+            try {
+                rd.close();
+            }
+            catch (Exception e){}
         }
 
         return jsonArray;
@@ -247,43 +262,47 @@ public class Utilidades {
     }
 
     public static String formatoMoneda(String cantidad){
+        String respuesta = null;
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append("$ ");
         if(cantidad.length() < 4){
-            return cantidad;
+            builder.append(cantidad);
         }
-        if(cantidad.length() == 4){
+        else if(cantidad.length() == 4){
             String mil = cantidad.substring(0,1);
             String resto = cantidad.substring(1,4);
-            return mil+"."+resto;
+            builder.append(mil).append(".").append(resto);
         }
-        if(cantidad.length() == 5){
+        else if(cantidad.length() == 5){
             String mil = cantidad.substring(0,2);
             String resto = cantidad.substring(2,5);
-            return mil+"."+resto;
+            builder.append(mil).append(".").append(resto);
         }
-        if(cantidad.length() == 6){
+        else if(cantidad.length() == 6){
             String mil = cantidad.substring(0,3);
             String resto = cantidad.substring(3,6);
-            return mil+"."+resto;
+            builder.append(mil).append(".").append(resto);
         }
-        if(cantidad.length() == 7){
+        else if(cantidad.length() == 7){
             String millon = cantidad.substring(0,1);
             String mil = cantidad.substring(1,4);
             String resto = cantidad.substring(4,7);
-            return millon+"."+mil+"."+resto;
+            builder.append(millon).append(".").append(mil).append(".").append(resto);
         }
-        if(cantidad.length() == 8){
+        else if(cantidad.length() == 8){
             String millon = cantidad.substring(0,2);
             String mil = cantidad.substring(2,5);
             String resto = cantidad.substring(5,8);
-            return millon+"."+mil+"."+resto;
+            builder.append(millon).append(".").append(mil).append(".").append(resto);
         }
-        if(cantidad.length() == 9){
+        else if(cantidad.length() == 9){
             String millon = cantidad.substring(0,3);
             String mil = cantidad.substring(3,6);
             String resto = cantidad.substring(6,9);
-            return millon+"."+mil+"."+resto;
+            builder.append(millon).append(".").append(mil).append(".").append(resto);
         }
-        return cantidad;
+        respuesta = builder.toString();
+        return respuesta;
     }
 
 }

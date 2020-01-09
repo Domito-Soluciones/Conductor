@@ -1,5 +1,6 @@
 package cl.domito.dmttransfer.activity;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,8 @@ import java.util.ArrayList;
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewDetalleAdapter;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewDetalleEspAdapter;
+import cl.domito.dmttransfer.activity.utils.ActivityUtils;
+import cl.domito.dmttransfer.activity.utils.StringBuilderUtil;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.http.Utilidades;
 import cl.domito.dmttransfer.thread.EnviarLogOperation;
@@ -90,10 +93,12 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
                 JSONObject servicio = historico.getJSONObject(i);
                 if (i == 0) {
                     textviewServicioValor.setText(servicio.getString("servicio_id"));
-                    textviewFechaValor.setText(servicio.getString("servicio_fecha") + " " + servicio.getString("servicio_hora"));
+                    StringBuilder builder = StringBuilderUtil.getInstance();
+                    builder.append(servicio.getString("servicio_fecha")).append(" ").append(servicio.getString("servicio_hora"));
+                    textviewFechaValor.setText(builder.toString());
                     textviewClienteValor.setText(servicio.getString("servicio_cliente"));
                     textviewRutaValor.setText(servicio.getString("servicio_ruta"));
-                    textviewTarifaValor.setText("$ "+ Utilidades.formatoMoneda(servicio.getString("servicio_tarifa")));
+                    textviewTarifaValor.setText(Utilidades.formatoMoneda(servicio.getString("servicio_tarifa")));
                     textviewObservacionValor.setText(servicio.getString("servicio_observacion").equals("") ? "Sin observaciones" : servicio.getString("servicio_observacion"));
                 }
                 String nombre = servicio.getString("servicio_pasajero_nombre");
@@ -108,7 +113,7 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
                             nombreAux = nombreComp;
                             cantidad++;
                         }
-                        else if(!ruta.equals("XX")){
+                        else if(!ruta.equals("ESP")){
                             cantidad++;
                         }
                             String[] data = aux.split("-");
@@ -116,10 +121,15 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
                             celular = data[1].replace("_par","").replace("_des","");
                         }
                     }
-                    lista.add(nombre + "%" + celular + "%" + destino);
+                    else{
+                        cantidad++;
+                    }
+                    StringBuilder builder = StringBuilderUtil.getInstance();
+                    builder.append(nombre).append("%").append(celular).append("%").append(destino);
+                    lista.add(builder.toString());
                 }
             }
-            textviewCantidadValor.setText(cantidad + "");
+            textviewCantidadValor.setText(Integer.toString(cantidad ));
             if (lista.size() > 0) {
                 Conductor conductor = Conductor.getInstance();
                 if (ruta.equals("ESP")) {
@@ -135,7 +145,9 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
                             if (listaEspecial.size() == 0) {
                                 listaEspecial.add(dato);
                             } else {
-                                listaEspecial.set(i - 1, listaEspecial.get(i - 1) + "%%%" + dato);
+                                StringBuilder builder = StringBuilderUtil.getInstance();
+                                builder.append(listaEspecial.get(i - 1)).append("%%%").append(dato);
+                                listaEspecial.set(i - 1, builder.toString());
                             }
                         }
                     }
@@ -154,7 +166,7 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 

@@ -9,7 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import cl.domito.dmttransfer.R;
+import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.dominio.Conductor;
+import cl.domito.dmttransfer.http.Utilidades;
 import cl.domito.dmttransfer.thread.AgregarObservacionOperation;
 import cl.domito.dmttransfer.thread.CambiarMovilOperation;
 import cl.domito.dmttransfer.thread.EnviarLogOperation;
@@ -43,13 +45,13 @@ public class FinServicioActivity extends AppCompatActivity {
             textView.setText(bundle.getString("id"));
             textViewCliente.setText(bundle.getString("cliente"));
             textViewFecha.setText(bundle.getString("fecha"));
-            textViewTarifa.setText(bundle.getString("tarifa"));
+            textViewTarifa.setText(Utilidades.formatoMoneda(bundle.getString("tarifa")));
         }
         catch(Exception e)
         {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
 
         imageViewAtras.setOnClickListener(new View.OnClickListener() {

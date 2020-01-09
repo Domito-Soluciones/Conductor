@@ -29,6 +29,7 @@ import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewDetalleAdapter;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewDetalleEspAdapter;
 import cl.domito.dmttransfer.activity.utils.ActivityUtils;
+import cl.domito.dmttransfer.activity.utils.StringBuilderUtil;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.http.Utilidades;
 import cl.domito.dmttransfer.thread.CambiarEstadoServicioOperation;
@@ -105,6 +106,12 @@ public class ServicioDetalleActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        volver();
+        super.onBackPressed();
+    }
+
+    @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         obtenerServicios();
         super.onPostCreate(savedInstanceState);
@@ -148,7 +155,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
                 EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
             }
         }else if (estado.equals("4")) {
             Intent mainIntent = new Intent(this, PasajeroActivity.class);
@@ -225,7 +232,9 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     if (ruta.equals("ZP")) {
                         String cliente = primero.getString("servicio_cliente");
                         String destino = primero.getString("servicio_cliente_direccion");
-                        lista.add(cliente + "%%" + destino);
+                        StringBuilder builder = StringBuilderUtil.getInstance();
+                        builder.append(cliente).append("%%").append(destino);
+                        lista.add(builder.toString());
 
                     }
                 }
@@ -238,7 +247,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     textviewClienteValor.setText(servicio.getString("servicio_cliente"));
                     textviewRutaValor.setText(servicio.getString("servicio_ruta"));
                     textviewTRutaValor.setText(servicio.getString("servicio_truta"));
-                    textviewTarifaValor.setText("$ "+ Utilidades.formatoMoneda(servicio.getString("servicio_tarifa")));
+                    textviewTarifaValor.setText(Utilidades.formatoMoneda(servicio.getString("servicio_tarifa")));
                     textviewObservacionValor.setText(servicio.getString("servicio_observacion").equals("") ? "Sin observaciones" : servicio.getString("servicio_observacion"));
                     estado = servicio.getString("servicio_estado");
                     String nombre = servicio.getString("servicio_pasajero_nombre");
@@ -256,7 +265,9 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                         cantidad++;
                     }
                     if(!destino.equals("")) {
-                        lista.add(nombre + "%" + celular + "%" + destino);
+                        StringBuilder builder = StringBuilderUtil.getInstance();
+                        builder.append(nombre).append("%").append(celular).append("%").append(destino);
+                        lista.add(builder.toString());
                     }
 
                 }
@@ -266,10 +277,12 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                     if (ruta.equals("RG")) {
                         String cliente = ultimo.getString("servicio_cliente");
                         String destino = ultimo.getString("servicio_cliente_direccion");
-                        lista.add(cliente + "%%" + destino);
+                        StringBuilder builder = StringBuilderUtil.getInstance();
+                        builder.append(cliente).append("%%").append(destino);
+                        lista.add(builder.toString());
                     }
                 }
-                textviewCantidadValor.setText(cantidad + "");
+                textviewCantidadValor.setText(Integer.toString(cantidad));
                 conductor.cantidadPasajeros = cantidad;
                 if (lista.size() > 0) {
                     if(conductor.servicioActualRuta.equals("XX-ESP")){
@@ -287,7 +300,9 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                                     listaEspecial.add(dato);
                                 }
                                 else{
-                                    listaEspecial.set(i-1,listaEspecial.get(i-1)+"%%%"+dato);
+                                    StringBuilder builder = StringBuilderUtil.getInstance();
+                                    builder.append(listaEspecial.get(i-1)).append("%%%").append(dato);
+                                    listaEspecial.set(i-1,builder.toString());
                                 }
                             }
                         }
@@ -306,7 +321,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
                 EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
             }
 
             if (estado.equals("1")) {
@@ -321,7 +336,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 

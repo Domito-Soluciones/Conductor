@@ -37,6 +37,7 @@
     import cl.domito.dmttransfer.activity.MainActivity;
     import cl.domito.dmttransfer.activity.PasajeroActivity;
     import cl.domito.dmttransfer.activity.utils.ActivityUtils;
+    import cl.domito.dmttransfer.activity.utils.StringBuilderUtil;
     import cl.domito.dmttransfer.dominio.Conductor;
     import cl.domito.dmttransfer.service.BurbujaService;
     import cl.domito.dmttransfer.thread.CambiarEstadoServicioOperation;
@@ -705,14 +706,19 @@
                     SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
                     String tipoNav = pref.getString("nav", "");
                     String paquete = "";
+                    StringBuilder builder = StringBuilderUtil.getInstance();
                     if(tipoNav.equals("google"))
                     {
-                        uri = "google.navigation:q="+addresses.get(0).getLatitude() + "," + addresses.get(0).getLongitude();
+                        builder.append("google.navigation:q=").append(addresses.get(0).getLatitude())
+                                .append(",").append(addresses.get(0).getLongitude());
+                        uri = builder.toString() ;
                         paquete = "com.google.android.apps.maps";
                     }
                     else if(tipoNav.equals("") || tipoNav.equals("waze"))
                     {
-                        uri = "geo: " + addresses.get(0).getLatitude() + "," + addresses.get(0).getLongitude();
+                        builder.append("geo:").append(addresses.get(0).getLatitude())
+                                .append(",").append(addresses.get(0).getLongitude());
+                        uri = builder.toString();
                         paquete = "com.waze";
                 }
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
@@ -728,7 +734,7 @@
             {
                 e.printStackTrace();
                 EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
             }
         }
 
@@ -744,7 +750,7 @@
             {
                 e.printStackTrace();
                 EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
             }
             if(conductor.servicio != null) {
                 try {
@@ -757,14 +763,16 @@
                     if ((ruta.equals("ZP") && !conductor.zarpeIniciado)){
                         String cliente = primero.getString("servicio_cliente");
                         String destino = primero.getString("servicio_cliente_direccion");
-                        lista.add(cliente + "%%" + destino + "%0%0");
+                        StringBuilder builder = StringBuilderUtil.getInstance();
+                        builder.append(cliente).append("%%").append(destino).append("%0%0");
+                        lista.add(builder.toString());
                     }
                 }
                 catch (Exception e)
                 {
                     e.printStackTrace();
                     EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
                 }
             }
             if(conductor.servicio != null) {
@@ -777,20 +785,23 @@
                             String celular = servicio.getString("servicio_pasajero_celular");
                             String destino = servicio.getString("servicio_destino");
                             String estado = servicio.getString("servicio_pasajero_estado");
+                            StringBuilder builder = StringBuilderUtil.getInstance();
+                            builder.append(nombre).append("%").append(celular).append("%")
+                                    .append(destino).append("%").append(destino).append("%").append(i);
                             if (servicio.getString("servicio_truta").contains("ZP")) {
                                 if (!estado.equals("3") && !estado.equals("2")) {
-                                    lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                                    lista.add(builder.toString());
                                 }
                             } else if (servicio.getString("servicio_truta").contains("RG")) {
                                 if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
-                                    lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                                    lista.add(builder.toString());
                                 }
                             }
                             else if(servicio.getString("servicio_truta").contains("XX"))
                             {
                                 if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
                                     if(!destino.equals("")) {
-                                        lista.add(nombre + "%" + celular + "%" + destino + "%" + estado + "%" + id);
+                                        lista.add(builder.toString());
                                     }
                                 }
                             }
@@ -798,7 +809,7 @@
                     } catch (Exception e) {
                         e.printStackTrace();
                         EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                        enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                        enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
                     }
                 }
             }
@@ -809,14 +820,16 @@
                     if (ruta.equals("RG")) {
                         String cliente = ultimo.getString("servicio_cliente");
                         String destino = ultimo.getString("servicio_cliente_direccion");
-                        lista.add(cliente + "%%" + destino + "%0%0");
+                        StringBuilder builder = StringBuilderUtil.getInstance();
+                        builder.append(cliente).append("%%").append(destino).append("%0%0");
+                        lista.add(builder.toString());
                     }
                 }
                 catch (Exception e)
                 {
                     e.printStackTrace();
                     EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                    enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
                 }
             }
             if(lista.size() > 0 ) {

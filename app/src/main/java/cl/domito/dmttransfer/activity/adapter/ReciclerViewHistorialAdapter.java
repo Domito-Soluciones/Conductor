@@ -20,12 +20,12 @@ import android.widget.TextView;
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.HistoricoDetalleActivity;
 import cl.domito.dmttransfer.activity.utils.ActivityUtils;
+import cl.domito.dmttransfer.activity.utils.StringBuilderUtil;
 
 public class ReciclerViewHistorialAdapter extends RecyclerView.Adapter<ReciclerViewHistorialAdapter.MyViewHolder> {
 
     Activity activity;
     private String[] mDataset;
-    private AlertDialog dialog;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
@@ -47,7 +47,6 @@ public class ReciclerViewHistorialAdapter extends RecyclerView.Adapter<ReciclerV
     public ReciclerViewHistorialAdapter(Activity activity, String[] myDataset) {
         this.activity = activity;
         mDataset = myDataset;
-        dialog = ActivityUtils.setProgressDialog(activity);
     }
 
 
@@ -98,12 +97,15 @@ public class ReciclerViewHistorialAdapter extends RecyclerView.Adapter<ReciclerV
         }
         myViewHolder.textView.setText(idServicio);
         myViewHolder.textView.setTextColor(color);
-        myViewHolder.textViewFecha.setText(data[1] + " " + data[2]);
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(data[1]).append(" ").append(data[2]);
+        myViewHolder.textViewFecha.setText(builder.toString());
         myViewHolder.textViewCliente.setText(data[3]);
 
         myViewHolder.relativeLayout3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //dialog.show();
                 Intent i = new Intent(activity,HistoricoDetalleActivity.class);
                 i.putExtra("idServicio",idServicio);
                 i.putExtra("tipoServicio",ruta);

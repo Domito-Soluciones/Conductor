@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cl.domito.dmttransfer.activity.SplashScreenActivity;
+import cl.domito.dmttransfer.activity.utils.StringBuilderServiceUtil;
+import cl.domito.dmttransfer.activity.utils.StringBuilderUtil;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.thread.EnviarLogOperation;
 
@@ -26,7 +28,9 @@ public class RequestConductor {
 
     public static JSONObject loginConductor(String usuario, String password)
     {
-        String url = Utilidades.URL_BASE_CONDUCTOR + "Login.php";
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_CONDUCTOR).append("Login.php");
+        String url =  builder.toString();
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("usuario",usuario));
         try {
@@ -40,14 +44,14 @@ public class RequestConductor {
         } catch (Exception e) {
             e.printStackTrace();
         EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-        enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+        enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         try {
         }
         catch(Exception e)
         {
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         return null;
     }
@@ -60,7 +64,7 @@ public class RequestConductor {
         {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         return RESPUESTA;
     }
@@ -73,7 +77,7 @@ public class RequestConductor {
         catch (Exception e){
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         return jsonObject;
     }
@@ -90,14 +94,16 @@ public class RequestConductor {
         {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 
     public static JSONArray getRoute(String idServicio)
     {
         JSONArray jsonArray = null;
-        String url = Utilidades.URL_BASE_SERVICIO + "GetDetalleServicio.php";
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_SERVICIO).append("GetDetalleServicio.php");
+        String url = builder.toString();
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("id", idServicio));
         try
@@ -108,7 +114,7 @@ public class RequestConductor {
         {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         return jsonArray;
     }
@@ -117,8 +123,8 @@ public class RequestConductor {
         try {
             if(lastLocation != null) {
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
-                params.add(new BasicNameValuePair("lat", lastLocation.getLatitude() + ""));
-                params.add(new BasicNameValuePair("lon", lastLocation.getLongitude() + ""));
+                params.add(new BasicNameValuePair("lat", Double.toString(lastLocation.getLatitude() )));
+                params.add(new BasicNameValuePair("lon", Double.toString(lastLocation.getLongitude() )));
                 params.add(new BasicNameValuePair("conductor", conductor.id));
                 Utilidades.enviarPost(reqUrl, params);
             }
@@ -127,14 +133,16 @@ public class RequestConductor {
         {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 
     public static void actualizarComentarioAdicional(String idServicio,String comentario) {
         try {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            String url = Utilidades.URL_BASE_SERVICIO + "AddObservacionServicio.php";
+            StringBuilder builder = StringBuilderUtil.getInstance();
+            builder.append(Utilidades.URL_BASE_SERVICIO).append("AddObservacionServicio.php");
+            String url =  builder.toString();
             params.add(new BasicNameValuePair("observacion", comentario));
             params.add(new BasicNameValuePair("idServicio",idServicio ));
             Utilidades.enviarPost(url, params);
@@ -143,7 +151,7 @@ public class RequestConductor {
         {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 
@@ -156,14 +164,16 @@ public class RequestConductor {
         {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         return object;
     }
 
     public static JSONObject cambiarEstadoMovil(String estado) {
         JSONObject jsonObject = null;
-        String url2 = Utilidades.URL_BASE_MOVIL + "ModEstadoMovil.php";
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_MOVIL).append("ModEstadoMovil.php");
+        String url2 = builder.toString();
         List<NameValuePair> params2 = new ArrayList();
         params2.add(new BasicNameValuePair("conductor",conductor.id));
         params2.add(new BasicNameValuePair("estado",estado));
@@ -173,14 +183,16 @@ public class RequestConductor {
         } catch (IOException e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         return jsonObject;
     }
 
     public static JSONObject cambiarServicioMovil(String servicio) {
         JSONObject jsonObject = null;
-        String url = Utilidades.URL_BASE_MOVIL + "ModServicioMovil.php";
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_MOVIL ).append( "ModServicioMovil.php");
+        String url = builder.toString();
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("conductor",conductor.id));
         params.add(new BasicNameValuePair("servicio",servicio));
@@ -189,14 +201,16 @@ public class RequestConductor {
         } catch (IOException e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         return jsonObject;
     }
 
     public static JSONObject cambiarEstadoServicio(String idServicio,String estado,String obs) {
         JSONObject jsonObject = null;
-        String url2 = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicio.php";
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_SERVICIO ).append( "ModEstadoServicio.php");
+        String url2 =builder.toString();
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("id",idServicio));
         params.add(new BasicNameValuePair("estado",estado));
@@ -206,14 +220,16 @@ public class RequestConductor {
         } catch (IOException e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         return jsonObject;
     }
 
 
     public static void cambiarEstadoPasajeros(String estado) {
-        String url = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicioPasajeros.php";
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_SERVICIO ).append( "ModEstadoServicioPasajeros.php");
+        String url =builder.toString();
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("idServicio",conductor.servicioActual));
         params.add(new BasicNameValuePair("estado",estado));
@@ -222,12 +238,14 @@ public class RequestConductor {
         } catch (IOException e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 
     public static void cambiarEstadoPasajero(String estado,String observacion) {
-        String url = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicioPasajero.php";
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_SERVICIO ).append( "ModEstadoServicioPasajero.php");
+        String url =builder.toString();
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("idServicio",conductor.servicioActual));
         try {
@@ -235,24 +253,26 @@ public class RequestConductor {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         params.add(new BasicNameValuePair("observacion",observacion));
         params.add(new BasicNameValuePair("tipo",conductor.servicioActualRuta));
         params.add(new BasicNameValuePair("estado",estado));
-        params.add(new BasicNameValuePair("lat",conductor.location.getLatitude()+""));
-        params.add(new BasicNameValuePair("lon",conductor.location.getLongitude()+""));
+        params.add(new BasicNameValuePair("lat",Double.toString(conductor.location.getLatitude())));
+        params.add(new BasicNameValuePair("lon",Double.toString(conductor.location.getLongitude())));
         try {
             Utilidades.enviarPost(url,params);
         } catch (IOException e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 
     public static void obtenerServicioProgramados(String idServicio) {
-        String url = Utilidades.URL_BASE_SERVICIO + "GetServicioProgramado.php";
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_SERVICIO ).append( "GetServicioProgramado.php");
+        String url = builder.toString();
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("id",idServicio));
         params.add(new BasicNameValuePair("conductor",conductor.id));
@@ -263,13 +283,15 @@ public class RequestConductor {
         {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 
     public static JSONArray obtenerNotificaciones() {
         JSONArray jsonArray = null;
-        String url = Utilidades.URL_BASE_NOTIFICACION + "GetNotificaciones.php";
+        StringBuilder builder = StringBuilderServiceUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_NOTIFICACION ).append( "GetNotificaciones.php");
+        String url = builder.toString();
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("llave", conductor.id));
         try {
@@ -279,13 +301,15 @@ public class RequestConductor {
         {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         return jsonArray;
     }
 
     public static void logOut() {
-        String url = Utilidades.URL_BASE_MOVIL + "ModEstadoMovil.php";
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_MOVIL).append("ModEstadoMovil.php");
+        String url =  builder.toString();
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("conductor",conductor.id));
         params.add(new BasicNameValuePair("estado","0"));
@@ -294,12 +318,14 @@ public class RequestConductor {
         } catch (IOException e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 
     public static void cambiarEstadoServicioEspecial(String idServicio,String estado) {
-        String url = Utilidades.URL_BASE_SERVICIO + "ModEstadoServicioEspecial.php";
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_SERVICIO).append("ModEstadoServicioEspecial.php");
+        String url = builder.toString();
         List<NameValuePair> params = new ArrayList<NameValuePair>();
 
         params.add(new BasicNameValuePair("id",idServicio));
@@ -309,16 +335,18 @@ public class RequestConductor {
         } catch (IOException e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 
     public static void insertarNavegacion() {
-        String url = Utilidades.URL_BASE_SERVICIO + "AddServicioDetalleReal.php";
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_SERVICIO).append("AddServicioDetalleReal.php");
+        String url = builder.toString();
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("servicio",conductor.servicioActual));
-        params.add(new BasicNameValuePair("lat",conductor.location.getLatitude()+""));
-        params.add(new BasicNameValuePair("lon",conductor.location.getLongitude()+""));
+        params.add(new BasicNameValuePair("lat",Double.toString(conductor.location.getLatitude())));
+        params.add(new BasicNameValuePair("lon",Double.toString(conductor.location.getLongitude())));
         try {
             if(conductor.location.getLatitude() != latAnterior &&
                 conductor.location.getLongitude() != lngAnterior) {
@@ -329,12 +357,14 @@ public class RequestConductor {
         } catch (IOException e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 
     public static void cambiarEstadoNotificacion(String id) {
-        String url = Utilidades.URL_BASE_NOTIFICACION + "ModEstadoNotificacion.php";
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_NOTIFICACION).append("ModEstadoNotificacion.php");
+        String url = builder.toString();
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("id", id));
         params.add(new BasicNameValuePair("servicio", id));
@@ -343,33 +373,37 @@ public class RequestConductor {
         } catch (IOException e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 
     public static void actualizarLugarDestinoPasajero(String destino)
     {
-        String url = Utilidades.URL_BASE_SERVICIO + "ModDestinoPasajero.php";
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_SERVICIO).append("ModDestinoPasajero.php");
+        String url =  builder.toString() ;
         try {
             List<NameValuePair> params = new ArrayList();
             params.add(new BasicNameValuePair("servicio",conductor.servicioActual));
             params.add(new BasicNameValuePair("pasajero",conductor.pasajeroActual));
             params.add(new BasicNameValuePair("destino", new String(destino.getBytes(), "ISO-8859-1")));
             if(!destino.equals("")) {
-                params.add(new BasicNameValuePair("lat", conductor.location.getLatitude() + ""));
-                params.add(new BasicNameValuePair("lon", conductor.location.getLongitude() + ""));
+                params.add(new BasicNameValuePair("lat", Double.toString(conductor.location.getLatitude() )));
+                params.add(new BasicNameValuePair("lon", Double.toString(conductor.location.getLongitude() )));
             }
             Utilidades.enviarPost(url, params);
         } catch (Exception e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
     }
 
     public static void enviarLogError(String conductor,String error,String clase, String linea)
     {
-        String url = Utilidades.URL_BASE_LOG + "LogApp.php";
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_LOG).append("LogApp.php");
+        String url =  builder.toString();
         try {
             List<NameValuePair> params = new ArrayList();
             params.add(new BasicNameValuePair("id",conductor));

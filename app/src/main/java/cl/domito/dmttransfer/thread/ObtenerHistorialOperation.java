@@ -19,6 +19,7 @@ import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.HistoricoActivity;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewHistorialAdapter;
 import cl.domito.dmttransfer.activity.utils.ActivityUtils;
+import cl.domito.dmttransfer.activity.utils.StringBuilderUtil;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.http.RequestConductor;
 import cl.domito.dmttransfer.http.Utilidades;
@@ -39,13 +40,17 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
     protected JSONArray doInBackground(Void... voids) {
         Conductor conductor = Conductor.getInstance();
         Calendar c = Calendar.getInstance();
-        String fechaHasta = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
-        c.add(Calendar.MONTH,-2);
-        String fechaDesde = c.get(Calendar.DAY_OF_MONTH) + "/" + (c.get(Calendar.MONTH) + 1) + "/" + c.get(Calendar.YEAR);
-        String url = Utilidades.URL_BASE_SERVICIO + "GetServiciosHistoricos.php";
+        StringBuilder fechaHasta = StringBuilderUtil.getInstance();
         List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("desde",fechaDesde));
-        params.add(new BasicNameValuePair("hasta",fechaHasta));
+        fechaHasta.append(c.get(Calendar.DAY_OF_MONTH)).append("/").append((c.get(Calendar.MONTH) + 1) ).append("/").append(c.get(Calendar.YEAR));
+        params.add(new BasicNameValuePair("hasta",fechaHasta.toString()));
+        c.add(Calendar.MONTH,-2);
+        StringBuilder fechaDesde = StringBuilderUtil.getInstance();
+        fechaDesde.append(c.get(Calendar.DAY_OF_MONTH)).append("/").append((c.get(Calendar.MONTH) + 1) ).append("/").append(c.get(Calendar.YEAR));
+        params.add(new BasicNameValuePair("desde",fechaDesde.toString()));
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_SERVICIO).append("GetServiciosHistoricos.php");
+        String url = builder.toString();
         params.add(new BasicNameValuePair("conductor",conductor.id));
         JSONArray jsonObject = RequestConductor.getServicios(url,params);
         return jsonObject;
@@ -82,11 +87,15 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
                 String servicioCliente = jsonObject.getString("servicio_cliente");
                 String servicioEstado = jsonObject.getString("servicio_estado");
                 String servicioRuta = jsonObject.getString("servicio_ruta");
-                lista.add( servicioId + "%" + servicioFecha + "%"+ servicioHora + "%" + servicioCliente + "%" + servicioEstado + "%" + servicioRuta);
+                StringBuilder builder = StringBuilderUtil.getInstance();
+                builder.append(servicioId).append("%").append(servicioFecha).append("%")
+                        .append(servicioHora).append("%").append(servicioCliente).append("%")
+                        .append(servicioEstado).append("%").append(servicioRuta);
+                lista.add(builder.toString());
             } catch (Exception e) {
                 e.printStackTrace();
                 EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+                enviarLogOperation.execute(Conductor.getInstance().id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
             }
     }
 

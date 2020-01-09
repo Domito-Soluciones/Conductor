@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import java.util.ArrayList;
 import java.util.List;
 
+import cl.domito.dmttransfer.activity.utils.StringBuilderUtil;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.http.RequestConductor;
 import cl.domito.dmttransfer.http.Utilidades;
@@ -22,7 +23,9 @@ public class ObtenerServicioHistoricoOperation extends AsyncTask<String, Void, J
         JSONArray jsonArray = null;
         Conductor conductor = Conductor.getInstance();
         String idServicio = strings[0];
-        String url = Utilidades.URL_BASE_SERVICIO + "GetServicioHistorico.php";
+        StringBuilder builder = StringBuilderUtil.getInstance();
+        builder.append(Utilidades.URL_BASE_SERVICIO).append("GetServicioHistorico.php");
+        String url = builder.toString();
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("id",idServicio));
         try {
@@ -32,7 +35,7 @@ public class ObtenerServicioHistoricoOperation extends AsyncTask<String, Void, J
         {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),e.getStackTrace()[0].getLineNumber()+"");
+            enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         return jsonArray;
     }
