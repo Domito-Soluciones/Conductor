@@ -173,13 +173,13 @@ public class RequestConductor {
         JSONObject jsonObject = null;
         StringBuilder builder = StringBuilderUtil.getInstance();
         builder.append(Utilidades.URL_BASE_MOVIL).append("ModEstadoMovil.php");
-        String url2 = builder.toString();
+        String url = builder.toString();
         List<NameValuePair> params2 = new ArrayList();
         params2.add(new BasicNameValuePair("conductor",conductor.id));
         params2.add(new BasicNameValuePair("estado",estado));
         params2.add(new BasicNameValuePair("equipo", SplashScreenActivity.ANDROID_ID));
         try {
-            jsonObject = Utilidades.enviarPost(url2,params2);
+            jsonObject = Utilidades.enviarPost(url,params2);
         } catch (IOException e) {
             e.printStackTrace();
             EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
