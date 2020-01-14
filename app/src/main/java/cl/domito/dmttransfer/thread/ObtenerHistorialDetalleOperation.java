@@ -51,7 +51,14 @@ public class ObtenerHistorialDetalleOperation extends AsyncTask<String, Void, Vo
 
     @Override
     protected Void doInBackground(String... strings) {
-        dialog.show();
+        if(!context.get().isDestroyed()) {
+            try {
+                dialog.show();
+            }
+            catch(Exception e){
+
+            }
+        }
         ObtenerServicioHistoricoOperation obtenerServicioHistoricoOperation = new ObtenerServicioHistoricoOperation();
         try
         {

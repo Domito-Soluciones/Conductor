@@ -57,7 +57,12 @@ public class FinalizarRutaPasajeroOperation extends AsyncTask<String, Void, Void
             @Override
             public void run() {
                 if(!context.get().isDestroyed()) {
-                    dialog.show();
+                    try {
+                        dialog.show();
+                    }
+                    catch(Exception e){
+
+                    }
                 }
             }
         });

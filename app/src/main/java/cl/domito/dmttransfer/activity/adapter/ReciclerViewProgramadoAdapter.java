@@ -91,7 +91,15 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
                         Toast.makeText(activity,"Este servicio ya no se encuentra disponible",Toast.LENGTH_SHORT).show();
                     }
                     else {
-                        dialog.show();
+                        if(!activity.isDestroyed()) {
+                            try {
+                                dialog.show();
+                            }
+                            catch(Exception e){
+
+                            }
+
+                        }
                         Intent intent = new Intent(activity, ServicioDetalleActivity.class);
                         intent.putExtra("fecha", vh.textViewFecha.getText().toString());
                         intent.putExtra("id", vh.textView.getText().toString());
