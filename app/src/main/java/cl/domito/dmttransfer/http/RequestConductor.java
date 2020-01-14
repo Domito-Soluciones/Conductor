@@ -258,8 +258,15 @@ public class RequestConductor {
         params.add(new BasicNameValuePair("observacion",observacion));
         params.add(new BasicNameValuePair("tipo",conductor.servicioActualRuta));
         params.add(new BasicNameValuePair("estado",estado));
-        params.add(new BasicNameValuePair("lat",Double.toString(conductor.location.getLatitude())));
-        params.add(new BasicNameValuePair("lon",Double.toString(conductor.location.getLongitude())));
+        if(conductor.location != null){
+            params.add(new BasicNameValuePair("lat",Double.toString(conductor.location.getLatitude())));
+            params.add(new BasicNameValuePair("lon",Double.toString(conductor.location.getLongitude())));
+        }
+        else{
+            params.add(new BasicNameValuePair("lat","0"));
+            params.add(new BasicNameValuePair("lon","0"));
+        }
+
         try {
             Utilidades.enviarPost(url,params);
         } catch (IOException e) {

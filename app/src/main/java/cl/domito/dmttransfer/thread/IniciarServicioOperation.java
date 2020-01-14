@@ -139,13 +139,15 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
         if(lista.size() > 0 ) {
                 String[] array = new String[lista.size()];
             array  = lista.toArray(array);
-            ReciclerViewPasajeroAdapter mAdapter = new ReciclerViewPasajeroAdapter(context.get(),array);
-            context.get().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    recyclerView.setAdapter(mAdapter);
-                }
-            });
+            if(array != null) {
+                ReciclerViewPasajeroAdapter mAdapter = new ReciclerViewPasajeroAdapter(context.get(), array);
+                context.get().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        recyclerView.setAdapter(mAdapter);
+                    }
+                });
+            }
         }
         return idServicio;
     }

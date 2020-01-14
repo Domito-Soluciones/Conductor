@@ -46,6 +46,7 @@
     import cl.domito.dmttransfer.thread.FinalizarRutaPasajeroOperation;
     import cl.domito.dmttransfer.thread.FinalizarRutaPasajerosOperation;
     import cl.domito.dmttransfer.thread.IniciarServicioOperation;
+    import cl.domito.dmttransfer.thread.NavegarOperation;
     import cl.domito.dmttransfer.thread.ObtenerServicioOperation;
     import cl.domito.dmttransfer.thread.TomarPasajeroOperation;
 
@@ -146,7 +147,9 @@
                                     ActivityUtils.finalizar(activity);
                                 }
                             } else {
-                                navegar(direccionPasajero);
+                                NavegarOperation navegarOperation = new NavegarOperation((PasajeroActivity)activity);
+                                navegarOperation.execute(direccionPasajero);
+                                //navegar(direccionPasajero);
                             }
                         }
 
@@ -345,7 +348,9 @@
                             }
                             else if(!estadoPasajero.equals("0") && i == 0 && !conductor.pasajeroRepartido)
                             {
-                                navegar(direccionPasajero);
+                                NavegarOperation navegarOperation = new NavegarOperation((PasajeroActivity)activity);
+                                navegarOperation.execute(direccionPasajero);
+                                //navegar(direccionPasajero);
                             }
                             else if(!estadoPasajero.equals("0") && i == 0 && conductor.pasajeroRepartido)
                             {
@@ -524,7 +529,9 @@
                                     activity.finish();
                                 }
                             } else {
-                                navegar(direccionPasajero);
+                                NavegarOperation navegarOperation = new NavegarOperation((PasajeroActivity)activity);
+                                navegarOperation.execute(direccionPasajero);
+                                //navegar(direccionPasajero);
                             }
                         }
 
@@ -691,52 +698,6 @@
             return mDataset.length;
         }
 
-        private void navegar(String destino) {
-            activity.startService(new Intent(activity, BurbujaService.class));
-            conductor.navegando = true;
-            try {
-                Geocoder geocoder = new Geocoder(activity);
-                List<Address> addresses = geocoder.getFromLocationName(destino, 1);
-                Location location = new Location("");
-                location.setLatitude(addresses.get(0).getLatitude());
-                location.setLongitude(addresses.get(0).getLongitude());
-                conductor.locationDestino = location;
-                try {
-                    String uri = null;
-                    SharedPreferences pref = activity.getApplicationContext().getSharedPreferences("preferencias", Context.MODE_PRIVATE);
-                    String tipoNav = pref.getString("nav", "");
-                    String paquete = "";
-                    StringBuilder builder = StringBuilderUtil.getInstance();
-                    if(tipoNav.equals("google"))
-                    {
-                        builder.append("google.navigation:q=").append(addresses.get(0).getLatitude())
-                                .append(",").append(addresses.get(0).getLongitude());
-                        uri = builder.toString() ;
-                        paquete = "com.google.android.apps.maps";
-                    }
-                    else if(tipoNav.equals("") || tipoNav.equals("waze"))
-                    {
-                        builder.append("geo:").append(addresses.get(0).getLatitude())
-                                .append(",").append(addresses.get(0).getLongitude());
-                        uri = builder.toString();
-                        paquete = "com.waze";
-                }
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
-                intent.setPackage(paquete);
-                activity.startActivity(intent);
-                } catch (ActivityNotFoundException ex) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.waze"));
-                    activity.startActivity(intent);
-                    EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                    enviarLogOperation.execute(conductor.id,ex.getMessage(),ex.getClass().getName(),ex.getStackTrace()[0].getLineNumber()+"");
-                }
-            } catch (Exception e)
-            {
-                e.printStackTrace();
-                EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
-                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
-            }
-        }
 
         public void recargarPasajeros()
         {
