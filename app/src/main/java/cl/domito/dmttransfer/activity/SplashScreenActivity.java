@@ -25,12 +25,16 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.getSupportActionBar().hide();
         View v = View.inflate(getApplicationContext(), R.layout.activity_splash, null);
-        Conductor.getInstance().context = SplashScreenActivity.this;
+        Conductor conductor = Conductor.getInstance();
+        conductor.context = SplashScreenActivity.this;
         ANDROID_ID = Settings.Secure.getString(getApplicationContext().getContentResolver(), Settings.Secure.ANDROID_ID);
         SharedPreferences pref = getApplicationContext().getSharedPreferences
                 ("preferencias", Context.MODE_PRIVATE);
         String idConductor = pref.getString("idUsuario", "");
         String clave = pref.getString("claveUsuario","");
+        if(!idConductor.equals("")){
+           conductor.id = idConductor;
+        }
         setContentView(R.layout.activity_splash);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

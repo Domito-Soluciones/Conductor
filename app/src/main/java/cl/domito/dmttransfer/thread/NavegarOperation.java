@@ -76,7 +76,8 @@ public class NavegarOperation extends AsyncTask<String, Void, Void> {
                 location.setLatitude(lat);
                 location.setLongitude(lng);
             } catch (Exception e) {
-                e.printStackTrace();
+                EnviarLogOperation enviarLogOperation = new EnviarLogOperation();
+                enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
             }
             conductor.locationDestino = location;
             try {
