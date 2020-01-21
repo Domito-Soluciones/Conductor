@@ -97,7 +97,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                             getUbicacion();
                         }
                         //if (conductor.getLocation() != null) {
-                        if (conductor.navegando && conductor.location != null) {
+                        if (conductor.servicioActual != null && conductor.location != null) {
                             insertarNavegacion();
                         }
 
