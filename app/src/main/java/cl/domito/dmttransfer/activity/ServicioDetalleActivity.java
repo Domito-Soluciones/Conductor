@@ -60,8 +60,8 @@ public class ServicioDetalleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityUtils.cambiarColorBarra(this);
         setContentView(R.layout.activity_servicio_detalle);
-
         recyclerViewDetalle = (RecyclerView) findViewById(R.id.recyclerViewDetalle);
         recyclerViewDetalle.setHasFixedSize(true);
         layoutManagerDetalle = new LinearLayoutManager(this);

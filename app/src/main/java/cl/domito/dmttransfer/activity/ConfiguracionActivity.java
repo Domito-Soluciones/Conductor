@@ -24,6 +24,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityUtils.cambiarColorBarra(this);
         setContentView(R.layout.activity_configuracion);
         imageViewAtras = findViewById(R.id.imageViewAtras);
         radioButtonGMaps = findViewById(R.id.radioButton2);

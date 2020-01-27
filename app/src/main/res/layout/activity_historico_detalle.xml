@@ -57,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:background="@color/fondo_menu"
                 android:text="Detalle Servicio"
+                android:textColor="@color/blanco"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

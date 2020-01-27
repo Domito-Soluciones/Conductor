@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import cl.domito.dmttransfer.R;
+import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.dominio.Conductor;
 
 public class SplashScreenActivity extends AppCompatActivity {
@@ -23,6 +24,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityUtils.cambiarColorBarra(this);
         this.getSupportActionBar().hide();
         View v = View.inflate(getApplicationContext(), R.layout.activity_splash, null);
         Conductor conductor = Conductor.getInstance();

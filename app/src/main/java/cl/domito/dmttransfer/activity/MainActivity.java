@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActivityUtils.cambiarColorBarra(this);
         conductor = Conductor.getInstance();
         if(conductor.id == null){
             Intent i = new Intent(this,LoginActivity.class);

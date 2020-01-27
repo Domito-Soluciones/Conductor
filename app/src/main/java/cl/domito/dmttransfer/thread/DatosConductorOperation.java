@@ -1,6 +1,8 @@
 package cl.domito.dmttransfer.thread;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.widget.TextView;
@@ -62,7 +64,10 @@ public class DatosConductorOperation  extends AsyncTask<Void, Void, Void> {
             public void run() {
                 TextView textView = context.get().findViewById(R.id.textViewNombreUsuario);
                 TextView textViewEstado = context.get().findViewById(R.id.textViewEstadoValor);
-                textView.setText(conductor.nombre);
+                SharedPreferences pref = context.get().getApplicationContext().getSharedPreferences
+                        ("preferencias", Context.MODE_PRIVATE);
+                String nombre = pref.getString("nombreUsuario", "");
+                textView.setText(nombre);
                 if(conductor.estado == 1)
                 {
                     textViewEstado.setText("Conectado");

@@ -29,6 +29,7 @@ public class HistoricoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityUtils.cambiarColorBarra(this);
         setContentView(R.layout.activity_historico);
         imageViewAtras = findViewById(R.id.imageViewAtras);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewHistorial);

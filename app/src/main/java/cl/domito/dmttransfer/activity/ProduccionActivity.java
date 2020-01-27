@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import cl.domito.dmttransfer.R;
+import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.thread.ObtenerProduccionOperation;
 
@@ -26,6 +27,7 @@ public class ProduccionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityUtils.cambiarColorBarra(this);
         setContentView(R.layout.activity_produccion);
         imageViewAtras = findViewById(R.id.imageViewAtras);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerViewProduccion);

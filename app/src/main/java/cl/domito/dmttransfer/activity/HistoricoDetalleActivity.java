@@ -42,6 +42,7 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityUtils.cambiarColorBarra(this);
         setContentView(R.layout.activity_historico_detalle);
 
         recyclerViewDetalle = (RecyclerView) findViewById(R.id.recyclerViewDetalle);

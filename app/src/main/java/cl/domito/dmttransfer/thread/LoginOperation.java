@@ -42,6 +42,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
         try{
             String id = login.getString("conductor_id");
             String dispositivo = login.getString("conductor_equipo");
+            String nombre = login.getString("conductor_nombre");
         if (!id.equals("0")) {
             if (!dispositivo.equals("") && !dispositivo.equals(SplashScreenActivity.ANDROID_ID)) {
                 loginActivity.runOnUiThread(new Runnable() {
@@ -57,6 +58,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             {
                 conductor.id = id;
                 conductor.activo = true;
+                conductor.nombre = "";
                 conductor.nick = strings[0];
                 RequestConductor.cambiarEstadoMovil("1");
             }
@@ -64,6 +66,7 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
                         ("preferencias", Context.MODE_PRIVATE);
                 ActivityUtils.guardarSharedPreferences(pref, "idUsuario", strings[0]);
                 ActivityUtils.guardarSharedPreferences(pref, "claveUsuario", strings[1]);
+            ActivityUtils.guardarSharedPreferences(pref, "nombreUsuario", nombre);
             if (conductor.recordarSession) {
                 ActivityUtils.guardarSharedPreferences(pref, "recordar", "1");
             }

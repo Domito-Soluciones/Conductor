@@ -10,15 +10,15 @@
             android:title="Servicios" />-->
         <item
             android:id="@+id/historico"
-            android:icon="@drawable/historial"
+            android:icon="@drawable/historial_blanco"
             android:title="Historico" />
         <item
             android:id="@+id/produccion"
-            android:icon="@drawable/produccion"
+            android:icon="@drawable/produccion_blanco"
             android:title="Producción" />
         <item
             android:id="@+id/configuracion"
-            android:icon="@drawable/configuracion"
+            android:icon="@drawable/configuracion_blanco"
             android:title="Configuración" />
         <item
             android:id="@+id/salir"

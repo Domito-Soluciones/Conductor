@@ -29,6 +29,7 @@ public class FinServicioActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityUtils.cambiarColorBarra(this);
         setContentView(R.layout.activity_fin_servicio);
         imageViewAtras = findViewById(R.id.imageViewAtras);
         textView = findViewById(R.id.textViewIdServicio);

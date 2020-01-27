@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import cl.domito.dmttransfer.R;
 import cl.domito.dmttransfer.activity.adapter.ReciclerViewPasajeroAdapter;
+import cl.domito.dmttransfer.activity.utils.ActivityUtils;
 import cl.domito.dmttransfer.activity.utils.StringBuilderUtil;
 import cl.domito.dmttransfer.dominio.Conductor;
 import cl.domito.dmttransfer.thread.EnviarLogOperation;
@@ -31,6 +32,7 @@ public class PasajeroActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityUtils.cambiarColorBarra(this);
         setContentView(R.layout.activity_pasajero);
         swipeRefreshLayout = findViewById(R.id.swiperefresh);
         recyclerView = this.findViewById(R.id.recyclerViewPasajero);

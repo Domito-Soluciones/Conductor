@@ -32,9 +32,9 @@ public class RequestConductor {
         builder.append(Utilidades.URL_BASE_CONDUCTOR).append("Login.php");
         String url =  builder.toString();
         List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("usuario",usuario));
+        params.add(new BasicNameValuePair("usuario",usuario.trim()));
         try {
-            byte[] data = password.getBytes("UTF-8");
+            byte[] data = password.trim().getBytes("UTF-8");
             String base64 = android.util.Base64.encodeToString(data, android.util.Base64.NO_WRAP);
             params.add(new BasicNameValuePair("password",base64));
             RESPUESTA = Utilidades.enviarPost(url,params);
