@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences pref = getApplicationContext().getSharedPreferences
                 ("preferencias", Context.MODE_PRIVATE);
         String idConductor = pref.getString("idUsuario", "");
+        String nickConductor = pref.getString("nickUsuario", "");
         String clave = pref.getString("claveUsuario","");
         String recordar = pref.getString("recordar","");
         mUserView = findViewById(R.id.usuario);
@@ -57,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         if(recordar.equals("1")) {
-            mUserView.setText(idConductor);
+            mUserView.setText(nickConductor);
             mPasswordView.setText(clave);
             conductor.recordarSession = true;
             checkBoxRec.setChecked(true);
