@@ -54,11 +54,11 @@ public class RealizarServicioOperation extends AsyncTask<Void, Void, String> {
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(context.get(),"Servicio aceptado",Toast.LENGTH_LONG).show();
+                dialog.dismiss();
                 CambiarEstadoNotificacionOperation cambiarEstadoNotificacionOperation = new CambiarEstadoNotificacionOperation();
                 cambiarEstadoNotificacionOperation.execute(aString);
                 ActivityUtils.eliminarNotificacion(context.get(),aString);
-                //dialog.dismiss();
+                Toast.makeText(context.get(),"Servicio aceptado",Toast.LENGTH_LONG).show();
                 context.get().finish();
             }
         });

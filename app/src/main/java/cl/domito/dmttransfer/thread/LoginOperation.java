@@ -78,7 +78,17 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             mainIntent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION | Intent.FLAG_ACTIVITY_NEW_TASK);
             loginActivity.startActivity(mainIntent);
             loginActivity.finish();
-        } else if (Utilidades.tipoError == 0) {
+        }
+        else if(id .equals("0")){
+            loginActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast t = Toast.makeText(loginActivity.getBaseContext(), "Usuario y/o contraseña no coinciden", Toast.LENGTH_SHORT);
+                    t.show();
+                }
+            });
+        }
+        else if (Utilidades.tipoError == 0) {
             loginActivity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

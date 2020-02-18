@@ -85,6 +85,9 @@ public class ReciclerViewDetalleAdapter extends RecyclerView.Adapter<ReciclerVie
 
     @Override
     public int getItemCount() {
+        if(mDataset == null){
+            return 0;
+        }
         return mDataset.length;
     }
 

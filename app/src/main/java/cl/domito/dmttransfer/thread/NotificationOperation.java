@@ -76,7 +76,8 @@ public class NotificationOperation extends AsyncTask<Void, Void, String[]> {
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                     Date dateAux = sdf.parse(fecha);
                     Date dateNow = new Date();
-                    if(Math.abs(dateAux.getTime() - dateNow.getTime()) < 1.8e+6) {
+                    System.out.println(dateAux.getTime() + " " + dateNow.getTime());
+                    if(Math.abs(dateAux.getTime() - dateNow.getTime()) < 3600000) {
                         ActivityUtils.enviarNotificacion(Integer.parseInt(id),context, "", jsonObject.getString("notificacion_texto"), R.drawable.furgoneta,MainActivity.class);
                         CambiarEstadoNotificacionOperation cambiarEstadoNotificacionOperation = new CambiarEstadoNotificacionOperation();
                         cambiarEstadoNotificacionOperation.execute(id);

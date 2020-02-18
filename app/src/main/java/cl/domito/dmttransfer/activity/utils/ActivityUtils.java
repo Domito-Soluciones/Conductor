@@ -259,11 +259,7 @@ public class ActivityUtils {
             try {
                 JSONObject primero = conductor.servicio.getJSONObject(0);
                 String ruta = primero.getString("servicio_truta").split("-")[0];
-                if (primero.getString("servicio_estado").equals("4"))
-                {
-                    conductor.zarpeIniciado = true;
-                }
-                if ((ruta.equals("ZP") && !conductor.zarpeIniciado)){
+                if (!conductor.zarpeIniciado && ruta.equals("ZP")){
                     String cliente = primero.getString("servicio_cliente");
                     String destino = primero.getString("servicio_cliente_direccion");
                     StringBuilder builder =StringBuilderUtil.getInstance();

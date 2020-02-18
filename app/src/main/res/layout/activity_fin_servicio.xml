@@ -79,9 +79,11 @@
         <Button
             android:id="@+id/buttonFinalizar"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="70dp"
             android:background="@drawable/estilo_boton"
-            android:text="Guardar y finalizar"
+            android:text="GUARDAR Y FINALIZAR"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

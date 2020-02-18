@@ -57,13 +57,13 @@
         app:layout_constraintVertical_bias="0.96" />
 
     <ImageButton
-        android:id="@+id/imageButtonAceptar"
+        android:id="@+id/imageButtonNavegar"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:background="@color/colorFondo"
-        android:src="@drawable/confirmar"
+        android:src="@drawable/navegar"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,13 +73,13 @@
         app:layout_constraintVertical_bias="0.307" />
 
     <ImageButton
-        android:id="@+id/imageButtonManual"
+        android:id="@+id/imageButtonConfirmar"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:background="@color/colorFondo"
-        android:src="@drawable/mano"
+        android:src="@drawable/confirmar"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -108,6 +108,7 @@
         android:layout_marginStart="8dp"
         android:background="@color/colorFondo"
         android:src="@drawable/cerrar"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.86"

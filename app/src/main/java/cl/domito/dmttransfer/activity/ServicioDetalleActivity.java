@@ -141,10 +141,10 @@ public class ServicioDetalleActivity extends AppCompatActivity {
                 Long lNow = dateNow.getTime();
                 Long data = Math.abs(lNow - l);
                 if (data <= 3.6e+6 || dateNow.after(date)) {
-                    if(conductor.servicioActualRuta.contains("RG") || conductor.servicioActualRuta.contains("ESP")) {
+                    //if(conductor.servicioActualRuta.contains("RG") || conductor.servicioActualRuta.contains("ESP")) {
                         CambiarEstadoServicioOperation cambiarEstadoServicioOperation = new CambiarEstadoServicioOperation();
                         cambiarEstadoServicioOperation.execute(conductor.servicioActual,"4","");
-                    }
+                    //}
                     Intent mainIntent = new Intent(this, PasajeroActivity.class);
                     startActivity(mainIntent);
                     this.finish();

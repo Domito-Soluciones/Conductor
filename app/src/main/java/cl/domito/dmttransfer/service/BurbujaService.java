@@ -38,7 +38,7 @@ public class BurbujaService extends Service {
         super.onCreate();
         //Inflate the chat head layout we created
         mChatHeadView = LayoutInflater.from(this).inflate(R.layout.burbuja_layout, null);
-
+        conductor.burbujaService = this;
 
         //Add the view to the window.
         final WindowManager.LayoutParams params;

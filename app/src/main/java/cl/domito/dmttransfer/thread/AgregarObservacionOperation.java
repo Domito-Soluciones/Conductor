@@ -48,7 +48,7 @@ public class AgregarObservacionOperation extends AsyncTask<String, Void, Void> {
     @Override
     protected void onPostExecute(Void aVoid) {
         if(!context.get().isDestroyed()) {
-            dialog.dismiss();
+            //dialog.dismiss();
         }
     }
 

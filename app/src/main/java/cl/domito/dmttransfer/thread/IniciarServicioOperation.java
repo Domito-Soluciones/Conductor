@@ -28,15 +28,15 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
     AlertDialog dialog;
 
     public IniciarServicioOperation(Activity activity) {
-        context = new WeakReference<Activity>(activity);
-        constraintLayoutPasajero = context.get().findViewById(R.id.constrainLayoutPasajero);
-        constraintLayoutEstado = context.get().findViewById(R.id.constrainLayoutEstado);
-        dialog = ActivityUtils.setProgressDialog(context.get());
-    }
+            context = new WeakReference<Activity>(activity);
+            constraintLayoutPasajero = context.get().findViewById(R.id.constrainLayoutPasajero);
+            constraintLayoutEstado = context.get().findViewById(R.id.constrainLayoutEstado);
+            dialog = ActivityUtils.setProgressDialog(context.get());
+        }
 
-    @Override
-    protected String doInBackground(Void... voids) {
-        Conductor conductor = Conductor.getInstance();
+        @Override
+        protected String doInBackground(Void... voids) {
+            Conductor conductor = Conductor.getInstance();
         String idServicio = conductor.servicioActual;
         RecyclerView recyclerView = context.get().findViewById(R.id.recyclerViewPasajero);
         final RecyclerView.LayoutManager[] layoutManager = new RecyclerView.LayoutManager[1];
@@ -57,11 +57,7 @@ public class IniciarServicioOperation extends AsyncTask<Void, Void, String> {
             try {
                 JSONObject primero = conductor.servicio.getJSONObject(0);
                 String ruta = primero.getString("servicio_truta").split("-")[0];
-                if (primero.getString("servicio_estado").equals("4"))
-                {
-                    conductor.zarpeIniciado = true;
-                }
-                if ((ruta.equals("ZP") && !conductor.zarpeIniciado) ) {
+                if (!conductor.zarpeIniciado && ruta.equals("ZP"))  {
                     String cliente = primero.getString("servicio_cliente");
                     String destino = primero.getString("servicio_cliente_direccion");
                     StringBuilder builder = StringBuilderUtil.getInstance();

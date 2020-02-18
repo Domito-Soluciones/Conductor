@@ -290,14 +290,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
         int id = menuItem.getItemId();
         if (id == R.id.historico) {
             Intent mainIntent = new Intent(this, HistoricoActivity.class);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             this.startActivity(mainIntent);
         }
         if (id == R.id.configuracion) {
             Intent mainIntent = new Intent(this, ConfiguracionActivity.class);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             this.startActivity(mainIntent);
         }
         if (id == R.id.produccion) {
             Intent mainIntent = new Intent(this, ProduccionActivity.class);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mainIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             this.startActivity(mainIntent);
         }
         if (id == R.id.salir) {

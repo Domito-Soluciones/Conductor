@@ -7,6 +7,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.json.JSONArray;
 
+import cl.domito.dmttransfer.service.BurbujaService;
+
 public class Conductor {
 
     private static Conductor instance;
@@ -32,6 +34,7 @@ public class Conductor {
     public boolean zarpeIniciado = false;
     public boolean pasajeroRecogido = false;
     public boolean pasajeroRepartido = false;
+    public BurbujaService burbujaService;
 
     public static synchronized Conductor getInstance(){
         if(instance == null){

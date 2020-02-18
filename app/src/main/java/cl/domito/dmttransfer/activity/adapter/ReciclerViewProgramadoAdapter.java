@@ -111,6 +111,13 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
                 }
             }
         });
+        vh.relativeLayout3.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                //Toast.makeText(activity, "Funco", Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
         return vh;
 
     }
@@ -181,6 +188,9 @@ public class ReciclerViewProgramadoAdapter extends RecyclerView.Adapter<Recicler
 
     @Override
     public int getItemCount() {
+        if(mDataset == null){
+            return 0;
+        }
         return mDataset.length;
     }
 

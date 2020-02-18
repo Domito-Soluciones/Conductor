@@ -108,6 +108,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
                             if (distancia < 50f) {
                                 if(conductor.servicioActual != null) {
                                     abrirActivity();
+                                    conductor.burbujaService.stopSelf();
                                     conductor.locationDestino = null;
                                     if(conductor.servicioActualRuta.contains("RG"))
                                     {
@@ -160,6 +161,7 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
         else{
             Intent dialogIntent = new Intent(this, PasajeroActivity.class);
             dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
+            dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//diferenciar
             dialogIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(dialogIntent);
         }
@@ -176,8 +178,13 @@ public class AsignacionServicioService extends Service implements GoogleApiClien
             enviarLogOperation.execute(conductor.id,e.getMessage(),e.getStackTrace()[0].getClassName(),Integer.toString(e.getStackTrace()[0].getLineNumber()));
         }
         if(conductor.estado != 0) {
-            Intent broadcastIntent = new Intent(this, RestartBroadcastReceived.class);
-            sendBroadcast(broadcastIntent);
+            //Intent broadcastIntent = new Intent(this, RestartBroadcastReceived.class);
+            //sendBroadcast(broadcastIntent);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                startForegroundService(new Intent(this, AsignacionServicioService.class));
+            } else {
+                startService(new Intent(this, AsignacionServicioService.class));
+            }
         }
     }
 

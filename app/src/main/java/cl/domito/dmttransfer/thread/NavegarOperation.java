@@ -38,30 +38,7 @@ public class NavegarOperation extends AsyncTask<String, Void, Void> {
         context.get().startService(new Intent(context.get(), BurbujaService.class));
         conductor.navegando = true;
         try {
-            //Geocoder geocoder = new Geocoder(context.get());
             Location location = new Location("");
-            /*List<Address> addresses = null;
-            boolean error = true;
-            int i = 0;
-            do {
-                try {
-
-                    addresses = geocoder.getFromLocationName(destino, 1);
-                    location.setLatitude(addresses.get(0).getLatitude());
-                    location.setLongitude(addresses.get(0).getLongitude());
-                    error = false;
-                }
-                catch(Exception e){
-                    i++;
-                    if(i == 3){
-                        error = false;
-                    }
-                    else {
-                        error = true;
-                    }
-                }
-            }
-            while(error);*/
             String response;
             try {
                 response = ActivityUtils.getLatLongByURL("https://maps.googleapis.com/maps/api/geocode/json?address="+ URLEncoder.encode(destino,"UTF-8") +"&key=AIzaSyDcQylEsZAzuEw3EHBdWbsDAynXvU2Ljzs");
@@ -88,8 +65,6 @@ public class NavegarOperation extends AsyncTask<String, Void, Void> {
                 StringBuilder builder = StringBuilderUtil.getInstance();
                 if(tipoNav.equals("google"))
                 {
-                    /*builder.append("google.navigation:q=").append(addresses.get(0).getLatitude())
-                            .append(",").append(addresses.get(0).getLongitude());*/
                     builder.append("google.navigation:q=").append(location.getLatitude())
                             .append(",").append(location.getLongitude());
                     uri = builder.toString() ;
@@ -97,8 +72,6 @@ public class NavegarOperation extends AsyncTask<String, Void, Void> {
                 }
                 else if(tipoNav.equals("") || tipoNav.equals("waze"))
                 {
-                    /*builder.append("geo:").append(addresses.get(0).getLatitude())
-                            .append(",").append(addresses.get(0).getLongitude());*/
                     builder.append("geo:").append(location.getLatitude())
                             .append(",").append(location.getLongitude());
                     uri = builder.toString();

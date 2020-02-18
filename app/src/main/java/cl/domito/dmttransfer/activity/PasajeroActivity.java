@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.json.JSONObject;
 
@@ -28,6 +29,7 @@ public class PasajeroActivity extends AppCompatActivity {
     ImageView imageView;
     RecyclerView recyclerView;
     Conductor conductor;
+    TextView txtError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class PasajeroActivity extends AppCompatActivity {
         recyclerView.setDrawingCacheEnabled(true);
         recyclerView.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
         imageView = this.findViewById(R.id.imageView3);
+        txtError = this.findViewById(R.id.textViewError);
 
         conductor = Conductor.getInstance();
 
@@ -106,11 +109,7 @@ public class PasajeroActivity extends AppCompatActivity {
             try {
                 JSONObject primero = conductor.servicio.getJSONObject(0);
                 String ruta = primero.getString("servicio_truta").split("-")[0];
-                if (primero.getString("servicio_estado").equals("4"))
-                {
-                    conductor.zarpeIniciado = true;
-                }
-                if ((ruta.equals("ZP") && !conductor.zarpeIniciado)) {
+                if (!conductor.zarpeIniciado && ruta.equals("ZP")) {
                     String cliente = primero.getString("servicio_cliente");
                     String destino = primero.getString("servicio_cliente_direccion");
                     StringBuilder builder = StringBuilderUtil.getInstance();
@@ -191,10 +190,12 @@ public class PasajeroActivity extends AppCompatActivity {
             array  = lista.toArray(array);
             ReciclerViewPasajeroAdapter mAdapter = new ReciclerViewPasajeroAdapter(this,array);
             recyclerView.setAdapter(mAdapter);
+            recyclerView.setVisibility(View.VISIBLE);
         }
         else{
             ReciclerViewPasajeroAdapter mAdapter = new ReciclerViewPasajeroAdapter(this,null);
             recyclerView.setAdapter(mAdapter);
+            recyclerView.setVisibility(View.GONE);
         }
     }
 

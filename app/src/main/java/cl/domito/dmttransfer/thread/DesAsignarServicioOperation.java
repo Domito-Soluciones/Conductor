@@ -52,7 +52,7 @@ public class DesAsignarServicioOperation  extends AsyncTask<Void, Void, String> 
         context.get().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //dialog.dismiss();
+                dialog.dismiss();
                 context.get().finish();
                 CambiarEstadoNotificacionOperation cambiarEstadoNotificacionOperation = new CambiarEstadoNotificacionOperation();
                 cambiarEstadoNotificacionOperation.execute(aString);
