@@ -65,7 +65,8 @@ public class LoginOperation extends AsyncTask<String, Void, Void> {
             SharedPreferences pref = loginActivity.getApplicationContext().getSharedPreferences
                         ("preferencias", Context.MODE_PRIVATE);
             ActivityUtils.guardarSharedPreferences(pref, "idUsuario", conductor.id);
-            ActivityUtils.guardarSharedPreferences(pref, "nickUsuario", strings[0]);
+            ActivityUtils.guardarSharedPreferences(pref, "nickUsuario", strings[0]
+            );
             ActivityUtils.guardarSharedPreferences(pref, "claveUsuario", strings[1]);
             ActivityUtils.guardarSharedPreferences(pref, "nombreUsuario", nombre);
             if (conductor.recordarSession) {

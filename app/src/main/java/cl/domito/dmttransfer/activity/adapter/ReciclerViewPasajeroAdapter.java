@@ -126,48 +126,48 @@
                     myViewHolder.buttonManual.setVisibility(View.VISIBLE);
 
                     myViewHolder.buttonIniciar.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            NavegarOperation navegarOperation = new NavegarOperation((PasajeroActivity)activity);
-                            navegarOperation.execute(direccionPasajero);
-                        }
-                    });
-
-                    myViewHolder.buttonManual.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            conductor.pasajeroActual = idPasajero;
-                            if (!idPasajero.equals("0")) {
-                                AlertDialog.Builder dialogo1 = new AlertDialog.Builder(activity);
-                                dialogo1.setTitle("Dejar Pasajero");
-                                dialogo1.setMessage("¿ Esta seguro que desea dejar al pasajero aquí ?");
-                                dialogo1.setCancelable(false);
-                                dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialogo1, int id) {
-                                        dialogo1.dismiss();
-                                        conductor.pasajeroRecogido = false;
-                                        TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
-                                        tomarPasajeroOperation.execute("");
-                                    }
-                                });
-                                dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialogo1, int id) {
-                                        dialogo1.dismiss();
-                                    }
-                                });
-                                dialogo1.show();
-                            } else {
-                                ActivityUtils.finalizar(activity);
-                            }
-                        }
-
-                    });
-
+                @Override
+                public void onClick(View v) {
+                    NavegarOperation navegarOperation = new NavegarOperation((PasajeroActivity)activity);
+                    navegarOperation.execute(direccionPasajero);
                 }
-                else
-                {
-                    myViewHolder.buttonIniciar.setVisibility(View.GONE);
-                }
+            });
+
+                myViewHolder.buttonManual.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        conductor.pasajeroActual = idPasajero;
+                        if (!idPasajero.equals("0")) {
+                            AlertDialog.Builder dialogo1 = new AlertDialog.Builder(activity);
+                            dialogo1.setTitle("Dejar Pasajero");
+                            dialogo1.setMessage("¿ Esta seguro que desea dejar al pasajero aquí ?");
+                            dialogo1.setCancelable(false);
+                            dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialogo1, int id) {
+                                    dialogo1.dismiss();
+                                    conductor.pasajeroRecogido = false;
+                                    TomarPasajeroOperation tomarPasajeroOperation = new TomarPasajeroOperation((PasajeroActivity) activity);
+                                    tomarPasajeroOperation.execute("");
+                                }
+                            });
+                            dialogo1.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialogo1, int id) {
+                                    dialogo1.dismiss();
+                                }
+                            });
+                            dialogo1.show();
+                        } else {
+                            ActivityUtils.finalizar(activity);
+                        }
+                    }
+
+                });
+
+            }
+            else
+            {
+                myViewHolder.buttonIniciar.setVisibility(View.GONE);
+            }
 
                 myViewHolder.buttonCancelar.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -380,6 +380,7 @@
                                                 cambiarEstadoServicioOperation.execute(conductor.servicioActual,"6",input.getText().toString());
                                                 FinalizarRutaPasajerosOperation finalizarRutaPasajerosOperation = new FinalizarRutaPasajerosOperation(activity);
                                                 finalizarRutaPasajerosOperation.execute("2");
+                                                Toast.makeText(activity, "Servicio cancelado", Toast.LENGTH_SHORT).show();
                                                 activity.finish();
                                             }
                                             else

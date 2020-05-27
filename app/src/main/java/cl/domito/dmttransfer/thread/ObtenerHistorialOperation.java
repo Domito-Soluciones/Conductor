@@ -46,7 +46,7 @@ public class ObtenerHistorialOperation extends AsyncTask<Void, Void, JSONArray> 
         params.add(new BasicNameValuePair("hasta",fechaHasta.toString()));
         c.add(Calendar.MONTH,-2);
         StringBuilder fechaDesde = StringBuilderUtil.getInstance();
-        fechaDesde.append(c.get(Calendar.DAY_OF_MONTH)).append("/").append((c.get(Calendar.MONTH) + 1) ).append("/").append(c.get(Calendar.YEAR));
+        fechaDesde.append("01/").append((c.get(Calendar.MONTH) + 1) ).append("/").append(c.get(Calendar.YEAR));
         params.add(new BasicNameValuePair("desde",fechaDesde.toString()));
         StringBuilder builder = StringBuilderUtil.getInstance();
         builder.append(Utilidades.URL_BASE_SERVICIO).append("GetServiciosHistoricos.php");

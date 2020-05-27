@@ -58,7 +58,7 @@ public class HistoricoDetalleActivity extends AppCompatActivity {
         textviewCantidadValor = findViewById(R.id.textViewCantidadValor);
         textviewObservacionValor = findViewById(R.id.textViewObservacionValor);
 
-        conductor = Conductor.getInstance();
+         conductor = Conductor.getInstance();
 
         conductor.context = HistoricoDetalleActivity.this;
 

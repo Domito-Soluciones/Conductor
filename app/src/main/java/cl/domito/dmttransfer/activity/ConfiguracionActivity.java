@@ -39,7 +39,6 @@ public class ConfiguracionActivity extends AppCompatActivity {
         else if(tipoNav.equals("") || tipoNav.equals("waze")){
             radioButtonWaze.setChecked(true);
         }
-
         conductor = Conductor.getInstance();
 
         conductor.context = ConfiguracionActivity.this;

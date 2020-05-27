@@ -148,8 +148,7 @@ public class PasajeroActivity extends AppCompatActivity {
                                         .append(destino).append("%").append(estado).append("%").append(id);
                                 lista.add(builder.toString());
                             }
-                        } else if(servicio.getString("servicio_truta").contains("XX"))
-                        {
+                        } else if(servicio.getString("servicio_truta").contains("XX")) {
                             if (!estado.equals("3") && !estado.equals("2") && !estado.equals("1")) {
                                 if(!destino.equals("")) {
                                     builder.append(nombre).append("%").append(celular).append("%")

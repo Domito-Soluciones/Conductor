@@ -167,7 +167,7 @@ public class ServicioDetalleActivity extends AppCompatActivity {
     private void desasignarServicio() {
         AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
         dialogo1.setTitle("Rechazar Servicio");
-        dialogo1.setMessage("¿ Esta seguro que desea rechazar este servicio?");
+        dialogo1.setMessage("¿Esta seguro que desea rechazar este servicio?");
         dialogo1.setCancelable(false);
         dialogo1.setPositiveButton("Si", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialogo1, int id) {
